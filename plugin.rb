@@ -3,7 +3,7 @@
 # version: 0.1
 # authors: Angus McLeod
 
-register_asset 'stylesheets/previews.scss', :desktop
+register_asset 'stylesheets/previews.scss'
 
 after_initialize do
 

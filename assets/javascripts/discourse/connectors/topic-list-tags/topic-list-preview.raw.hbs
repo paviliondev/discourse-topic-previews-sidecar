@@ -1,6 +1,10 @@
 {{#if context.topic.image_url}}
-  <div class="topic-preview">
-    {{preview-unbound context.topic.image_url}}
-  </div>
+  {{#if context.site.mobileView}}
+    I AM THE MOBILE VIEW
+  {{else}}
+    <div class="topic-preview">
+      {{preview-unbound context.topic.image_url}}
+    </div>
+  {{/if}}
 {{/if}}
 {{raw "list/topic-excerpt" topic=context.topic}}
