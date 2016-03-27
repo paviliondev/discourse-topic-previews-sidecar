@@ -14,7 +14,9 @@ after_initialize do
       accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
       if accepted_id > 0
         cooked = Post.where(id: accepted_id).pluck('cooked')
-        PrettyText.excerpt(cooked[0], 200, {})
+        excerpt = PrettyText.excerpt(cooked[0], 200, {})
+        excerpt.slice! "[image]"
+        excerpt
       else
         object.excerpt
       end
@@ -24,4 +26,6 @@ after_initialize do
       true
     end
   end
+
+  add_to_serializer(:suggested_topic, :is_suggested) {true}
 end
