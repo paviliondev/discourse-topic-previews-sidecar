@@ -12,14 +12,15 @@ after_initialize do
 
     def excerpt
       accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
+
       if accepted_id > 0
         cooked = Post.where(id: accepted_id).pluck('cooked')
         excerpt = PrettyText.excerpt(cooked[0], 200, {})
-        excerpt.slice! "[image]"
-        excerpt
       else
-        object.excerpt
+        excerpt = object.excerpt
       end
+      excerpt.slice! "[image]" if excerpt
+      excerpt
     end
 
     def include_excerpt?
