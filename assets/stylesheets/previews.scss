@@ -1,4 +1,17 @@
-.topic-preview img {
-  max-height: 100px;
-  max-width: 100px;
+.topic-preview {
+  float: left;
+  padding-right: 15px;
+  .thumbnail {
+    height: 100px;
+    width: 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+}
+
+.topic-list .topic-excerpt {
+  margin-top: 2px;
+  padding-right: 10px;
+  overflow: hidden;
 }
