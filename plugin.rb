@@ -7,6 +7,8 @@ register_asset 'stylesheets/previews.scss'
 
 after_initialize do
 
+  TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
+
   require 'listable_topic_serializer'
   class ::ListableTopicSerializer
 
