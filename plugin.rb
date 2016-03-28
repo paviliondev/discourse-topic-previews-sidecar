@@ -7,8 +7,6 @@ register_asset 'stylesheets/previews.scss'
 
 after_initialize do
 
-  TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
-
   require 'listable_topic_serializer'
   class ::ListableTopicSerializer
 
@@ -28,7 +26,12 @@ after_initialize do
     def include_excerpt?
       true
     end
+
   end
 
+  TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
+
+  add_to_serializer(:topic_list_item, :show_thumbnail) {object.category.custom_fields["list_thumbnails"] && !!object.image_url}
+  add_to_serializer(:basic_category, :preview_enabled) {object.custom_fields["list_thumbnails"] == 'true'}
   add_to_serializer(:suggested_topic, :is_suggested) {true}
 end
