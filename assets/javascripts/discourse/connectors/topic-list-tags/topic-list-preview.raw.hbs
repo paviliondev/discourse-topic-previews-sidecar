@@ -8,5 +8,7 @@
       </div>
     {{/if}}
   {{/if}}
-  {{raw "list/topic-excerpt" topic=context.topic}}
+  {{#if context.topic.show_excerpt}}
+    {{raw "list/topic-excerpt" topic=context.topic}}
+  {{/if}}
 {{/unless}}
