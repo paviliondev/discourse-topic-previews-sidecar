@@ -22,7 +22,7 @@ after_initialize do
       else
         excerpt = object.excerpt
       end
-      excerpt.slice! "[image]" if excerpt
+      excerpt.gsub!(/(\[image\])/, "") if excerpt
       excerpt
     end
 
