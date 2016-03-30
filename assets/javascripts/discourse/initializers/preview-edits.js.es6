@@ -18,12 +18,11 @@ export default {
 
       expandPinned: function() {
         const pinned = this.get('topic.pinned');
-        if (!pinned) {return false;}
-        if (this.get('topic.show_excerpt')) {return false;}
+        if (!pinned) {return this.get('topic.hasExcerpt');}
         if (this.get('controller.expandGloballyPinned') && this.get('topic.pinned_globally')) {return true;}
         if (this.get('controller.expandAllPinned')) {return true;}
         return false;
-      }.property(),
+      }.property()
 
     })
 

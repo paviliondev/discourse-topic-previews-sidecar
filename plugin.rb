@@ -26,21 +26,17 @@ after_initialize do
       excerpt
     end
 
-    def include_excerpt?
-      true
-    end
-
   end
 
   require 'topic_list_item_serializer'
   class ::TopicListItemSerializer
-    attributes :show_thumbnail, :show_excerpt
+    attributes :show_thumbnail
 
     def show_thumbnail
       object.category.custom_fields["list_thumbnails"] && !!object.image_url
     end
 
-    def show_excerpt
+    def include_excerpt?
       object.category.custom_fields["list_excerpts"] && !!object.excerpt
     end
   end
