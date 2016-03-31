@@ -15,7 +15,6 @@ after_initialize do
 
     def excerpt
       accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
-
       if accepted_id > 0
         cooked = Post.where(id: accepted_id).pluck('cooked')
         excerpt = PrettyText.excerpt(cooked[0], 300, {})
@@ -33,11 +32,11 @@ after_initialize do
     attributes :show_thumbnail
 
     def show_thumbnail
-      object.category.custom_fields["list_thumbnails"] && !!object.image_url
+      object.category && object.category.custom_fields["list_thumbnails"] && !!object.image_url
     end
 
     def include_excerpt?
-      object.category.custom_fields["list_excerpts"] && !!object.excerpt
+      object.category && object.category.custom_fields["list_excerpts"] && !!object.excerpt
     end
   end
 
