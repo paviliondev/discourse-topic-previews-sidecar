@@ -29,10 +29,23 @@ after_initialize do
 
   require 'topic_list_item_serializer'
   class ::TopicListItemSerializer
-    attributes :show_thumbnail
+    attributes :show_thumbnail, :thumbnails
+
+    def thumbnail_url(image, w, h)
+      image.create_thumbnail!(w, h) if !image.has_thumbnail?(w, h)
+      image.thumbnail(w, h).url
+    end
+
+    def thumbnails
+      image = Upload.get_from_url(object.image_url)
+      return false if !image
+      normal = thumbnail_url(image, 100, 100)
+      retina = thumbnail_url(image, 200, 200)
+      { normal: normal, retina: retina }
+    end
 
     def show_thumbnail
-      object.category && object.category.custom_fields["list_thumbnails"] && !!object.image_url
+      object.category && object.category.custom_fields["list_thumbnails"] && !!thumbnails
     end
 
     def include_excerpt?

@@ -6,8 +6,8 @@ export default {
   name: 'preview-edits',
   initialize(){
 
-    registerUnbound('preview-unbound', function(url) {
-      return new Handlebars.SafeString(renderUnboundPreview(url));
+    registerUnbound('preview-unbound', function(thumbnails) {
+      return new Handlebars.SafeString(renderUnboundPreview(thumbnails));
     });
 
     TopicListItem.reopen({
