@@ -1,3 +1,8 @@
+.topic-list .main-link a.title {
+  padding: 0;
+  display: block;
+}
+
 .topic-preview {
   float: left;
   padding-right: 15px;
@@ -10,12 +15,32 @@
   }
 }
 
+.topic-category {
+  display: inline-block;
+  .badge-wrapper {
+    font-size: 12px;
+  }
+}
+
 .topic-list .topic-excerpt {
   margin-top: 2px;
   padding-right: 10px;
   overflow: hidden;
+  max-height: 60px;
 }
 
 .topic-list-item .discourse-tags {
   clear: none !important;
+  display: inline-block;
+}
+
+.topic-list th.posters, .topic-list td.posters {
+  width: 65px;
+  max-width: 65px;
+  min-width: 65px;
+  text-align: center;
+}
+
+.topic-list .posters > a {
+  float: none;
 }
