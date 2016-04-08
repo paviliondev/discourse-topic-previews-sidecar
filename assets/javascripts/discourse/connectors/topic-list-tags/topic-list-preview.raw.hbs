@@ -9,10 +9,12 @@
     {{/if}}
   {{/unless}}
 {{/unless}}
-{{#unless controller.hideCategory}}
-  {{#unless topic.isPinnedUncategorized}}
-    <div class='topic-category'>
-      {{category-link context.topic.category}}
-    </div>
+{{#unless context.site.mobileView}}
+  {{#unless controller.hideCategory}}
+    {{#unless topic.isPinnedUncategorized}}
+      <div class='topic-category'>
+        {{category-link context.topic.category}}
+      </div>
+    {{/unless}}
   {{/unless}}
 {{/unless}}
