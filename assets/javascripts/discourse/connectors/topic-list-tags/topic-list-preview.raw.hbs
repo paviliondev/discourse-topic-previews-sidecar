@@ -1,20 +1,14 @@
-{{#unless context.topic.is_suggested}}
-  {{#unless context.site.mobileView}}
-    {{#if context.topic.show_thumbnail}}
-      <div class="topic-preview">
-        <a href='{{context.topic.url}}'>
-          {{preview-unbound context.topic.thumbnails}}
-        </a>
-      </div>
-    {{/if}}
-  {{/unless}}
-{{/unless}}
 {{#unless context.site.mobileView}}
-  {{#unless controller.hideCategory}}
-    {{#unless topic.isPinnedUncategorized}}
-      <div class='topic-category'>
-        {{category-link context.topic.category}}
-      </div>
-    {{/unless}}
-  {{/unless}}
+  {{#if context.topic.show_thumbnail}}
+    <div class="topic-thumbnail">
+      <a href='{{context.topic.url}}'>
+        {{preview-unbound context.topic.thumbnails}}
+      </a>
+    </div>
+  {{/if}}
+  {{#if context.showCategoryBadge}}
+    <div class='topic-category'>
+      {{category-link context.topic.category}}
+    </div>
+  {{/if}}
 {{/unless}}

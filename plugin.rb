@@ -11,6 +11,35 @@ after_initialize do
   Category.register_custom_field_type('list_excerpts', :boolean)
   Topic.register_custom_field_type('thumbnails', :json)
 
+  @no_thumbs = TopicCustomField.where( name: 'thumbnails', value: nil )
+  @no_thumbs.each do |thumb|
+    hash = { :normal => '', :retina => ''}
+    thumb.value = ::JSON.generate(hash)
+    thumb.save!
+  end
+
+  module ListHelper
+    class << self
+      def create_thumbnails(image)
+        normal = image ? thumbnail_url(image, 100, 100) : ''
+        retina = image ? thumbnail_url(image, 200, 200) : ''
+        { normal: normal, retina: retina }
+      end
+
+      def thumbnail_url (image, w, h)
+        image.create_thumbnail!(w, h) if !image.has_thumbnail?(w, h)
+        image.thumbnail(w, h).url
+      end
+
+      def save_thumbnails(id, thumbnails)
+        return if !thumbnails
+        topic = Topic.find(id)
+        topic.custom_fields['thumbnails'] = thumbnails
+        topic.save_custom_fields
+      end
+    end
+  end
+
   require 'listable_topic_serializer'
   class ::ListableTopicSerializer
 
@@ -28,22 +57,6 @@ after_initialize do
 
   end
 
-  module ListHelper
-    class << self
-      def create_thumbnails(image)
-        return nil if !image
-        normal = thumbnail_url(image, 100, 100)
-        retina = thumbnail_url(image, 200, 200)
-        { normal: normal, retina: retina }
-      end
-
-      def thumbnail_url (image, w, h)
-        image.create_thumbnail!(w, h) if !image.has_thumbnail?(w, h)
-        image.thumbnail(w, h).url
-      end
-    end
-  end
-
   require 'cooked_post_processor'
   class ::CookedPostProcessor
 
@@ -57,9 +70,7 @@ after_initialize do
       local = UrlHelper.is_local(url)
       image = local ? (Upload.get_from_url(url) rescue nil) : get_linked_image(url)
       thumbnails = ListHelper.create_thumbnails(image)
-      topic = Topic.find(@post.topic.id)
-      topic.custom_fields['thumbnails'] = thumbnails
-      topic.save_custom_fields
+      ListHelper.save_thumbnails(@post.topic.id, thumbnails)
     end
 
     def update_topic_image
@@ -83,39 +94,36 @@ after_initialize do
       ListHelper.create_thumbnails(image)
     end
 
+    def thumbnails_present?
+      thumbnails = object.custom_fields['thumbnails']
+      thumbnails && thumbnails['normal'].present? && thumbnails['retina'].present?
+    end
+
     def thumbnails
-      return false unless object.archetype == Archetype.default
-      if object.custom_fields['thumbnails']
+      return unless object.archetype == Archetype.default
+      if thumbnails_present?
         object.custom_fields['thumbnails']
       else
-        ## for backup and legacy support
-        object.image_url ? get_thumbnails_from_image_url : false
+        return unless object.image_url
+        thumbnails = get_thumbnails_from_image_url
+        ListHelper.save_thumbnails(object.id, thumbnails)
+        thumbnails
       end
     end
 
     def show_thumbnail
-      object.category && object.category.custom_fields["list_thumbnails"] && !!thumbnails
+      object.category && object.category.custom_fields["list_thumbnails"] && thumbnails_present?
     end
 
     def include_excerpt?
       object.category && object.category.custom_fields["list_excerpts"] && !!object.excerpt
     end
-  end
 
-  require 'basic_category_serializer'
-  class ::BasicCategorySerializer
-    attributes :list_thumbnails, :list_excerpts
-
-    def list_thumbnails
-      object.custom_fields["list_thumbnails"]
-    end
-
-    def list_excerpts
-      object.custom_fields["list_excerpts"]
-    end
   end
 
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
   TopicList.preloaded_custom_fields << "thumbnails" if TopicList.respond_to? :preloaded_custom_fields
-  add_to_serializer(:suggested_topic, :is_suggested) {true}
+
+  add_to_serializer(:basic_category, :list_excerpts) {object.custom_fields["list_excerpts"]}
+  add_to_serializer(:basic_category, :list_thumbnails) {object.custom_fields["list_thumbnails"]}
 end

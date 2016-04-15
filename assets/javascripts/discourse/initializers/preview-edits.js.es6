@@ -1,6 +1,8 @@
 import registerUnbound from 'discourse/helpers/register-unbound';
 import renderUnboundPreview from 'discourse/plugins/discourse-topic-previews/lib/render-preview';
 import TopicListItem from 'discourse/views/topic-list-item';
+import DiscoveryTopics from 'discourse/controllers/discovery/topics';
+import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 
 export default {
   name: 'preview-edits',
@@ -10,29 +12,51 @@ export default {
       return new Handlebars.SafeString(renderUnboundPreview(thumbnails));
     });
 
+    DiscoveryTopics.reopen({
+      filterCategoryHasPreviews: Ember.computed.or('category.list_excerpts', 'category.list_thumbnails'),
+
+      @on('init')
+      @observes('category', 'model')
+      _toggleCategoryColumn() {
+        if (this.get('model')) {
+          this.set('model.hideCategory', this.get('filterCategoryHasPreviews') || this.get('category.has_children'))
+        }
+      }
+    })
+
     TopicListItem.reopen({
+      discoveryCategory: Ember.computed.alias('parentView.parentView.controller.category'),
+      filterCategoryHasPreviews: Ember.computed.or('discoveryCategory.list_excerpts', 'discoveryCategory.list_thumbnails'),
+      notSuggested: true,
 
-      _setupDom: function() {
-        this.$('td.category').remove()
-        this.$().parents('table').find('th.category').remove()
-        var $tags = this.$('.discourse-tags'),
-            $category = this.$('.topic-category'),
-            thumbnail = this.get('topic.show_thumbnail'),
-            excerpt = this.get('topic.hasExcerpt');
-        if ($tags.length) {$tags.insertAfter($category)}
-        if (excerpt || thumbnail) {
-          if (thumbnail) {this.$('.topic-preview').prependTo(this.$('.main-link')[0])}
-        } else { this.$('a.title').css('display', 'inline-block')}
-        this.$('td.posters a:gt(0):lt(-1)').hide()
-      }.on('didInsertElement'),
+      @on('didInsertElement')
+      _setupDom() {
+        if (this.$('.discourse-tags')) {
+          this.$('.discourse-tags').insertAfter(this.$('.topic-category'))
+        }
+        if (this.get('topic.show_thumbnail')) {
+          var $thumbnail = this.$('.topic-thumbnail')
+          if (this.$().parents('#suggested-topics').length > 0) {
+            $thumbnail.hide()
+          } else {
+            $thumbnail.prependTo(this.$('.main-link')[0])
+          }
+        }
+      },
 
-      expandPinned: function() {
+      @computed('filterCategoryHasPreviews')
+      showCategoryBadge() {
+        return this.get('filterCategoryHasPreviews') && !this.get('topic.isPinnedUncategorized')
+      },
+
+      @computed()
+      expandPinned() {
         const pinned = this.get('topic.pinned');
         if (!pinned) {return this.get('topic.hasExcerpt');}
         if (this.get('controller.expandGloballyPinned') && this.get('topic.pinned_globally')) {return true;}
         if (this.get('controller.expandAllPinned')) {return true;}
         return false;
-      }.property()
+      }
 
     })
 
