@@ -95,7 +95,8 @@ after_initialize do
     end
 
     def thumbnails_present?
-      thumbnails = object.custom_fields['thumbnails']
+      obj = object.custom_fields['thumbnails']
+      thumbnails = obj.respond_to?(:to_str) ? ::JSON.parse(obj) : obj
       thumbnails && thumbnails['normal'].present? && thumbnails['retina'].present?
     end
 
