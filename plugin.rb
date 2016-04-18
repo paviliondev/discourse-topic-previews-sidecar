@@ -11,11 +11,13 @@ after_initialize do
   Category.register_custom_field_type('list_excerpts', :boolean)
   Topic.register_custom_field_type('thumbnails', :json)
 
-  @no_thumbs = TopicCustomField.where( name: 'thumbnails', value: nil )
-  @no_thumbs.each do |thumb|
-    hash = { :normal => '', :retina => ''}
-    thumb.value = ::JSON.generate(hash)
-    thumb.save!
+  @nil_thumbs = TopicCustomField.where( name: 'thumbnails', value: nil )
+  if @nil_thumbs.length
+    @nil_thumbs.each do |thumb|
+      hash = { :normal => '', :retina => ''}
+      thumb.value = ::JSON.generate(hash)
+      thumb.save!
+    end
   end
 
   module ListHelper
@@ -89,21 +91,31 @@ after_initialize do
   class ::TopicListItemSerializer
     attributes :show_thumbnail, :thumbnails
 
+    def get_thumbnails
+      thumbnails = object.custom_fields['thumbnails']
+      if thumbnails.is_a?(String)
+        thumbnails = ::JSON.parse(thumbnails)
+      end
+      if thumbnails.is_a?(Array)
+        thumbnails = thumbnails[0]
+      end
+      thumbnails.is_a?(Hash) ? thumbnails : { :normal => '', :retina => ''}
+    end
+
     def get_thumbnails_from_image_url
       image = Upload.get_from_url(object.image_url) rescue false
       ListHelper.create_thumbnails(image)
     end
 
     def thumbnails_present?
-      obj = object.custom_fields['thumbnails']
-      thumbnails = (obj.is_a? String) ? ::JSON.parse(obj) : obj
-      thumbnails && thumbnails['normal'].present? && thumbnails['retina'].present?
+      thumbnails = get_thumbnails
+      thumbnails && thumbnails['normal'] && thumbnails['retina']
     end
 
     def thumbnails
       return unless object.archetype == Archetype.default
       if thumbnails_present?
-        object.custom_fields['thumbnails']
+        get_thumbnails
       else
         return unless object.image_url
         thumbnails = get_thumbnails_from_image_url
