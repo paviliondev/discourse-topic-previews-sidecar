@@ -70,7 +70,7 @@ after_initialize do
 
     def create_topic_thumbnails(url)
       local = UrlHelper.is_local(url)
-      image = local ? (Upload.get_from_url(url) rescue nil) : get_linked_image(url)
+      image = local ? Upload.find_by(sha1: url[/[a-z0-9]{40,}/i]) : get_linked_image(url)
       thumbnails = ListHelper.create_thumbnails(image)
       ListHelper.save_thumbnails(@post.topic.id, thumbnails)
     end
