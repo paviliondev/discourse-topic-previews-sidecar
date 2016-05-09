@@ -1,6 +1,6 @@
 import registerUnbound from 'discourse/helpers/register-unbound';
 import renderUnboundPreview from 'discourse/plugins/discourse-topic-previews/lib/render-preview';
-import TopicListItem from 'discourse/views/topic-list-item';
+import TopicListItem from 'discourse/components/topic-list-item';
 import DiscoveryTopics from 'discourse/controllers/discovery/topics';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 
@@ -13,24 +13,22 @@ export default {
     });
 
     DiscoveryTopics.reopen({
-      filterCategoryHasPreviews: Ember.computed.or('category.list_excerpts', 'category.list_thumbnails'),
+      categoryHasPreviews: Ember.computed.or('category.list_excerpts', 'category.list_thumbnails'),
 
       @on('init')
       @observes('category', 'model')
       _toggleCategoryColumn() {
         if (this.get('model')) {
-          this.set('model.hideCategory', this.get('filterCategoryHasPreviews') || this.get('category.has_children'))
+          this.set('model.hideCategory', this.get('categoryHasPreviews') || this.get('category.has_children'))
         }
       }
     })
 
     TopicListItem.reopen({
-      discoveryCategory: Ember.computed.alias('parentView.parentView.controller.category'),
-      filterCategoryHasPreviews: Ember.computed.or('discoveryCategory.list_excerpts', 'discoveryCategory.list_thumbnails'),
       notSuggested: true,
 
       @on('didInsertElement')
-      _setupDom() {
+      _setup() {
         if (this.$('.discourse-tags')) {
           this.$('.discourse-tags').insertAfter(this.$('.topic-category'))
         }
@@ -40,13 +38,15 @@ export default {
             $thumbnail.hide()
           } else {
             $thumbnail.prependTo(this.$('.main-link')[0])
+            this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />")
           }
         }
-      },
-
-      @computed('filterCategoryHasPreviews')
-      showCategoryBadge() {
-        return this.get('filterCategoryHasPreviews') && !this.get('topic.isPinnedUncategorized')
+        const category = this.container.lookup('controller:discovery/topics').get('category')
+        if (category && (category.list_excerpts || category.list_thumbnails)) {
+          $('.topic-category').show()
+        } else {
+          $('.topic-category').hide()
+        }
       },
 
       @computed()

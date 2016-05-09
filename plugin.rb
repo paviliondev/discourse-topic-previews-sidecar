@@ -38,6 +38,7 @@ after_initialize do
         topic = Topic.find(id)
         topic.custom_fields['thumbnails'] = thumbnails
         topic.save_custom_fields
+        thumbnails
       end
     end
   end
@@ -104,28 +105,23 @@ after_initialize do
 
     def get_thumbnails_from_image_url
       image = Upload.get_from_url(object.image_url) rescue false
-      ListHelper.create_thumbnails(image)
+      thumbnails = ListHelper.create_thumbnails(image)
+      return ListHelper.save_thumbnails(object.id, thumbnails)
     end
 
-    def thumbnails_present?
-      thumbnails = get_thumbnails
-      thumbnails && thumbnails['normal'] && thumbnails['retina']
+    def thumbnails_present?(thumbnails)
+      thumbnails && thumbnails['normal'].present? && thumbnails['retina'].present?
     end
 
     def thumbnails
       return unless object.archetype == Archetype.default
-      if thumbnails_present?
-        get_thumbnails
-      else
-        return unless object.image_url
-        thumbnails = get_thumbnails_from_image_url
-        ListHelper.save_thumbnails(object.id, thumbnails)
-        thumbnails
-      end
+      thumbnails = get_thumbnails
+      return thumbnails if thumbnails_present?(thumbnails)
+      get_thumbnails_from_image_url
     end
 
     def show_thumbnail
-      object.category && object.category.custom_fields["list_thumbnails"] && thumbnails_present?
+      object.category && object.category.custom_fields["list_thumbnails"] && !!object.image_url
     end
 
     def include_excerpt?
