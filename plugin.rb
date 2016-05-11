@@ -64,9 +64,10 @@ after_initialize do
   class ::CookedPostProcessor
 
     def get_linked_image(url)
-      max_size = SiteSetting.max_image_size_kb.kilobytes
+      max_size = 99999999999
       file = FileHelper.download(url, max_size, "discourse", true) rescue nil
-      file ? Upload.create_for(@post.user_id, file, file.path.split('/')[-1], File.size(file.path)) : nil
+      image = file ? Upload.create_for(@post.user_id, file, file.path.split('/')[-1], File.size(file.path)) : nil
+      image
     end
 
     def create_topic_thumbnails(url)
