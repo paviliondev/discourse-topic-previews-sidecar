@@ -1,4 +1,4 @@
-import { registerUnbound } from 'discourse/lib/helpers';
+import registerUnbound from 'discourse/helpers/register-unbound';
 import renderUnboundPreview from 'discourse/plugins/discourse-topic-previews/lib/render-preview';
 import TopicListItem from 'discourse/components/topic-list-item';
 import DiscoveryTopics from 'discourse/controllers/discovery/topics';
