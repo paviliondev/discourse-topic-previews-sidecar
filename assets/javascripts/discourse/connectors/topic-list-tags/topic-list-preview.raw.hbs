@@ -1,12 +1,21 @@
 {{#unless context.site.mobileView}}
-  {{#if context.topic.show_thumbnail}}
+  {{#if context.showThumbnail}}
     <div class="topic-thumbnail">
       <a href='{{context.topic.url}}'>
         {{preview-unbound context.topic.thumbnails}}
       </a>
     </div>
   {{/if}}
-  <div class='topic-category'>
-    {{category-link context.topic.category}}
-  </div>
+  {{#if context.showCategoryBadge}}
+    <div class='topic-category'>
+      {{category-link context.topic.category}}
+    </div>
+  {{/if}}
+  {{#if context.showActions}}
+    <div class="topic-actions">
+      {{#each context.topicActions as |action|}}
+        {{list-button action}}
+      {{/each}}
+    </div>
+  {{/if}}
 {{/unless}}

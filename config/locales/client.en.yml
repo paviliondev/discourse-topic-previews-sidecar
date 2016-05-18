@@ -1,5 +1,7 @@
 en:
   js:
     category:
-      list_thumbnails: "Show topic preview thumbnails in topic list items from this category"
-      list_excerpts: "Show topic excerpts in topic list items from this category"
+      list_thumbnails: "Show topic preview thumbnails in topic list items from this category."
+      list_excerpts: "Show topic excerpts in topic list items from this category."
+      list_actions: "Show like and bookmark buttons in topic list items from this category."
+      list_category_badge_move: "Show category badge under title in topic list from this category."

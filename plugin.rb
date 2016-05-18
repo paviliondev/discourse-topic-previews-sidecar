@@ -9,6 +9,8 @@ after_initialize do
 
   Category.register_custom_field_type('list_thumbnails', :boolean)
   Category.register_custom_field_type('list_excerpts', :boolean)
+  Category.register_custom_field_type('list_actions', :boolean)
+  Category.register_custom_field_type('list_category_badge_move', :boolean)
   Topic.register_custom_field_type('thumbnails', :json)
 
   @nil_thumbs = TopicCustomField.where( name: 'thumbnails', value: nil )
@@ -44,23 +46,6 @@ after_initialize do
     end
   end
 
-  require 'listable_topic_serializer'
-  class ::ListableTopicSerializer
-
-    def excerpt
-      accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
-      if accepted_id > 0
-        cooked = Post.where(id: accepted_id).pluck('cooked')
-        excerpt = PrettyText.excerpt(cooked[0], 300, {})
-      else
-        excerpt = object.excerpt
-      end
-      excerpt.gsub!(/(\[#{I18n.t 'excerpt_image'}\])/, "") if excerpt
-      excerpt
-    end
-
-  end
-
   require 'cooked_post_processor'
   class ::CookedPostProcessor
 
@@ -89,9 +74,34 @@ after_initialize do
 
   end
 
+  require 'listable_topic_serializer'
+  class ::ListableTopicSerializer
+
+    def excerpt
+      accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
+      if accepted_id > 0
+        cooked = Post.where(id: accepted_id).pluck('cooked')
+        excerpt = PrettyText.excerpt(cooked[0], 200, {})
+      else
+        excerpt = object.excerpt
+      end
+      excerpt.gsub!(/(\[#{I18n.t 'excerpt_image'}\])/, "") if excerpt
+    end
+
+    def include_excerpt?
+      !!object.excerpt
+    end
+
+  end
+
   require 'topic_list_item_serializer'
   class ::TopicListItemSerializer
-    attributes :show_thumbnail, :thumbnails
+    attributes :thumbnails,
+               :topic_post_id,
+               :topic_post_liked,
+               :topic_post_can_like,
+               :topic_post_can_unlike,
+               :topic_post_bookmarked
 
     def get_thumbnails
       thumbnails = object.custom_fields['thumbnails']
@@ -120,14 +130,48 @@ after_initialize do
       get_thumbnails_from_image_url
     end
 
-    def show_thumbnail
-      object.category && object.category.custom_fields["list_thumbnails"] && !!object.image_url
+    def include_thumbnails?
+      !!object.image_url
     end
 
-    def include_excerpt?
-      object.category && object.category.custom_fields["list_excerpts"] && !!object.excerpt
+    def first_post_id
+      Post.find_by(topic_id: object.id, post_number: 1).id
     end
 
+    def topic_post_id
+      if object.custom_fields["accepted_answer_post_id"]
+        object.custom_fields["accepted_answer_post_id"].to_i
+      else
+        first_post_id
+      end
+    end
+
+    def topic_post_actions
+      return [] if !scope.current_user
+      PostAction.where(post_id: first_post_id, user_id: scope.current_user.id)
+    end
+
+    def topic_like_action
+      topic_post_actions.select {|a| a.post_action_type_id == PostActionType.types[:like]}
+    end
+
+    def topic_post_bookmarked
+      !!topic_post_actions.any?{|a| a.post_action_type_id == PostActionType.types[:bookmark]}
+    end
+
+    def topic_post_liked
+      topic_like_action.any?
+    end
+
+    def topic_post_can_like
+      post = Post.find(topic_post_id)
+      return false if !scope.current_user || post.user_id == scope.current_user.id
+      scope.post_can_act?(post, PostActionType.types[:like], taken_actions: topic_post_actions)
+    end
+
+    def topic_post_can_unlike
+      scope.current_user && scope.can_delete_post_action?(topic_like_action)
+    end
   end
 
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
@@ -135,4 +179,6 @@ after_initialize do
 
   add_to_serializer(:basic_category, :list_excerpts) {object.custom_fields["list_excerpts"]}
   add_to_serializer(:basic_category, :list_thumbnails) {object.custom_fields["list_thumbnails"]}
+  add_to_serializer(:basic_category, :list_actions) {object.custom_fields["list_actions"]}
+  add_to_serializer(:basic_category, :list_category_badge_move) {object.custom_fields["list_category_badge_move"]}
 end

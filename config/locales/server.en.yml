@@ -1,0 +1,6 @@
+en:
+  site_settings:
+    universal_list_thumbnails: "Show topic preview thumbnails in all topic list items."
+    universal_list_excerpts: "Show topic excerpts in all topic list items."
+    universal_list_actions: "Show like and bookmark buttons in all topic list items."
+    universal_list_category_badge_move: "Show category badge under title in all topic list items."

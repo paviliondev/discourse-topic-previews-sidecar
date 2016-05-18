@@ -10,10 +10,6 @@
   }
 }
 
-.topic-list-item .topic-details {
-  overflow: hidden;
-}
-
 .topic-list .main-link a.title {
   padding: 0;
   display: block;
@@ -22,14 +18,31 @@
 
 span.topic-post-badges {
   float: left;
+  margin-left: 2px;
 }
 
-.topic-list-item .discourse-tags {
-  float: left;
-  clear: none;
+
+.topic-details {
+  overflow: hidden;
+  max-height: 100px;
+
+  .topic-category ~ .discourse-tags {
+    float: left;
+    clear: none;
+    margin-top: 4px;
+  }
+  .topic-excerpt {
+    margin-top: 2px;
+    padding-right: 10px;
+    overflow: hidden;
+    float: left;
+    clear: both;
+    line-height: 1.2;
+    max-height: 52px;
+  }
 }
 
-.topic-category {
+.main-link .topic-category {
   float: left;
   clear: left;
   .badge-wrapper {
@@ -37,10 +50,51 @@ span.topic-post-badges {
   }
 }
 
-.topic-list .topic-excerpt {
-  margin-top: 2px;
-  padding-right: 10px;
-  overflow: hidden;
+.topic-list .topic-actions {
   float: left;
   clear: both;
+}
+
+.list-button {
+  font-size: 1.1em;
+  background: transparent;
+  border: none;
+  padding: 3px 4px;
+  overflow: hidden;
+
+  &:first-of-type {
+    padding-left: 0;
+  }
+
+  &.topic-like:hover {
+    color: $love;
+    background: dark-light-diff($love, $secondary, 85%, -60%)
+  }
+
+  &.has-like {color: $love;}
+  &.has-like[disabled]:hover {
+    background: transparent;
+  }
+  &.has-like[disabled]:active {
+    box-shadow: none;
+  }
+
+  &.bookmarked {
+    i.fa-bookmark {
+      color: $tertiary;
+    }
+  }
+}
+
+.topic-list .posters {
+  width: initial;
+  min-width: initial;
+  > a {
+    float: initial;
+    margin: initial;
+  }
+}
+
+.topic-list td.posters {
+  white-space: nowrap;
 }
