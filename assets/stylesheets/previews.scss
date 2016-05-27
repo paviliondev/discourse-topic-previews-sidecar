@@ -12,33 +12,29 @@
 
 .topic-list .main-link a.title {
   padding: 0;
-  display: block;
-  float: left;
 }
-
-span.topic-post-badges {
-  float: left;
-  margin-left: 2px;
-}
-
 
 .topic-details {
   overflow: hidden;
   max-height: 100px;
-
+  &:before {
+    float: left;
+    content: '';
+    min-height: 20px;
+  }
   .topic-category ~ .discourse-tags {
     float: left;
-    clear: none;
+    clear: right;
     margin-top: 4px;
   }
   .topic-excerpt {
     margin-top: 2px;
     padding-right: 10px;
     overflow: hidden;
-    float: left;
-    clear: both;
     line-height: 1.2;
     max-height: 52px;
+    float: left;
+    clear: both;
   }
 }
 
@@ -48,6 +44,10 @@ span.topic-post-badges {
   .badge-wrapper {
     font-size: 12px;
   }
+}
+
+.main-link .topic-statuses {
+  line-height: 19px;
 }
 
 .topic-list .topic-actions {

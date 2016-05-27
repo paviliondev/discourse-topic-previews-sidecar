@@ -58,6 +58,7 @@ export default {
 
       _rearrangeDOM() {
         this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />")
+        this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>")
         if (this.$('.discourse-tags')) {
           this.$('.discourse-tags').insertAfter(this.$('.topic-category'))
         }
