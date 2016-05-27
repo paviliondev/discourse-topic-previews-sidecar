@@ -97,13 +97,13 @@ export default {
       @computed()
       showThumbnail() {
         return this.get('topic.thumbnails') && (Discourse.SiteSettings.universal_list_thumbnails ||
-                                                (this.get('category') && this.get('category.list_thumbnails')))
+                                               (this.get('category') && this.get('category.list_thumbnails')))
       },
 
       @computed()
       showExcerpt() {
-        return this.get('topic.hasExcerpt') && (Discourse.SiteSettings.universal_list_excerpts ||
-                                                (this.get('category') && this.get('category.list_excerpts')))
+        return this.get('topic.excerpt') && (Discourse.SiteSettings.universal_list_excerpts ||
+                                            (this.get('category') && this.get('category.list_excerpts')))
       },
 
       @computed()
@@ -135,7 +135,8 @@ export default {
 
       @computed()
       category() {
-        return this.container.lookup('controller:discovery/topics').get('category')
+        const controller = this.container.lookup('controller:discovery/topics')
+        return controller.get('category')
       },
 
       _bookmarkButton() {

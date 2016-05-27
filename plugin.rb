@@ -74,26 +74,6 @@ after_initialize do
 
   end
 
-  require 'listable_topic_serializer'
-  class ::ListableTopicSerializer
-
-    def excerpt
-      accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
-      if accepted_id > 0
-        cooked = Post.where(id: accepted_id).pluck('cooked')
-        excerpt = PrettyText.excerpt(cooked[0], 200, {})
-      else
-        excerpt = object.excerpt
-      end
-      excerpt.gsub!(/(\[#{I18n.t 'excerpt_image'}\])/, "") if excerpt
-    end
-
-    def include_excerpt?
-      !!object.excerpt
-    end
-
-  end
-
   require 'topic_list_item_serializer'
   class ::TopicListItemSerializer
     attributes :thumbnails,
@@ -102,6 +82,41 @@ after_initialize do
                :topic_post_can_like,
                :topic_post_can_unlike,
                :topic_post_bookmarked
+
+    def first_post_id
+      Post.find_by(topic_id: object.id, post_number: 1).id
+    end
+
+    def topic_post_id
+      accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
+      return accepted_id > 0 ? accepted_id : first_post_id
+    end
+
+    def excerpt
+      if object.custom_fields["accepted_answer_post_id"].to_i > 0 || object.excerpt.blank?
+        cooked = Post.where(id: topic_post_id).pluck('cooked')
+        excerpt = PrettyText.excerpt(cooked[0], 200, keep_emoji_images: true)
+      else
+        excerpt = object.excerpt
+      end
+      excerpt.gsub!(/(\[#{I18n.t 'excerpt_image'}\])/, "") if excerpt
+      excerpt
+    end
+
+    def include_excerpt?
+      object.excerpt.present?
+    end
+
+    def thumbnails
+      return unless object.archetype == Archetype.default
+      existing = get_thumbnails
+      return existing if existing.present? && existing['normal'].present?
+      get_thumbnails_from_image_url
+    end
+
+    def include_thumbnails?
+      thumbnails.present? && thumbnails['normal'].present?
+    end
 
     def get_thumbnails
       thumbnails = object.custom_fields['thumbnails']
@@ -119,36 +134,9 @@ after_initialize do
       return ListHelper.create_thumbnails(object.id, image, object.image_url)
     end
 
-    def thumbnails_present?(thumbnails)
-      thumbnails && thumbnails['normal'].present? && thumbnails['retina'].present?
-    end
-
-    def thumbnails
-      return unless object.archetype == Archetype.default
-      thumbnails = get_thumbnails
-      return thumbnails if thumbnails_present?(thumbnails)
-      get_thumbnails_from_image_url
-    end
-
-    def include_thumbnails?
-      !!object.image_url
-    end
-
-    def first_post_id
-      Post.find_by(topic_id: object.id, post_number: 1).id
-    end
-
-    def topic_post_id
-      if object.custom_fields["accepted_answer_post_id"]
-        object.custom_fields["accepted_answer_post_id"].to_i
-      else
-        first_post_id
-      end
-    end
-
     def topic_post_actions
       return [] if !scope.current_user
-      PostAction.where(post_id: first_post_id, user_id: scope.current_user.id)
+      PostAction.where(post_id: topic_post_id, user_id: scope.current_user.id)
     end
 
     def topic_like_action
@@ -172,6 +160,7 @@ after_initialize do
     def topic_post_can_unlike
       scope.current_user && scope.can_delete_post_action?(topic_like_action)
     end
+
   end
 
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
