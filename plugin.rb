@@ -79,6 +79,7 @@ after_initialize do
     attributes :thumbnails,
                :topic_post_id,
                :topic_post_liked,
+               :topic_post_like_count,
                :topic_post_can_like,
                :topic_post_can_unlike,
                :topic_post_bookmarked
@@ -143,6 +144,10 @@ after_initialize do
       topic_post_actions.select {|a| a.post_action_type_id == PostActionType.types[:like]}
     end
 
+    def topic_post
+      Post.find(topic_post_id)
+    end
+
     def topic_post_bookmarked
       !!topic_post_actions.any?{|a| a.post_action_type_id == PostActionType.types[:bookmark]}
     end
@@ -151,8 +156,18 @@ after_initialize do
       topic_like_action.any?
     end
 
+    def topic_post_like_count
+      p "THIS IS THE COUNT"
+      p topic_post.like_count
+      topic_post.like_count
+    end
+
+    def include_topic_post_like_count?
+      topic_post_like_count > 0
+    end
+
     def topic_post_can_like
-      post = Post.find(topic_post_id)
+      post = topic_post
       return false if !scope.current_user || post.user_id == scope.current_user.id
       scope.post_can_act?(post, PostActionType.types[:like], taken_actions: topic_post_actions)
     end

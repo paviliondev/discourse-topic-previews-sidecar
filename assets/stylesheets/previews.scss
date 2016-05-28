@@ -55,16 +55,19 @@
   clear: both;
 }
 
+.like-count {
+  color: dark-light-choose(scale-color($primary, $lightness: 60%), scale-color($secondary, $lightness: 40%));
+  font-size: 13px;
+  display: inline-block;
+  margin-right: 2px;
+}
+
 .list-button {
-  font-size: 1.1em;
+  font-size: 0.9em;
   background: transparent;
   border: none;
   padding: 3px 4px;
   overflow: hidden;
-
-  &:first-of-type {
-    padding-left: 0;
-  }
 
   &.topic-like:hover {
     color: $love;

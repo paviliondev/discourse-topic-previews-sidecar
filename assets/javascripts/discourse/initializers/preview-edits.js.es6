@@ -47,16 +47,18 @@ export default {
     TopicListItem.reopen({
       notSuggested: true,
       canBookmark: Ember.computed.bool('currentUser'),
+      rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeCount'],
 
       @on('init')
       _mobileEdits() {
-        const mobile = this.get('site.mobileView')
+        const mobile = this.get('site.mobileView');
         if (mobile) {
-          const topic = this.get('topic')
+          const topic = this.get('topic');
           if ((topic.excerpt.length > -1) && !topic.pinned) {
             topic.set('excerpt', '')
           }
         }
+        this.setLikeCount()
       },
 
       @on('didInsertElement')
@@ -133,14 +135,14 @@ export default {
       @computed()
       topicActions() {
         var actions = []
+        if (this.get('topic.topic_post_can_like')) {
+          actions.push(this._likeButton())
+        }
         if (this.get('canBookmark')) {
           actions.push(this._bookmarkButton())
           Ember.run.scheduleOnce('afterRender', this, () => {
             this.$('.topic-statuses .op-bookmark').hide()
           })
-        }
-        if (this.get('topic.topic_post_can_like')) {
-          actions.push(this._likeButton())
         }
         return actions
       },
@@ -149,6 +151,38 @@ export default {
       category() {
         const controller = this.container.lookup('controller:discovery/topics')
         return controller.get('category')
+      },
+
+      setLikeCount(increment) {
+        var count = this.get('topic.topic_post_like_count')
+        if (!count || count === 0) {
+          if (increment) {
+            count = 1
+          } else {
+            return false
+          }
+        } else if (increment) {
+          count = count + 1
+        }
+        if (count === 1) {
+          this.set('likeCount', I18n.t("post.has_likes.one", { count }))
+        } else {
+          this.set('likeCount', I18n.t("post.has_likes.other", { count }))
+        }
+        if (increment) {this._likeRerender()}
+      },
+
+      _likeRerender(){
+        Ember.run.scheduleOnce('afterRender', this, () => {
+          this._rearrangeDOM()
+          var $like = this.$('.topic-like');
+          if ($like.hasClass('has-like')) {
+            $like.removeClass('has-like')
+          } else {
+            $like.addClass('has-like');
+            $like.prop("disabled", true);
+          }
+        })
       },
 
       _bookmarkButton() {
@@ -178,16 +212,14 @@ export default {
 
       toggleLike($like, postId) {
         if ($like.hasClass('has-like')) {
-          $like.removeClass('has-like')
           this.removeAction(postId, 2)
         } else {
-          $like.addClass('has-like');
-          $like.prop("disabled", true)
           const scale = [1.0, 1.5];
           return new Ember.RSVP.Promise(resolve => {
             animateHeart($like, scale[0], scale[1], () => {
               animateHeart($like, scale[1], scale[0], () => {
                 this.sendAction(postId, 2);
+                this.setLikeCount(true)
                 resolve();
               });
             });

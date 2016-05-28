@@ -13,6 +13,9 @@
   {{/if}}
   {{#if context.showActions}}
     <div class="topic-actions">
+      {{#if context.likeCount}}
+        <div class="like-count">{{context.likeCount}}</div>
+      {{/if}}
       {{#each context.topicActions as |action|}}
         {{list-button action}}
       {{/each}}
