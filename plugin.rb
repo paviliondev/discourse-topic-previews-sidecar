@@ -65,7 +65,7 @@ after_initialize do
     def update_topic_image
       if @post.is_first_post?
         img = extract_images_for_topic.first
-        return if !img["src"]
+        return if !img["src"] || img["src"].include?("/emoji/")
         url = img["src"][0...255]
         @post.topic.update_column(:image_url, url)
         create_topic_thumbnails(url)
@@ -110,9 +110,9 @@ after_initialize do
 
     def thumbnails
       return unless object.archetype == Archetype.default
-      existing = get_thumbnails
-      return existing if existing.present? && existing['normal'].present?
-      get_thumbnails_from_image_url
+      thumbs = get_thumbnails || get_thumbnails_from_image_url
+      return false if thumbs.include?("/emoji/")
+      thumbs
     end
 
     def include_thumbnails?
@@ -127,7 +127,7 @@ after_initialize do
       if thumbnails.is_a?(Array)
         thumbnails = thumbnails[0]
       end
-      thumbnails.is_a?(Hash) ? thumbnails : { :normal => '', :retina => ''}
+      thumbnails.is_a?(Hash) ? thumbnails : false
     end
 
     def get_thumbnails_from_image_url
