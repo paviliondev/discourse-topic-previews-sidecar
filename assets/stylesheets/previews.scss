@@ -22,11 +22,11 @@
     content: '';
     min-height: 20px;
   }
-  .topic-category ~ .discourse-tags {
+  .discourse-tags {
     float: left;
     clear: right;
-    margin-top: 4px;
   }
+
   .topic-excerpt {
     margin-top: 2px;
     padding-right: 10px;
@@ -35,6 +35,7 @@
     max-height: 52px;
     float: left;
     clear: both;
+    cursor: pointer;
   }
 }
 
@@ -55,11 +56,27 @@
   clear: both;
 }
 
-.like-count {
+.like-count, .list-vote-count {
   color: dark-light-choose(scale-color($primary, $lightness: 60%), scale-color($secondary, $lightness: 40%));
   font-size: 13px;
   display: inline-block;
   margin-right: 2px;
+  .vote-count {
+    height: initial;
+    line-height: initial;
+    font-weight: initial;
+  }
+}
+
+.list-vote-count {
+  float: left;
+  padding-right: 3px;
+  margin-top: 5px;
+}
+
+.topic-actions .list-vote-count {
+  float: none;
+  margin-top: 0;
 }
 
 .list-button {

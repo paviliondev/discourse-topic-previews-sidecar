@@ -5,6 +5,7 @@ import TopicListItem from 'discourse/components/topic-list-item';
 import DiscoveryTopics from 'discourse/controllers/discovery/topics';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 import { popupAjaxError } from 'discourse/lib/ajax-error';
+import DiscourseURL from 'discourse/lib/url';
 
 var animateHeart = function($elem, start, end, complete) {
   if (Ember.testing) { return Ember.run(this, complete); }
@@ -72,10 +73,14 @@ export default {
       _rearrangeDOM() {
         this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />")
         this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>")
-        if (this.$('.discourse-tags')) {
-          this.$('.discourse-tags').insertAfter(this.$('.topic-category'))
-        }
-        if (this.get('showThumbnail')) {
+
+        var showThumbnail = this.get('showThumbnail'),
+            showExcerpt = this.get('showExcerpt'),
+            showCategoryBadge = this.get('showCategoryBadge'),
+            showActions = this.get('showActions'),
+            $excerpt = this.$('.topic-excerpt')
+
+        if (showThumbnail) {
           var $thumbnail = this.$('.topic-thumbnail')
           if (this.$().parents('#suggested-topics').length > 0) {
             $thumbnail.hide()
@@ -83,14 +88,34 @@ export default {
             $thumbnail.prependTo(this.$('.main-link')[0])
           }
         }
-        if (this.get('showActions')) {
-          var $excerpt = this.$('.topic-excerpt')
+
+        if (showExcerpt && (showCategoryBadge || showActions || $excerpt.siblings('.discourse-tags, .list-vote-count'))) {
+          $excerpt.css('max-height', '36px')
+        }
+        $excerpt.on('click.topic-excerpt', () => {
+          var topic = this.get('topic'),
+              url = '/t/' + topic.slug + '/' + topic.id;
+          if (topic.topic_post_id) {
+            url += '/' + topic.topic_post_id
+          }
+          DiscourseURL.routeTo(url)
+        })
+
+        if (showCategoryBadge) {
+          this.$('.discourse-tags').insertAfter(this.$('.topic-category'))
+        } else if (showActions) {
+          this.$('.discourse-tags').appendTo(this.$('.topic-actions'))
+        } else if (showExcerpt) {
+          this.$('.discourse-tags').insertAfter($excerpt)
+        }
+
+        if (showActions) {
+          this.$('.list-vote-count').prependTo(this.$('.topic-actions'))
           if ($excerpt) {
             this.$('.topic-actions').insertAfter($excerpt)
-            if ($excerpt.siblings('.discourse-tags, .topic-category')) {
-              $excerpt.css('max-height', '36px')
-            }
           }
+        } else if (showExcerpt) {
+          this.$('.list-vote-count').insertAfter($excerpt)
         }
       },
 
@@ -104,6 +129,7 @@ export default {
 
       @on('willDestroyElement')
       _tearDown() {
+        this.$('.topic-excerpt').off('click.topic-excerpt')
         this.$('.topic-bookmark').off('click.topic-bookmark')
         this.$('.topic-like').off('click.topic-like')
       },
