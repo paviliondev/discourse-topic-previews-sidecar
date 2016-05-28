@@ -157,8 +157,6 @@ after_initialize do
     end
 
     def topic_post_like_count
-      p "THIS IS THE COUNT"
-      p topic_post.like_count
       topic_post.like_count
     end
 
