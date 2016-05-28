@@ -48,6 +48,17 @@ export default {
       notSuggested: true,
       canBookmark: Ember.computed.bool('currentUser'),
 
+      @on('init')
+      _mobileEdits() {
+        const mobile = this.get('site.mobileView')
+        if (mobile) {
+          const topic = this.get('topic')
+          if ((topic.excerpt.length > -1) && !topic.pinned) {
+            topic.set('excerpt', '')
+          }
+        }
+      },
+
       @on('didInsertElement')
       _setupDOM() {
         this._rearrangeDOM()
