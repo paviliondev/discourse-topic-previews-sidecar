@@ -65,7 +65,7 @@ after_initialize do
     def update_topic_image
       if @post.is_first_post?
         img = extract_images_for_topic.first
-        return if !img["src"] || img["src"].include?("/emoji/")
+        return if !img["src"]
         url = img["src"][0...255]
         @post.topic.update_column(:image_url, url)
         create_topic_thumbnails(url)
@@ -111,7 +111,6 @@ after_initialize do
     def thumbnails
       return unless object.archetype == Archetype.default
       thumbs = get_thumbnails || get_thumbnails_from_image_url
-      return false if thumbs.include?("/emoji/")
       thumbs
     end
 
@@ -132,7 +131,8 @@ after_initialize do
 
     def get_thumbnails_from_image_url
       image = Upload.get_from_url(object.image_url) rescue false
-      return ListHelper.create_thumbnails(object.id, image, object.image_url)
+      backupUrl = object.image_url.include?("/emoji/") ? '' : object.image_url
+      return ListHelper.create_thumbnails(object.id, image, backupUrl)
     end
 
     def topic_post_actions
