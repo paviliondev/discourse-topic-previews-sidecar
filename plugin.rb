@@ -131,8 +131,7 @@ after_initialize do
 
     def get_thumbnails_from_image_url
       image = Upload.get_from_url(object.image_url) rescue false
-      backupUrl = object.image_url.include?("/emoji/") ? '' : object.image_url
-      return ListHelper.create_thumbnails(object.id, image, backupUrl)
+      return ListHelper.create_thumbnails(object.id, image, object.image_url)
     end
 
     def topic_post_actions
