@@ -126,10 +126,12 @@ after_initialize do
       if thumbnails.is_a?(Array)
         thumbnails = thumbnails[0]
       end
+      p "THIS IS THE THUMBNAILS HASH: #{thumbnails}"
       thumbnails.is_a?(Hash) ? thumbnails : false
     end
 
     def get_thumbnails_from_image_url
+      p "USING THIS IMAGE_URL: #{object.image_url}"
       image = Upload.get_from_url(object.image_url) rescue false
       return ListHelper.create_thumbnails(object.id, image, object.image_url)
     end
