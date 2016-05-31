@@ -67,6 +67,7 @@ after_initialize do
         img = extract_images_for_topic.first
         return if !img["src"]
         url = img["src"][0...255]
+        p "THIS IS THE URL BEING SAVED: #{url}"
         @post.topic.update_column(:image_url, url)
         create_topic_thumbnails(url)
       end
