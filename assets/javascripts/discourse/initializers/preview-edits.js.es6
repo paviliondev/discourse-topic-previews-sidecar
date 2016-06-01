@@ -46,7 +46,6 @@ export default {
     })
 
     TopicListItem.reopen({
-      notSuggested: true,
       canBookmark: Ember.computed.bool('currentUser'),
       rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeCount'],
 
@@ -64,30 +63,25 @@ export default {
 
       @on('didInsertElement')
       _setupDOM() {
-        this._rearrangeDOM()
-        if (this.get('showActions')) {
-          this._setupActions()
+        if ($('#suggested-topics').length) {
+          this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
+        } else {
+          this._rearrangeDOM()
+          if (this.get('showActions')) {
+            this._setupActions()
+          }
         }
       },
 
       _rearrangeDOM() {
         this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />")
         this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>")
+        this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0])
 
-        var showThumbnail = this.get('showThumbnail'),
-            showExcerpt = this.get('showExcerpt'),
+        var showExcerpt = this.get('showExcerpt'),
             showCategoryBadge = this.get('showCategoryBadge'),
             showActions = this.get('showActions'),
             $excerpt = this.$('.topic-excerpt')
-
-        if (showThumbnail) {
-          var $thumbnail = this.$('.topic-thumbnail')
-          if (this.$().parents('#suggested-topics').length > 0) {
-            $thumbnail.hide()
-          } else {
-            $thumbnail.prependTo(this.$('.main-link')[0])
-          }
-        }
 
         if (showExcerpt && (showCategoryBadge || showActions || $excerpt.siblings('.discourse-tags, .list-vote-count'))) {
           $excerpt.css('max-height', '36px')
