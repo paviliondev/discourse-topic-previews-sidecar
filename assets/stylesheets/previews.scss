@@ -106,6 +106,17 @@
   }
 }
 
+.user-main .list-button {
+  .fa-heart {
+    color: inherit !important;
+  }
+  &.has-like {
+    .fa-heart {
+      color: $love !important;
+    }
+  }
+}
+
 .topic-list .posters {
   width: initial;
   min-width: initial;
