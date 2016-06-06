@@ -50,7 +50,7 @@ export default {
       rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeCount'],
 
       @on('init')
-      _mobileEdits() {
+      _init() {
         const mobile = this.get('site.mobileView');
         if (mobile) {
           const topic = this.get('topic');
@@ -173,35 +173,24 @@ export default {
         return controller.get('category')
       },
 
-      setLikeCount(increment) {
-        var count = this.get('topic.topic_post_like_count')
-        if (!count || count === 0) {
-          if (increment) {
-            count = 1
-          } else {
-            return false
-          }
-        } else if (increment) {
-          count = count + 1
-        }
-        if (count === 1) {
-          this.set('likeCount', I18n.t("post.has_likes.one", { count }))
-        } else {
-          this.set('likeCount', I18n.t("post.has_likes.other", { count }))
-        }
-        if (increment) {this._likeRerender()}
+      @computed()
+      likeCountDisplay() {
+        var count = this.get('likeCount') || this.get('topic.topic_post_like_count'),
+            message = count === 1 ? "post.has_likes.one" : "post.has_likes.other";
+        return I18n.t(message, { count })
+      },
+
+      setLikeCount(change) {
+        var likeCount = this.get('likeCount')
+        this.set('hasLiked', change ? Boolean(change > 0): this.get("topic.topic_post_liked"))
+        this.set('likeCount', (Boolean(likeCount) ? this.get("topic.topic_post_like_count") : (likeCount + (change || 0))))
+        this._likeRerender()
       },
 
       _likeRerender(){
         Ember.run.scheduleOnce('afterRender', this, () => {
           this._rearrangeDOM()
-          var $like = this.$('.topic-like');
-          if ($like.hasClass('has-like')) {
-            $like.removeClass('has-like')
-          } else {
-            $like.addClass('has-like');
-            $like.prop("disabled", true);
-          }
+          this._setupActions()
         })
       },
 
@@ -218,7 +207,7 @@ export default {
       _likeButton() {
         var classes = "topic-like",
             disabled = false
-        if (this.get('topic.topic_post_liked')) {
+        if (this.get('hasLiked')) {
           classes += ' has-like'
           disabled = !this.get('topic.topic_post_can_unlike')
         }
@@ -231,15 +220,16 @@ export default {
       },
 
       toggleLike($like, postId) {
-        if ($like.hasClass('has-like')) {
+        if (this.get('hasLiked')) {
           this.removeAction(postId, 2)
+          this.setLikeCount(-1)
         } else {
           const scale = [1.0, 1.5];
           return new Ember.RSVP.Promise(resolve => {
             animateHeart($like, scale[0], scale[1], () => {
               animateHeart($like, scale[1], scale[0], () => {
                 this.sendAction(postId, 2);
-                this.setLikeCount(true)
+                this.setLikeCount(1)
                 resolve();
               });
             });

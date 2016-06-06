@@ -170,7 +170,9 @@ after_initialize do
     end
 
     def topic_post_can_unlike
-      scope.current_user && scope.can_delete_post_action?(topic_like_action)
+      return false if !scope.current_user
+      action = topic_like_action[0]
+      !!(action && (action.user_id == scope.current_user.id) && (action.created_at > SiteSetting.post_undo_action_window_mins.minutes.ago))
     end
 
   end
