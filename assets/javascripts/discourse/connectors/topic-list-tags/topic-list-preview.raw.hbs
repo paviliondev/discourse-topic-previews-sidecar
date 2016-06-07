@@ -13,7 +13,7 @@
   {{/if}}
   {{#if context.showActions}}
     <div class="topic-actions">
-      {{#if context.likeCount}}
+      {{#if context.likeCountDisplay}}
         <div class="like-count">{{context.likeCountDisplay}}</div>
       {{/if}}
       {{#each context.topicActions as |action|}}

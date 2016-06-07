@@ -58,7 +58,6 @@ export default {
             topic.set('excerpt', '')
           }
         }
-        this.setLikeCount()
       },
 
       @on('didInsertElement')
@@ -81,7 +80,7 @@ export default {
         var showExcerpt = this.get('showExcerpt'),
             showCategoryBadge = this.get('showCategoryBadge'),
             showActions = this.get('showActions'),
-            $excerpt = this.$('.topic-excerpt')
+            $excerpt = this.$('.topic-excerpt');
 
         if (showExcerpt && (showCategoryBadge || showActions || $excerpt.siblings('.discourse-tags, .list-vote-count'))) {
           $excerpt.css('max-height', '36px')
@@ -129,6 +128,12 @@ export default {
       },
 
       @computed()
+      category() {
+        const controller = this.container.lookup('controller:discovery/topics')
+        return controller.get('category')
+      },
+
+      @computed()
       showThumbnail() {
         return this.get('topic.thumbnails') && (Discourse.SiteSettings.universal_list_thumbnails ||
                                                (this.get('category') && this.get('category.list_thumbnails')))
@@ -152,7 +157,7 @@ export default {
         return Discourse.SiteSettings.universal_list_actions || (category && category.list_actions)
       },
 
-      @computed()
+      @computed('likeCount')
       topicActions() {
         var actions = []
         if (this.get('topic.topic_post_can_like')) {
@@ -167,23 +172,25 @@ export default {
         return actions
       },
 
-      @computed()
-      category() {
-        const controller = this.container.lookup('controller:discovery/topics')
-        return controller.get('category')
-      },
-
-      @computed()
+      @computed('likeCount')
       likeCountDisplay() {
-        var count = this.get('likeCount') || this.get('topic.topic_post_like_count'),
+        var likeCount = this.get('likeCount'),
+            count = likeCount == null ? this.get('topic.topic_post_like_count') : likeCount,
             message = count === 1 ? "post.has_likes.one" : "post.has_likes.other";
-        return I18n.t(message, { count })
+        return count ? I18n.t(message, { count }) : false
       },
 
-      setLikeCount(change) {
-        var likeCount = this.get('likeCount')
-        this.set('hasLiked', change ? Boolean(change > 0): this.get("topic.topic_post_liked"))
-        this.set('likeCount', (Boolean(likeCount) ? this.get("topic.topic_post_like_count") : (likeCount + (change || 0))))
+      @computed('hasLiked')
+      hasLikedDisplay() {
+        var hasLiked = this.get('hasLiked')
+        return hasLiked == null ? this.get('topic.topic_post_liked') : hasLiked
+      },
+
+      changeLikeCount(change) {
+        var oldCount = this.get('likeCount') || this.get('topic.topic_post_like_count') || 0,
+            newCount = oldCount + (change || 0)
+        this.set('hasLiked', Boolean(change > 0))
+        this.set('likeCount', newCount)
         this._likeRerender()
       },
 
@@ -207,9 +214,9 @@ export default {
       _likeButton() {
         var classes = "topic-like",
             disabled = false
-        if (this.get('hasLiked')) {
+        if (this.get('hasLikedDisplay')) {
           classes += ' has-like'
-          disabled = !this.get('topic.topic_post_can_unlike')
+          disabled = this.get('topic.topic_post_can_unlike') ? false : this.get('likeCount') == null
         }
         return { class: classes, title: 'post.controls.like', icon: 'heart', disabled: disabled}
       },
@@ -220,16 +227,16 @@ export default {
       },
 
       toggleLike($like, postId) {
-        if (this.get('hasLiked')) {
+        if (this.get('hasLikedDisplay')) {
           this.removeAction(postId, 2)
-          this.setLikeCount(-1)
+          this.changeLikeCount(-1)
         } else {
           const scale = [1.0, 1.5];
           return new Ember.RSVP.Promise(resolve => {
             animateHeart($like, scale[0], scale[1], () => {
               animateHeart($like, scale[1], scale[0], () => {
                 this.sendAction(postId, 2);
-                this.setLikeCount(1)
+                this.changeLikeCount(1)
                 resolve();
               });
             });
