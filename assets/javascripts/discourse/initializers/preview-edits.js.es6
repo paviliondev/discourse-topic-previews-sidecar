@@ -54,7 +54,7 @@ export default {
         const mobile = this.get('site.mobileView');
         if (mobile) {
           const topic = this.get('topic');
-          if ((topic.excerpt.length > -1) && !topic.pinned) {
+          if (topic.excerpt && !topic.pinned) {
             topic.set('excerpt', '')
           }
         }
