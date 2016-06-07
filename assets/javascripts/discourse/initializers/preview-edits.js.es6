@@ -63,6 +63,7 @@ export default {
 
       @on('didInsertElement')
       _setupDOM() {
+        if (this.get('site.mobileView')) { return }
         if ($('#suggested-topics').length) {
           this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
         } else {
