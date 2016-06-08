@@ -83,8 +83,12 @@ export default {
             showActions = this.get('showActions'),
             $excerpt = this.$('.topic-excerpt');
 
-        if (showExcerpt && (showCategoryBadge || showActions || $excerpt.siblings('.discourse-tags, .list-vote-count'))) {
-          $excerpt.css('max-height', '36px')
+        if (showExcerpt) {
+          var title = this.$('.topic-title').height(),
+              labels = (showCategoryBadge || $excerpt.siblings('.discourse-tags, .list-vote-count')) ? 20 : 0,
+              actions = showActions ? 25 : 0,
+              excerpt = 100 - title - labels - actions;
+          $excerpt.css('max-height', (excerpt > 0 ? excerpt : 0))
         }
         $excerpt.on('click.topic-excerpt', () => {
           var topic = this.get('topic'),
