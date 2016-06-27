@@ -129,9 +129,9 @@ export default {
 
         if (showExcerpt) {
           var height = 0;
-          this.$('.topic-details > :not(.topic-excerpt)').each(function(){ height += $(this).height() })
+          this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){ height += $(this).height() })
           var excerpt = 100 - height;
-          $excerpt.css('max-height', (excerpt > 0 ? excerpt : 0))
+          $excerpt.css('max-height', (excerpt > 19 ? excerpt : 0))
         }
       },
 
