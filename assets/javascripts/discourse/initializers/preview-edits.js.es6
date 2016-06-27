@@ -2,7 +2,7 @@ import { registerUnbound } from 'discourse/lib/helpers';
 import renderUnboundPreview from 'discourse/plugins/discourse-topic-previews/lib/render-preview';
 import buttonHTML from 'discourse/plugins/discourse-topic-previews/lib/list-button';
 import TopicListItem from 'discourse/components/topic-list-item';
-import DiscoveryTopics from 'discourse/controllers/discovery/topics';
+import TopicList from 'discourse/components/topic-list';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 import { popupAjaxError } from 'discourse/lib/ajax-error';
 import DiscourseURL from 'discourse/lib/url';
@@ -33,16 +33,34 @@ export default {
       return new Handlebars.SafeString(buttonHTML(button, params));
     });
 
-    DiscoveryTopics.reopen({
-      @on('init')
-      @observes('category', 'model')
-      _toggleCategoryColumn() {
-        if (this.get('model')) {
-          this.set('model.hideCategory', Discourse.SiteSettings.universal_list_category_badge_move ||
-                                         this.get('category.list_category_badge_move') ||
-                                         this.get('category.has_children'))
+    TopicList.reopen({
+      hideCategoryColumn: function(){
+        var router = this.container.lookup("router:main"),
+            handlerInfos = router.currentState.routerJsState.handlerInfos,
+            handler1 = handlerInfos[1],
+            handler2 = handlerInfos[2],
+            hideCategory = false;
+
+        if (handler1.name === 'topic') {return}
+
+        if (Discourse.SiteSettings.universal_list_category_badge_move) {
+          hideCategory = true
+        } else {
+          if ( handler2.name === 'discovery.category' ||
+               handler2.name === 'discovery.parentCategory') {
+            var category_id = handler2.context.category.id,
+                category = Discourse.Category.findById(category_id)
+            if (category.list_category_badge_move || category.has_children) {
+              hideCategory = true;
+            }
+          }
+          if ( handler1.name === 'tags' ) {
+            hideCategory = true;
+          }
         }
-      }
+
+        this.set('hideCategory', hideCategory)
+      }.on('didInsertElement')
     })
 
     TopicListItem.reopen({
@@ -83,13 +101,6 @@ export default {
             showActions = this.get('showActions'),
             $excerpt = this.$('.topic-excerpt');
 
-        if (showExcerpt) {
-          var title = this.$('.topic-title').height(),
-              labels = (showCategoryBadge || $excerpt.siblings('.discourse-tags, .list-vote-count')) ? 20 : 0,
-              actions = showActions ? 25 : 0,
-              excerpt = 100 - title - labels - actions;
-          $excerpt.css('max-height', (excerpt > 0 ? excerpt : 0))
-        }
         $excerpt.on('click.topic-excerpt', () => {
           var topic = this.get('topic'),
               url = '/t/' + topic.slug + '/' + topic.id;
@@ -102,7 +113,7 @@ export default {
         if (showCategoryBadge) {
           this.$('.discourse-tags').insertAfter(this.$('.topic-category'))
         } else if (showActions) {
-          this.$('.discourse-tags').appendTo(this.$('.topic-actions'))
+          this.$('.discourse-tags').insertAfter(this.$('.topic-actions'))
         } else if (showExcerpt) {
           this.$('.discourse-tags').insertAfter($excerpt)
         }
@@ -114,6 +125,13 @@ export default {
           }
         } else if (showExcerpt) {
           this.$('.list-vote-count').insertAfter($excerpt)
+        }
+
+        if (showExcerpt) {
+          var height = 0;
+          this.$('.topic-details > :not(.topic-excerpt)').each(function(){ height += $(this).height() })
+          var excerpt = 100 - height;
+          $excerpt.css('max-height', (excerpt > 0 ? excerpt : 0))
         }
       },
 
@@ -171,7 +189,10 @@ export default {
         if (this.get('canBookmark')) {
           actions.push(this._bookmarkButton())
           Ember.run.scheduleOnce('afterRender', this, () => {
-            this.$('.topic-statuses .op-bookmark').hide()
+            var $bookmarkStatus = this.$('.topic-statuses .op-bookmark')
+            if ($bookmarkStatus) {
+              $bookmarkStatus.hide()
+            }
           })
         }
         return actions
