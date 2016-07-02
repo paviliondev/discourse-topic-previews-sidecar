@@ -65,7 +65,7 @@ export default {
 
     TopicListItem.reopen({
       canBookmark: Ember.computed.bool('currentUser'),
-      rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeCount'],
+      rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference'],
 
       @on('init')
       _init() {
@@ -180,7 +180,7 @@ export default {
         return Discourse.SiteSettings.universal_list_actions || (category && category.list_actions)
       },
 
-      @computed('likeCount')
+      @computed('likeDifference')
       topicActions() {
         var actions = []
         if (this.get('topic.topic_post_can_like')) {
@@ -198,12 +198,17 @@ export default {
         return actions
       },
 
-      @computed('likeCount')
+      likeCount() {
+        var likeDifference = this.get('likeDifference'),
+            count = (likeDifference == null ? this.get('topic.topic_post_like_count') : likeDifference) || 0;
+        return count
+      },
+
+      @computed('likeDifference')
       likeCountDisplay() {
-        var likeCount = this.get('likeCount'),
-            count = likeCount == null ? this.get('topic.topic_post_like_count') : likeCount,
+        var count = this.likeCount(),
             message = count === 1 ? "post.has_likes.one" : "post.has_likes.other";
-        return count ? I18n.t(message, { count }) : false
+        return count > 0 ? I18n.t(message, { count }) : false
       },
 
       @computed('hasLiked')
@@ -213,10 +218,10 @@ export default {
       },
 
       changeLikeCount(change) {
-        var oldCount = this.get('likeCount') || this.get('topic.topic_post_like_count') || 0,
-            newCount = oldCount + (change || 0)
+        var count = this.likeCount(),
+            newCount = count + (change || 0);
         this.set('hasLiked', Boolean(change > 0))
-        this.set('likeCount', newCount)
+        this.set('likeDifference', newCount)
         this._likeRerender()
       },
 
@@ -242,7 +247,7 @@ export default {
             disabled = false
         if (this.get('hasLikedDisplay')) {
           classes += ' has-like'
-          disabled = this.get('topic.topic_post_can_unlike') ? false : this.get('likeCount') == null
+          disabled = this.get('topic.topic_post_can_unlike') ? false : this.get('likeDifference') == null
         }
         return { class: classes, title: 'post.controls.like', icon: 'heart', disabled: disabled}
       },
@@ -254,14 +259,14 @@ export default {
 
       toggleLike($like, postId) {
         if (this.get('hasLikedDisplay')) {
-          this.removeAction(postId, 2)
+          this.removeAction(postId)
           this.changeLikeCount(-1)
         } else {
           const scale = [1.0, 1.5];
           return new Ember.RSVP.Promise(resolve => {
             animateHeart($like, scale[0], scale[1], () => {
               animateHeart($like, scale[1], scale[0], () => {
-                this.sendAction(postId, 2);
+                this.sendAction(postId);
                 this.changeLikeCount(1)
                 resolve();
               });
@@ -270,12 +275,12 @@ export default {
         }
       },
 
-      sendAction(postId, actionId) {
+      sendAction(postId) {
         Discourse.ajax("/post_actions", {
           type: 'POST',
           data: {
             id: postId,
-            post_action_type_id: actionId
+            post_action_type_id: 2
           },
           returnXHR: true,
         }).catch(function(error) {
@@ -292,11 +297,11 @@ export default {
         });
       },
 
-      removeAction(postId, actionId) {
+      removeAction(postId) {
         Discourse.ajax("/post_actions/" + postId, {
           type: 'DELETE',
           data: {
-            post_action_type_id: actionId
+            post_action_type_id: 2
           }
         }).catch(function(error) {
           popupAjaxError(error);
