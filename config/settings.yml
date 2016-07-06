@@ -1,13 +1,13 @@
 plugins:
-  universal_list_thumbnails:
+  topic_list_thumbnails:
     default: false
     client: true
-  universal_list_excerpts:
+  topic_list_excerpts:
     default: false
     client: true
-  universal_list_actions:
+  topic_list_actions:
     default: false
     client: true
-  universal_list_category_badge_move:
+  topic_list_category_badge_move:
     default: false
     client: true

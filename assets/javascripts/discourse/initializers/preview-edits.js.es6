@@ -43,7 +43,7 @@ export default {
 
         if (handler1.name === 'topic') {return}
 
-        if (Discourse.SiteSettings.universal_list_category_badge_move) {
+        if (Discourse.SiteSettings.topic_list_category_badge_move) {
           hideCategory = true
         } else {
           if ( handler2.name === 'discovery.category' ||
@@ -158,26 +158,26 @@ export default {
 
       @computed()
       showThumbnail() {
-        return this.get('topic.thumbnails') && (Discourse.SiteSettings.universal_list_thumbnails ||
+        return this.get('topic.thumbnails') && (Discourse.SiteSettings.topic_list_thumbnails ||
                                                (this.get('category') && this.get('category.list_thumbnails')))
       },
 
       @computed()
       showExcerpt() {
-        return this.get('topic.excerpt') && (Discourse.SiteSettings.universal_list_excerpts ||
+        return this.get('topic.excerpt') && (Discourse.SiteSettings.topic_list_excerpts ||
                                             (this.get('category') && this.get('category.list_excerpts')))
       },
 
       @computed()
       showCategoryBadge() {
         const category = this.get('category')
-        return Discourse.SiteSettings.universal_list_category_badge_move || (category && category.list_category_badge_move)
+        return Discourse.SiteSettings.topic_list_category_badge_move || (category && category.list_category_badge_move)
       },
 
       @computed()
       showActions() {
         const category = this.get('category')
-        return Discourse.SiteSettings.universal_list_actions || (category && category.list_actions)
+        return Discourse.SiteSettings.topic_list_actions || (category && category.list_actions)
       },
 
       @computed('likeDifference')
