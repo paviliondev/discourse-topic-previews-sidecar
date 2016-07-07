@@ -38,28 +38,22 @@ export default {
         var router = this.container.lookup("router:main"),
             handlerInfos = router.currentState.routerJsState.handlerInfos,
             handler1 = handlerInfos[1],
-            handler2 = handlerInfos[2],
-            hideCategory = false;
+            handler2 = handlerInfos[2];
 
-        if (handler1.name === 'topic') {return}
+        if (handler1.name === 'topic' || this.get('hideCategory')) {return}
 
         if (Discourse.SiteSettings.topic_list_category_badge_move) {
-          hideCategory = true
-        } else {
-          if ( handler2.name === 'discovery.category' ||
-               handler2.name === 'discovery.parentCategory') {
-            var category_id = handler2.context.category.id,
-                category = Discourse.Category.findById(category_id)
-            if (category.list_category_badge_move || category.has_children) {
-              hideCategory = true;
-            }
-          }
-          if ( handler1.name === 'tags' ) {
-            hideCategory = true;
-          }
+          return this.set('hideCategory', true)
         }
 
-        this.set('hideCategory', hideCategory)
+        if ( handler2.name === 'discovery.category' ||
+             handler2.name === 'discovery.parentCategory') {
+          var category_id = handler2.context.category.id,
+              category = Discourse.Category.findById(category_id)
+          if (category.list_category_badge_move) {
+            return this.set('hideCategory', true)
+          }
+        }
       }.on('didInsertElement')
     })
 
