@@ -4,9 +4,10 @@
   .thumbnail {
     height: 100px;
     width: 100px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+    object-fit: cover;
+  }
+  .no-thumbnail{
+    display: none;
   }
 }
 

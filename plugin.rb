@@ -28,6 +28,7 @@ after_initialize do
         normal = image ? thumbnail_url(image, 100, 100) : original_url
         retina = image ? thumbnail_url(image, 200, 200) : original_url
         thumbnails = { normal: normal, retina: retina }
+        Rails.logger.info "Saving thumbnails: #{thumbnails}"
         save_thumbnails(id, thumbnails)
         return thumbnails
       end
@@ -52,6 +53,7 @@ after_initialize do
     def get_linked_image(url)
       max_size = SiteSetting.max_image_size_kb.kilobytes
       file = FileHelper.download(url, max_size, "discourse", true) rescue nil
+      Rails.logger.info "Downloaded linked image: #{file}"
       image = file ? Upload.create_for(@post.user_id, file, file.path.split('/')[-1], File.size(file.path)) : nil
       image
     end
@@ -59,12 +61,14 @@ after_initialize do
     def create_topic_thumbnails(url)
       local = UrlHelper.is_local(url)
       image = local ? Upload.find_by(sha1: url[/[a-z0-9]{40,}/i]) : get_linked_image(url)
+      Rails.logger.info "Creating thumbnails with: #{image}"
       ListHelper.create_thumbnails(@post.topic.id, image, url)
     end
 
     def update_topic_image
       if @post.is_first_post?
         img = extract_images_for_topic.first
+        Rails.logger.info "Updating topic image: #{img}"
         return if !img["src"]
         url = img["src"][0...255]
         @post.topic.update_column(:image_url, url)
