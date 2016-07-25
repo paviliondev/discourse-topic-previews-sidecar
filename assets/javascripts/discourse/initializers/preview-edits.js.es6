@@ -126,7 +126,8 @@ export default {
           var height = 0;
           this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){ height += $(this).height() })
           var excerpt = 100 - height;
-          $excerpt.css('max-height', (excerpt > 19 ? (excerpt > 35 ? excerpt : 19) : 0))
+          console.log(excerpt)
+          $excerpt.css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0))
         }
       },
 

@@ -61,6 +61,7 @@
   color: dark-light-choose(scale-color($primary, $lightness: 60%), scale-color($secondary, $lightness: 40%));
   font-size: 13px;
   display: inline-block;
+  vertical-align: bottom;
   margin-right: 2px;
   .vote-count {
     height: initial;
@@ -84,23 +85,22 @@
   font-size: 0.9em;
   background: transparent;
   border: none;
-  padding: 3px 4px;
+  padding: 2px 4px;
   overflow: hidden;
-
-  &.topic-like:hover {
-    color: $love;
-    background: dark-light-diff($love, $secondary, 85%, -60%)
+  i {
+    vertical-align: bottom;
   }
 
-  &.has-like {color: $love;}
+  &.has-like, &.topic-like:hover {
+    color: $love;
+  }
   &.has-like[disabled]:hover {
     background: transparent;
   }
   &.has-like[disabled]:active {
     box-shadow: none;
   }
-
-  &.bookmarked {
+  &.bookmarked, &.topic-bookmark:hover {
     i.fa-bookmark {
       color: $tertiary;
     }
