@@ -90,6 +90,7 @@ export default {
         this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />")
         this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>")
         this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0])
+        this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
 
         var showExcerpt = this.get('showExcerpt'),
             showCategoryBadge = this.get('showCategoryBadge'),
