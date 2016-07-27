@@ -89,13 +89,15 @@ after_initialize do
                :topic_post_bookmarked
 
     def first_post_id
-      Post.find_by(topic_id: object.id, post_number: 1).id
+     first = Post.find_by(topic_id: object.id, post_number: 1)
+     first ? first.id : false
     end
 
     def topic_post_id
       accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
       return accepted_id > 0 ? accepted_id : first_post_id
     end
+    alias :include_topic_post_id? :first_post_id
 
     def excerpt
       if object.custom_fields["accepted_answer_post_id"].to_i > 0 || object.excerpt.blank?
@@ -154,17 +156,20 @@ after_initialize do
     def topic_post_bookmarked
       !!topic_post_actions.any?{|a| a.post_action_type_id == PostActionType.types[:bookmark]}
     end
+    alias :include_topic_post_bookmarked? :first_post_id
 
     def topic_post_liked
       topic_like_action.any?
     end
+    alias :include_topic_post_liked? :first_post_id
 
     def topic_post_like_count
       topic_post.like_count
     end
+    alias :include_topic_post_like_count? :first_post_id
 
     def include_topic_post_like_count?
-      topic_post_like_count > 0
+      first_post_id && topic_post_like_count > 0
     end
 
     def topic_post_can_like
@@ -172,12 +177,14 @@ after_initialize do
       return false if !scope.current_user || post.user_id == scope.current_user.id
       scope.post_can_act?(post, PostActionType.types[:like], taken_actions: topic_post_actions)
     end
+    alias :include_topic_post_can_like? :first_post_id
 
     def topic_post_can_unlike
       return false if !scope.current_user
       action = topic_like_action[0]
       !!(action && (action.user_id == scope.current_user.id) && (action.created_at > SiteSetting.post_undo_action_window_mins.minutes.ago))
     end
+    alias :include_topic_post_can_unlike? :first_post_id
 
   end
 
