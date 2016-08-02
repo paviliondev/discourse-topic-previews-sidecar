@@ -14,3 +14,6 @@ plugins:
   topic_list_show_like_on_current_users_posts:
     default: false
     client: true
+  topic_list_excerpt_length:
+    default: 200
+    client: true

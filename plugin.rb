@@ -101,12 +101,8 @@ after_initialize do
     alias :include_topic_post_id? :first_post_id
 
     def excerpt
-      if object.custom_fields["accepted_answer_post_id"].to_i > 0 || object.excerpt.blank?
-        cooked = Post.where(id: topic_post_id).pluck('cooked')
-        excerpt = PrettyText.excerpt(cooked[0], 200, keep_emoji_images: true)
-      else
-        excerpt = object.excerpt
-      end
+      cooked = Post.where(id: topic_post_id).pluck('cooked')
+      excerpt = PrettyText.excerpt(cooked[0], SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
       excerpt.gsub!(/(\[#{I18n.t 'excerpt_image'}\])/, "") if excerpt
       excerpt
     end
