@@ -197,4 +197,5 @@ after_initialize do
   add_to_serializer(:basic_category, :list_thumbnails) {object.custom_fields["list_thumbnails"]}
   add_to_serializer(:basic_category, :list_actions) {object.custom_fields["list_actions"]}
   add_to_serializer(:basic_category, :list_category_badge_move) {object.custom_fields["list_category_badge_move"]}
+  add_to_serializer(:basic_category, :list_default_thumbnail) {object.custom_fields["list_default_thumbnail"]}
 end

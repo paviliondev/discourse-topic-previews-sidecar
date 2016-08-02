@@ -5,3 +5,5 @@ en:
       list_excerpts: "Show topic excerpts in topic list items from this category."
       list_actions: "Show like and bookmark buttons in topic list items from this category."
       list_category_badge_move: "Show category badge under title in topic list from this category."
+      list_default_thumbnail: "Image URL for thumbnail shown if topic in this category has no preview thumbnail set."
+      list_default_thumbnail_placeholder: "Default thumbnail URL"

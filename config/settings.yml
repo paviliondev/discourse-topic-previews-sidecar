@@ -17,3 +17,6 @@ plugins:
   topic_list_excerpt_length:
     default: 200
     client: true
+  topic_list_default_thumbnail:
+    default: ''
+    client: true

@@ -161,8 +161,19 @@ export default {
 
       @computed()
       showThumbnail() {
-        return this.get('topic.thumbnails') && (Discourse.SiteSettings.topic_list_thumbnails ||
-                                               (this.get('category') && this.get('category.list_thumbnails')))
+        return this.get('thumbnails') && (Discourse.SiteSettings.topic_list_thumbnails ||
+               (this.get('category') && this.get('category.list_thumbnails')))
+      },
+
+      @computed()
+      defaultThumbnail(){
+        let defaultThumbnail = this.get('category.list_default_thumbnail') || Discourse.SiteSettings.topic_list_default_thumbnail
+        return defaultThumbnail ? defaultThumbnail : false
+      },
+
+      @computed()
+      thumbnails(){
+        return this.get('topic.thumbnails') || this.get('defaultThumbnail')
       },
 
       @computed()
