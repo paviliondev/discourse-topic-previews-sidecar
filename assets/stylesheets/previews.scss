@@ -91,7 +91,7 @@
     vertical-align: bottom;
   }
 
-  &.has-like, &.topic-like:hover {
+  &.has-like, &.topic-like:not([disabled]):hover {
     color: $love;
   }
   &.has-like[disabled]:hover {

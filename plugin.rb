@@ -86,7 +86,8 @@ after_initialize do
                :topic_post_like_count,
                :topic_post_can_like,
                :topic_post_can_unlike,
-               :topic_post_bookmarked
+               :topic_post_bookmarked,
+               :topic_post_is_current_users
 
     def first_post_id
      first = Post.find_by(topic_id: object.id, post_number: 1)
@@ -174,10 +175,15 @@ after_initialize do
 
     def topic_post_can_like
       post = topic_post
-      return false if !scope.current_user || post.user_id == scope.current_user.id
+      return false if !scope.current_user || topic_post_is_current_users
       scope.post_can_act?(post, PostActionType.types[:like], taken_actions: topic_post_actions)
     end
     alias :include_topic_post_can_like? :first_post_id
+
+    def topic_post_is_current_users
+      return scope.current_user && (topic_post.user_id == scope.current_user.id)
+    end
+    alias :include_topic_post_is_current_users? :first_post_id
 
     def topic_post_can_unlike
       return false if !scope.current_user

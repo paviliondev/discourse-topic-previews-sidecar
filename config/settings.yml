@@ -11,3 +11,6 @@ plugins:
   topic_list_category_badge_move:
     default: false
     client: true
+  topic_list_show_like_on_current_users_posts:
+    default: false
+    client: true

@@ -186,7 +186,8 @@ export default {
       @computed('likeDifference')
       topicActions() {
         var actions = []
-        if (this.get('topic.topic_post_can_like') || !this.get('currentUser')) {
+        if (this.get('topic.topic_post_can_like') || !this.get('currentUser') ||
+            Discourse.SiteSettings.topic_list_show_like_on_current_users_posts) {
           actions.push(this._likeButton())
         }
         if (this.get('canBookmark')) {
@@ -247,11 +248,18 @@ export default {
 
       _likeButton() {
         var classes = "topic-like",
-            disabled = false
+            disabled = false;
+
+        if (Discourse.SiteSettings.topic_list_show_like_on_current_users_posts) {
+          disabled = this.get('topic.topic_post_is_current_users')
+        }
+
         if (this.get('hasLikedDisplay')) {
           classes += ' has-like'
-          disabled = this.get('topic.topic_post_can_unlike') ? false : this.get('likeDifference') == null
+          let unlikeDisabled = this.get('topic.topic_post_can_unlike') ? false : this.get('likeDifference') == null
+          disabled = disabled ? true : unlikeDisabled
         }
+
         return { class: classes, title: 'post.controls.like', icon: 'heart', disabled: disabled}
       },
 
@@ -262,14 +270,14 @@ export default {
 
       toggleLike($like, postId) {
         if (this.get('hasLikedDisplay')) {
-          this.removeAction(postId)
+          this.removeLike(postId)
           this.changeLikeCount(-1)
         } else {
           const scale = [1.0, 1.5];
           return new Ember.RSVP.Promise(resolve => {
             animateHeart($like, scale[0], scale[1], () => {
               animateHeart($like, scale[1], scale[0], () => {
-                this.sendAction(postId);
+                this.addLike(postId);
                 this.changeLikeCount(1)
                 resolve();
               });
@@ -278,7 +286,7 @@ export default {
         }
       },
 
-      sendAction(postId) {
+      addLike(postId) {
         ajax("/post_actions", {
           type: 'POST',
           data: {
@@ -300,7 +308,7 @@ export default {
         });
       },
 
-      removeAction(postId) {
+      removeLike(postId) {
         ajax("/post_actions/" + postId, {
           type: 'DELETE',
           data: {
