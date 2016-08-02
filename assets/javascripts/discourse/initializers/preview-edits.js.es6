@@ -136,7 +136,14 @@ export default {
             $bookmark = this.$('.topic-bookmark'),
             $like = this.$('.topic-like');
         $bookmark.on('click.topic-bookmark', () => {this.toggleBookmark($bookmark, postId)})
-        $like.on('click.topic-like', () => {this.toggleLike($like, postId)})
+        $like.on('click.topic-like', () => {
+          if (this.get('currentUser')) {
+            this.toggleLike($like, postId);
+          } else {
+            const controller = this.container.lookup('controller:application');
+            controller.send('showLogin');
+          }
+        })
       },
 
       @on('willDestroyElement')
@@ -179,7 +186,7 @@ export default {
       @computed('likeDifference')
       topicActions() {
         var actions = []
-        if (this.get('topic.topic_post_can_like')) {
+        if (this.get('topic.topic_post_can_like') || !this.get('currentUser')) {
           actions.push(this._likeButton())
         }
         if (this.get('canBookmark')) {
