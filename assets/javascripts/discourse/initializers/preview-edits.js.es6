@@ -167,7 +167,9 @@ export default {
 
       @computed()
       defaultThumbnail(){
-        let defaultThumbnail = this.get('category.list_default_thumbnail') || Discourse.SiteSettings.topic_list_default_thumbnail
+        let topicCat = this.get('topic.category'),
+            catThumb = topicCat ? topicCat.list_default_thumbnail : false,
+            defaultThumbnail = catThumb || Discourse.SiteSettings.topic_list_default_thumbnail;
         return defaultThumbnail ? defaultThumbnail : false
       },
 
