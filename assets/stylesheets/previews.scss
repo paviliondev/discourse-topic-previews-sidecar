@@ -1,11 +1,6 @@
 .topic-thumbnail {
   float: left;
   padding-right: 15px;
-  .thumbnail {
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
-  }
   .no-thumbnail{
     display: none;
   }
