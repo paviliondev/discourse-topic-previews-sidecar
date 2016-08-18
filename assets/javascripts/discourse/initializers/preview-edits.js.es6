@@ -35,6 +35,19 @@ export default {
     });
 
     TopicList.reopen({
+
+      socialFeed: function(){
+        if (Discourse.SiteSettings.topic_list_social_feed) {
+          this.set('skipHeader', true)
+          this.$('tbody').css({
+            'width': 600,
+            'display': 'table',
+            'margin': '0 auto'
+          })
+          this.$().parents('.show-more').css('top', 0)
+        }
+      }.on('didInsertElement'),
+
       hideCategoryColumn: function(){
         var router = this.container.lookup("router:main"),
             handlerInfos = router.currentState.routerJsState.handlerInfos,
@@ -128,6 +141,37 @@ export default {
           this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){ height += $(this).height() })
           var excerpt = 100 - height;
           $excerpt.css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0))
+        }
+
+        if (Discourse.SiteSettings.topic_list_social_feed) {
+          this.$('td:not(.main-link):not(.posters)').hide()
+          this.$('.topic-details').css('float', 'left')
+          this.$().css({
+            'margin-bottom': '10px',
+            'box-shadow': '0 1px 4px rgba(0,0,0,.04)',
+            'border': '1px solid rgba(0,0,0,.09)',
+            'border-radius': '3px',
+            'display': 'table'
+          })
+          this.$('.main-link').css({
+            'border': 'none',
+            'padding': '10px'
+          })
+          this.$('.topic-thumbnail').css({
+            'padding': 0,
+            'margin-bottom': 5
+          })
+          this.$('.topic-category').prependTo(this.$('.main-link')).css({
+            'float': 'none',
+            'display': 'inline-block',
+            'vertical-align': 'middle'
+          })
+          this.$('td.posters').prependTo(this.$('.main-link')).css({
+            'display': 'inline-block',
+            'padding': '0 10px 0 0'
+          })
+          this.$('.posters, .topic-category').wrapAll("<div class='topic-intro' />")
+          this.$('.topic-intro').css('margin-bottom', 5)
         }
       },
 

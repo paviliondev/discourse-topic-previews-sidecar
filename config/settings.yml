@@ -20,6 +20,12 @@ plugins:
   topic_list_default_thumbnail:
     default: ''
     client: true
-  topic_list_thumbnail_size:
+  topic_list_thumbnail_width:
     default: 100
+    client: true
+  topic_list_thumbnail_height:
+    default: 100
+    client: true
+  topic_list_social_feed:
+    default: false
     client: true
