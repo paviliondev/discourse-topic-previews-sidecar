@@ -9,4 +9,4 @@ en:
     topic_list_default_thumbnail: "Image URL for thumbnail shown if topic has no preview thumbnail set."
     topic_list_thumbnail_width: "Width of topic preview thumbnail."
     topic_list_thumbnail_height: "Height of topic preview thumbnail."
-    topic_list_social_feed: "Apply social feed arrangement to topic list. 600x150 topic preview thumbnails are recommended for this setting."
+    topic_list_social_media_discovery: "Apply social feed arrangement to all discovery topic lists. 600x150 topic preview thumbnails are recommended for this setting."

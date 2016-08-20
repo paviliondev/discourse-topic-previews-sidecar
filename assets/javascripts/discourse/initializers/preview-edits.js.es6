@@ -36,21 +36,15 @@ export default {
 
     TopicList.reopen({
 
-      socialFeed: function(){
-        if (Discourse.SiteSettings.topic_list_social_feed) {
+      setupListStyle: function() {
+        if (this.get('socialMediaStyle')) {
           this.set('skipHeader', true)
-          this.$('tbody').css({
-            'width': 600,
-            'display': 'table',
-            'margin': '0 auto'
-          })
-          this.$().parents('.show-more').css('top', 0)
+          this.$().parents('#list-area').addClass('social-media')
         }
       }.on('didInsertElement'),
 
       hideCategoryColumn: function(){
-        var router = this.container.lookup("router:main"),
-            handlerInfos = router.currentState.routerJsState.handlerInfos,
+        var handlerInfos = this.get('handlerInfos'),
             handler1 = handlerInfos[1],
             handler2 = handlerInfos[2];
 
@@ -68,7 +62,18 @@ export default {
             return this.set('hideCategory', true)
           }
         }
-      }.on('didInsertElement')
+      }.on('didInsertElement'),
+
+      socialMediaStyle: function(){
+        const handlerInfos = this.get('handlerInfos')
+        if (handlerInfos[1].name === 'topic') {return false}
+        return Discourse.SiteSettings.topic_list_social_media_discovery
+      }.property(),
+
+      handlerInfos: function() {
+        const router = this.container.lookup('router:main');
+        return router.currentState.routerJsState.handlerInfos
+      }.property()
     })
 
     TopicListItem.reopen({
@@ -100,15 +105,16 @@ export default {
       },
 
       _rearrangeDOM() {
-        this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />")
-        this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>")
-        this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0])
+        this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />");
+        this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>");
+        this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0]);
         this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
 
         var showExcerpt = this.get('showExcerpt'),
             showCategoryBadge = this.get('showCategoryBadge'),
             showActions = this.get('showActions'),
-            $excerpt = this.$('.topic-excerpt');
+            $excerpt = this.$('.topic-excerpt'),
+            socialMediaStyle = this.get('socialMediaStyle');
 
         $excerpt.on('click.topic-excerpt', () => {
           var topic = this.get('topic'),
@@ -136,42 +142,18 @@ export default {
           this.$('.list-vote-count').insertAfter($excerpt)
         }
 
-        if (showExcerpt) {
+        if (!socialMediaStyle && showExcerpt) {
           var height = 0;
           this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){ height += $(this).height() })
           var excerpt = 100 - height;
           $excerpt.css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0))
         }
 
-        if (Discourse.SiteSettings.topic_list_social_feed) {
-          this.$('td:not(.main-link):not(.posters)').hide()
-          this.$('.topic-details').css('float', 'left')
-          this.$().css({
-            'margin-bottom': '10px',
-            'box-shadow': '0 1px 4px rgba(0,0,0,.04)',
-            'border': '1px solid rgba(0,0,0,.09)',
-            'border-radius': '3px',
-            'display': 'table'
-          })
-          this.$('.main-link').css({
-            'border': 'none',
-            'padding': '10px'
-          })
-          this.$('.topic-thumbnail').css({
-            'padding': 0,
-            'margin-bottom': 5
-          })
-          this.$('.topic-category').prependTo(this.$('.main-link')).css({
-            'float': 'none',
-            'display': 'inline-block',
-            'vertical-align': 'middle'
-          })
-          this.$('td.posters').prependTo(this.$('.main-link')).css({
-            'display': 'inline-block',
-            'padding': '0 10px 0 0'
-          })
-          this.$('.posters, .topic-category').wrapAll("<div class='topic-intro' />")
-          this.$('.topic-intro').css('margin-bottom', 5)
+        if (socialMediaStyle) {
+          this.$('td:not(.main-link)').hide()
+          this.$().addClass('social')
+          this.$('.topic-intro').prependTo(this.$('.main-link'))
+          this.$('.topic-title').prependTo(this.$('.main-link'))
         }
       },
 
@@ -195,6 +177,28 @@ export default {
         this.$('.topic-excerpt').off('click.topic-excerpt')
         this.$('.topic-bookmark').off('click.topic-bookmark')
         this.$('.topic-like').off('click.topic-like')
+      },
+
+      @computed()
+      socialMediaStyle() {
+        const component = this.container.lookup('component:topic-list')
+        return component.get('socialMediaStyle')
+      },
+
+      @computed()
+      posterNames() {
+        let posters = this.get('topic.posters')
+        let posterNames = ''
+        posters.forEach((poster, i) => {
+          let name = poster.user.name ? poster.user.name : poster.user.username
+          posterNames += '<a href="' + poster.user.path + '" data-user-card="' + poster.user.username + '" + class="' + poster.extras + '">' + name + '</a>'
+          if (i === posters.length - 2) {
+            posterNames += ' & '
+          } else if (i != posters.length - 1) {
+            posterNames += ', '
+          }
+        })
+        return posterNames
       },
 
       @computed()

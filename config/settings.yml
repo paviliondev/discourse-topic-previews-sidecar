@@ -26,6 +26,6 @@ plugins:
   topic_list_thumbnail_height:
     default: 100
     client: true
-  topic_list_social_feed:
+  topic_list_social_media_discovery:
     default: false
     client: true
