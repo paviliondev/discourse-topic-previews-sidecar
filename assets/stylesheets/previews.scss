@@ -10,6 +10,80 @@
   padding: 0;
 }
 
+#list-area.social-media {
+  .show-more {
+    top: 0;
+  }
+  tbody {
+    width: 600px;
+    display: table;
+    margin: 0 auto;
+  }
+  .topic-list-item {
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    border: 1px solid rgba(0,0,0,.09);
+    border-radius: 3px;
+    display: inline-block;
+    width: 100%;
+    .main-link {
+      border: none;
+      padding: 15px;
+    }
+    .topic-details {
+      float: left;
+      max-height: none;
+    }
+    .topic-intro, .topic-thumbnail {
+      margin-bottom: 5px;
+      padding: 0;
+    }
+    .badge-wrapper.box {
+      margin: 0px;
+    }
+    .topic-title {
+      font-size: 19px;
+      margin-bottom: 7px;
+      a.title {
+        color: #222;
+      }
+      .badge-notification.new-topic {
+        vertical-align: top;
+        display: inline-block;
+      }
+    }
+    .topic-replies {
+      cursor: pointer;
+    }
+    .topic-excerpt {
+      float: none;
+      display: inline-block;
+    }
+  }
+}
+
+.topic-intro {
+  img {
+    width: 40px;
+    height: 40px;
+  }
+  div.inline, span.inline {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 5px 0 0;
+    margin: 0;
+    width: auto;
+  }
+  div.sub, span.sub {
+    padding: 0;
+    font-size: 12px;
+  }
+  .middot:after {
+    content: '\00B7';
+  }
+}
+
 .topic-details {
   overflow: hidden;
   max-height: 100px;

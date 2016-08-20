@@ -25,9 +25,10 @@ after_initialize do
   module ListHelper
     class << self
       def create_thumbnails(id, image, original_url)
-        size = SiteSetting.topic_list_thumbnail_size
-        normal = image ? thumbnail_url(image, size, size) : original_url
-        retina = image ? thumbnail_url(image, size*2, size*2) : original_url
+        width = SiteSetting.topic_list_thumbnail_width
+        height = SiteSetting.topic_list_thumbnail_height
+        normal = image ? thumbnail_url(image, width, height) : original_url
+        retina = image ? thumbnail_url(image, width*2, height*2) : original_url
         thumbnails = { normal: normal, retina: retina }
         Rails.logger.info "Saving thumbnails: #{thumbnails}"
         save_thumbnails(id, thumbnails)
