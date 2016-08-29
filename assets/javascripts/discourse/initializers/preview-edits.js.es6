@@ -1,6 +1,7 @@
 import { registerUnbound } from 'discourse/lib/helpers';
 import renderUnboundPreview from 'discourse/plugins/discourse-topic-previews/lib/render-preview';
 import buttonHTML from 'discourse/plugins/discourse-topic-previews/lib/list-button';
+import testImageUrl from 'discourse/plugins/discourse-topic-previews/lib/test-image-url';
 import TopicListItem from 'discourse/components/topic-list-item';
 import TopicList from 'discourse/components/topic-list';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
@@ -66,7 +67,7 @@ export default {
 
       socialMediaStyle: function(){
         const handlerInfos = this.get('handlerInfos')
-        if (handlerInfos[1].name === 'topic') {return false}
+        if (handlerInfos[1].name === 'topic' || this.get('site.mobileView')) {return false}
         return Discourse.SiteSettings.topic_list_social_media_discovery
       }.property(),
 
@@ -78,22 +79,29 @@ export default {
 
     TopicListItem.reopen({
       canBookmark: Ember.computed.bool('currentUser'),
-      rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference'],
+      rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
 
       @on('init')
       _init() {
         const mobile = this.get('site.mobileView');
+        const topic = this.get('topic');
         if (mobile) {
-          const topic = this.get('topic');
           if (topic.excerpt && !topic.pinned) {
             topic.set('excerpt', '')
           }
+        }
+        if (topic.get('thumbnails')) {
+          testImageUrl(topic.get('thumbnails.normal')).then(function(result){
+            if (result === 'error') {
+              topic.set('thumbnails', null)
+            }
+          })
         }
       },
 
       @on('didInsertElement')
       _setupDOM() {
-        if (this.get('site.mobileView')) { return }
+        if (this.get('site.mobileView')) {return}
         if ($('#suggested-topics').length) {
           this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
         } else {
@@ -207,7 +215,7 @@ export default {
         return controller.get('category')
       },
 
-      @computed()
+      @computed('thumbnails')
       showThumbnail() {
         return this.get('thumbnails') && (Discourse.SiteSettings.topic_list_thumbnails ||
                (this.get('category') && this.get('category.list_thumbnails')))
@@ -221,7 +229,14 @@ export default {
         return defaultThumbnail ? defaultThumbnail : false
       },
 
-      @computed()
+      @observes('thumbnails')
+      _rerenderOnThumbnailChange() {
+        Ember.run.scheduleOnce('afterRender', this, () => {
+          this._rearrangeDOM()
+        })
+      },
+
+      @computed('topic.thumbnails')
       thumbnails(){
         return this.get('topic.thumbnails') || this.get('defaultThumbnail')
       },

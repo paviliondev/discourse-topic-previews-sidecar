@@ -3,7 +3,8 @@
 # version: 0.2
 # authors: Angus McLeod
 
-register_asset 'stylesheets/previews.scss'
+register_asset 'stylesheets/previews_common.scss'
+register_asset 'stylesheets/previews_mobile.scss'
 
 after_initialize do
 

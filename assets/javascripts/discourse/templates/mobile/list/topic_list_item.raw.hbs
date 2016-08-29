@@ -1,0 +1,50 @@
+<td>
+  {{#if showThumbnail}}
+    {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+  {{else}}
+    <div class='pull-left'>
+      <a href="{{topic.lastPostUrl}}">{{avatar topic.lastPoster imageSize="large"}}</a>
+    </div>
+  {{/if}}
+  <div class='topic-details'>
+    <div class='main-link'>
+      {{raw "topic-status" topic=topic}}
+      {{topic-link topic}}
+      {{#if topic.unseen}}
+        <span class="badge-notification new-topic"></span>
+      {{/if}}
+      {{~#if expandPinned}}
+      {{raw "list/topic-excerpt" topic=topic}}
+      {{/if~}}
+    </div>
+
+    <div class='pull-right'>
+      {{raw "list/post-count-or-badges" topic=topic postBadgesEnabled=showTopicPostBadges}}
+    </div>
+
+    {{#if showCategoryBadge}}
+      {{raw "list/topic-category" category=context.topic.category}}
+    {{/if}}
+
+    {{#if context.topic.tags}}
+      <div class='discourse-tags'>
+      {{#each context.topic.visibleListTags as |tag|}}
+        {{discourse-tag tag}}
+      {{/each}}
+      </div>
+    {{/if}}
+
+    {{plugin-outlet "topic-list-tags"}}
+
+    <div class='topic-details-bottom'>
+      {{#if context.showActions}}
+        {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay topicActions=context.topicActions}}
+      {{/if}}
+      <div class="pull-right">
+        <div class='num activity last'>
+          <span class="age activity" title="{{topic.bumpedAtTitle}}"><a href="{{topic.lastPostUrl}}">{{format-date topic.bumpedAt format="tiny" noTitle="true"}}</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</td>

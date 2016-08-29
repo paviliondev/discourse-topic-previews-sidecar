@@ -1,0 +1,23 @@
+.mobile-view .topic-list {
+  .topic-thumbnail {
+    padding-right: 10px;
+  }
+  .topic-details-bottom {
+    margin-top: 7px;
+    display: inline-block;
+    width: 100%;
+  }
+  .list-button {
+    font-size: 1.2em;
+    height: 18px;
+    padding: 0 12px 0 0px;
+  }
+  .like-count {
+    font-size: 1em;
+    float: left;
+    margin-right: 8px;
+  }
+  .list-button i {
+    vertical-align: top;
+  }
+}

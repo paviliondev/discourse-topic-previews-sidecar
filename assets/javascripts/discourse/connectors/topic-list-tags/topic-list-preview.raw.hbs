@@ -1,10 +1,6 @@
 {{#unless context.site.mobileView}}
   {{#if context.showThumbnail}}
-    <div class="topic-thumbnail">
-      <a href='{{context.topic.url}}'>
-        {{preview-unbound context.thumbnails}}
-      </a>
-    </div>
+    {{raw "list/topic-thumbnail" topic=context.topic thumbnails=context.thumbnails}}
   {{/if}}
   {{#if context.socialMediaStyle}}
     <div class='topic-intro'>
@@ -43,19 +39,10 @@
     </div>
   {{else}}
     {{#if context.showCategoryBadge}}
-      <div class='topic-category'>
-        {{category-link context.topic.category}}
-      </div>
+      {{raw "list/topic-category" category=context.topic.category}}
     {{/if}}
   {{/if}}
   {{#if context.showActions}}
-    <div class="topic-actions">
-      {{#if context.likeCountDisplay}}
-        <div class="like-count">{{context.likeCountDisplay}}</div>
-      {{/if}}
-      {{#each context.topicActions as |action|}}
-        {{list-button action}}
-      {{/each}}
-    </div>
+    {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay topicActions=context.topicActions}}
   {{/if}}
 {{/unless}}
