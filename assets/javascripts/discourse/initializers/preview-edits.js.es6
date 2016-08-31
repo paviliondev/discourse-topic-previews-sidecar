@@ -109,6 +109,9 @@ export default {
           if (this.get('showActions')) {
             this._setupActions()
           }
+          if (this.get('showThumbnail')) {
+            this._sizeThumbnails()
+          }
         }
       },
 
@@ -177,6 +180,15 @@ export default {
             const controller = this.container.lookup('controller:application');
             controller.send('showLogin');
           }
+        })
+      },
+
+      _sizeThumbnails() {
+        this.$('.topic-thumbnail img').load(function(){
+          console.log($(this)[0].naturalWidth)
+          $(this).css({
+            'width': $(this)[0].naturalWidth
+          })
         })
       },
 
