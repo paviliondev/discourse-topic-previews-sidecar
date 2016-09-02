@@ -1,48 +1,20 @@
 {{#unless context.site.mobileView}}
   {{#if context.showThumbnail}}
-    {{raw "list/topic-thumbnail" topic=context.topic thumbnails=context.thumbnails}}
+    {{raw "list/topic-thumbnail" topic=context.topic
+                                 thumbnails=context.thumbnails}}
   {{/if}}
   {{#if context.socialMediaStyle}}
-    <div class='topic-intro'>
-      <div class="topic-poster-avatars inline">
-        {{#each context.topic.posters as |poster|}}
-          <a href="{{poster.user.path}}" data-user-card="{{poster.user.username}}" class="{{poster.extras}}">
-            {{avatar poster avatarTemplatePath="user.avatar_template" usernamePath="user.username" imageSize="large"}}
-          </a>
-        {{/each}}
-      </div>
-      <div class="topic-intro-details inline">
-        <div>
-          <div class="topic-poster-names inline">
-            {{{context.posterNames}}}
-          </div>
-          <div class='topic-category inline'>
-            {{category-link context.topic.category}}
-          </div>
-        </div>
-        <div>
-          <div class="topic-views {{context.topic.viewsHeat}} inline sub">
-            {{number context.topic.views numberKey="views_long"}}
-            {{i18n 'views_lowercase' count=context.topic.views}}
-          </div>
-          <span class="middot inline sub"></span>
-          <div class='topic-replies posts-map {{context.view.likesHeat}} inline sub' title='{{context.view.title}}'>
-            <a href class='posts-map badge-posts {{context.view.likesHeat}}'>{{number context.topic.replyCount}}</a>
-            {{i18n 'replies_lowercase' count=context.topic.replyCount}}
-          </div>
-          <span class="middot inline sub"></span>
-          <div class="{{class}} {{cold-age-class context.topic.createdAt startDate=context.topic.bumpedAt class=""}} activity inline sub" title="{{{context.topic.bumpedAtTitle}}}">
-            <a href="{{context.topic.lastPostUrl}}">{{format-date context.topic.bumpedAt format="medium-with-ago" noTitle="true"}}</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    {{raw "list/topic-intro" topic=context.topic
+                             posterNames=context.posterNames
+                             likesHeat=context.view.likesHeat
+                             title=context.view.title}}
   {{else}}
     {{#if context.showCategoryBadge}}
       {{raw "list/topic-category" category=context.topic.category}}
     {{/if}}
   {{/if}}
   {{#if context.showActions}}
-    {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay topicActions=context.topicActions}}
+    {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay
+                               topicActions=context.topicActions}}
   {{/if}}
 {{/unless}}

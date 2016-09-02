@@ -67,7 +67,7 @@ export default {
 
       socialMediaStyle: function(){
         const handlerInfos = this.get('handlerInfos')
-        if (handlerInfos[1].name === 'topic' || this.get('site.mobileView')) {return false}
+        if (handlerInfos[1].name === 'topic') {return false}
         return Discourse.SiteSettings.topic_list_social_media_discovery
       }.property(),
 
@@ -83,13 +83,7 @@ export default {
 
       @on('init')
       _init() {
-        const mobile = this.get('site.mobileView');
         const topic = this.get('topic');
-        if (mobile) {
-          if (topic.excerpt && !topic.pinned) {
-            topic.set('excerpt', '')
-          }
-        }
         if (topic.get('thumbnails')) {
           testImageUrl(topic.get('thumbnails.normal')).then(function(result){
             if (result === 'error') {
@@ -101,7 +95,9 @@ export default {
 
       @on('didInsertElement')
       _setupDOM() {
-        if (this.get('site.mobileView')) {return}
+        if (this.get('showThumbnail')) {
+          this._sizeThumbnails()
+        }
         if ($('#suggested-topics').length) {
           this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
         } else {
@@ -109,13 +105,11 @@ export default {
           if (this.get('showActions')) {
             this._setupActions()
           }
-          if (this.get('showThumbnail')) {
-            this._sizeThumbnails()
-          }
         }
       },
 
       _rearrangeDOM() {
+        if (this.get('site.mobileView')) {return}
         this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />");
         this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>");
         this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0]);
@@ -185,7 +179,6 @@ export default {
 
       _sizeThumbnails() {
         this.$('.topic-thumbnail img').load(function(){
-          console.log($(this)[0].naturalWidth)
           $(this).css({
             'width': $(this)[0].naturalWidth
           })
@@ -234,6 +227,11 @@ export default {
       },
 
       @computed()
+      mobilePreviews() {
+        return Discourse.SiteSettings.topic_list_mobile_previews
+      },
+
+      @computed()
       defaultThumbnail(){
         let topicCat = this.get('topic.category'),
             catThumb = topicCat ? topicCat.list_default_thumbnail : false,
@@ -255,6 +253,9 @@ export default {
 
       @computed()
       showExcerpt() {
+        if (this.get('site.mobileView') &&
+            !Discourse.SiteSettings.topic_list_mobile_previews &&
+            !Discourse.SiteSettings.topic_list_social_media_discovery) {return false}
         return this.get('topic.excerpt') && (Discourse.SiteSettings.topic_list_excerpts ||
                                             (this.get('category') && this.get('category.list_excerpts')))
       },
