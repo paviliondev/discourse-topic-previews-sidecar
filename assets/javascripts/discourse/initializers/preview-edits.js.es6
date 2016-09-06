@@ -206,9 +206,9 @@ export default {
           let name = poster.user.name ? poster.user.name : poster.user.username
           posterNames += '<a href="' + poster.user.path + '" data-user-card="' + poster.user.username + '" + class="' + poster.extras + '">' + name + '</a>'
           if (i === posters.length - 2) {
-            posterNames += ' & '
+            posterNames += '<span> & </span>'
           } else if (i != posters.length - 1) {
-            posterNames += ', '
+            posterNames += '<span>, </span>'
           }
         })
         return posterNames
