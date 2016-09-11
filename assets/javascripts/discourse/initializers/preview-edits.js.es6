@@ -68,7 +68,7 @@ export default {
       socialMediaStyle: function(){
         const handlerInfos = this.get('handlerInfos')
         if (handlerInfos[1].name === 'topic') {return false}
-        if (handlerInfos[2].name !== 'discovery.latest' && Discourse.SiteSettings.topic_list_social_media_only_latest) {return false}
+        if (Discourse.SiteSettings.topic_list_social_media_only_latest && handlerInfos[2].name !== 'discovery.latest') {return false}
         return Discourse.SiteSettings.topic_list_social_media_discovery
       }.property(),
 
