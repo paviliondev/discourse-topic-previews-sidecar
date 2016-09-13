@@ -39,7 +39,6 @@ export default {
 
       setupListStyle: function() {
         if (this.get('socialMediaStyle')) {
-          this.set('skipHeader', true)
           this.$().parents('#list-area').addClass('social-media')
         }
       }.on('didInsertElement'),
@@ -160,6 +159,12 @@ export default {
           this.$().addClass('social')
           this.$('.topic-intro').prependTo(this.$('.main-link'))
           this.$('.topic-title').prependTo(this.$('.main-link'))
+        }
+
+        if (socialMediaStyle) {
+          this.$().parents('#list-area').addClass('social-media')
+        } else {
+          this.$().parents('#list-area').removeClass('social-media')
         }
       },
 
