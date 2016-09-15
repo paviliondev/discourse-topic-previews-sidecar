@@ -165,6 +165,9 @@ export default {
           this.$().parents('#list-area').addClass('social-media')
         } else {
           this.$().parents('#list-area').removeClass('social-media')
+          if (Discourse.SiteSettings.topic_list_social_media_only_latest) {
+            this.$('.topic-thumbnail').remove()
+          }
         }
       },
 
