@@ -5,7 +5,9 @@
                              posterNames=context.posterNames
                              likesHeat=context.view.likesHeat
                              title=context.view.title}}
-    {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+    {{#if showThumbnail}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+    {{/if}}
   {{else}}
     {{#if context.mobilePreviews}}
       {{#if showThumbnail}}
