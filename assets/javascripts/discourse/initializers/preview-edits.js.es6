@@ -36,12 +36,17 @@ export default {
     });
 
     TopicList.reopen({
-
-      setupListStyle: function() {
+      @on("didInsertElement")
+      @observes("topics")
+      setupListStyle() {
         if (this.get('socialMediaStyle')) {
+          this.set('skipHeader', true)
           this.$().parents('#list-area').addClass('social-media')
+        } else {
+          this.set('skipHeader', false)
+          this.$().parents('#list-area').removeClass('social-media')
         }
-      }.on('didInsertElement'),
+      },
 
       hideCategoryColumn: function(){
         var handlerInfos = this.get('handlerInfos'),
@@ -69,12 +74,17 @@ export default {
         if (handlerInfos[1].name === 'topic') {return false}
         if (Discourse.SiteSettings.topic_list_social_media_only_latest && handlerInfos[2].name !== 'discovery.latest') {return false}
         return Discourse.SiteSettings.topic_list_social_media_discovery
-      }.property(),
+      }.property('topics'),
 
       handlerInfos: function() {
         const router = this.container.lookup('router:main');
         return router.currentState.routerJsState.handlerInfos
-      }.property()
+      }.property('topics')
+
+      @on('willDestroyElement')
+      _tearDown() {
+        this.$().parents('#list-area').removeClass('social-media')
+      },
     })
 
     TopicListItem.reopen({
@@ -161,14 +171,6 @@ export default {
           this.$('.topic-title').prependTo(this.$('.main-link'))
         }
 
-        if (socialMediaStyle) {
-          this.$().parents('#list-area').addClass('social-media')
-        } else {
-          this.$().parents('#list-area').removeClass('social-media')
-          if (Discourse.SiteSettings.topic_list_social_media_only_latest) {
-            this.$('.topic-thumbnail').remove()
-          }
-        }
       },
 
       _setupActions() {
@@ -231,6 +233,11 @@ export default {
 
       @computed('thumbnails')
       showThumbnail() {
+        if (Discourse.SiteSettings.topic_list_social_media_only_latest &&
+            Discourse.SiteSettings.topic_list_social_media_disable_thumbnails &&
+            !this.get('socialMediaStyle'))
+          return false
+
         return this.get('thumbnails') && (Discourse.SiteSettings.topic_list_thumbnails ||
                (this.get('category') && this.get('category.list_thumbnails')))
       },
