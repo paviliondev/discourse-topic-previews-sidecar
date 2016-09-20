@@ -170,7 +170,6 @@ export default {
           this.$('.topic-intro').prependTo(this.$('.main-link'))
           this.$('.topic-title').prependTo(this.$('.main-link'))
         }
-
       },
 
       _setupActions() {
