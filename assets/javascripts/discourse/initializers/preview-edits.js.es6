@@ -79,7 +79,7 @@ export default {
       handlerInfos: function() {
         const router = this.container.lookup('router:main');
         return router.currentState.routerJsState.handlerInfos
-      }.property('topics')
+      }.property('topics'),
 
       @on('willDestroyElement')
       _tearDown() {
