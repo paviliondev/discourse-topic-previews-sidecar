@@ -39,7 +39,7 @@ export default {
       @on("didInsertElement")
       @observes("topics")
       setupListStyle() {
-        if (this.get('socialMediaStyle')) {
+        if (this.get('socialMediaStyle') || this.get('site.mobileView')) {
           this.set('skipHeader', true)
           this.$().parents('#list-area').addClass('social-media')
         } else {
