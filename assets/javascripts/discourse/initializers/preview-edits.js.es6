@@ -116,6 +116,7 @@ export default {
 
       _rearrangeDOM() {
         if (this.get('site.mobileView')) {return}
+        if (!this.$('.main-link')) {return}
         this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />");
         this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>");
         this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0]);
