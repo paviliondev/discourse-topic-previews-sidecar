@@ -39,13 +39,9 @@ export default {
       @on("didInsertElement")
       @observes("topics")
       setupListStyle() {
-        if (this.get('socialMediaStyle') || this.get('site.mobileView')) {
-          this.set('skipHeader', true)
-          this.$().parents('#list-area').addClass('social-media')
-        } else {
-          this.set('skipHeader', false)
-          this.$().parents('#list-area').removeClass('social-media')
-        }
+        let social = this.get('socialMediaStyle');
+        this.set('skipHeader', social);
+        this.$().parents('#list-area').toggleClass('social-media', social);
       },
 
       hideCategoryColumn: function(){
