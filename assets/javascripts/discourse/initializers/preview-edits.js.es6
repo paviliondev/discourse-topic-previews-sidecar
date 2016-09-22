@@ -1,4 +1,4 @@
-import { registerUnbound } from 'discourse/lib/helpers';
+import { registerUnbound } from 'discourse-common/lib/helpers';
 import renderUnboundPreview from 'discourse/plugins/discourse-topic-previews/lib/render-preview';
 import buttonHTML from 'discourse/plugins/discourse-topic-previews/lib/list-button';
 import testImageUrl from 'discourse/plugins/discourse-topic-previews/lib/test-image-url';
