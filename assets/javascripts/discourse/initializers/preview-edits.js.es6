@@ -91,11 +91,11 @@ export default {
       _init() {
         const topic = this.get('topic');
         if (topic.get('thumbnails')) {
-          testImageUrl(topic.get('thumbnails.normal')).then(function(result){
-            if (result === 'error') {
+          testImageUrl(topic.get('thumbnails.normal'), function(imageLoaded) {
+            if (!imageLoaded) {
               topic.set('thumbnails', null)
             }
-          })
+          });
         }
       },
 
