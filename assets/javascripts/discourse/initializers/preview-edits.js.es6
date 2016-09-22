@@ -36,13 +36,13 @@ export default {
     });
 
     TopicList.reopen({
-
-      setupListStyle: function() {
-        if (this.get('socialMediaStyle')) {
-          this.set('skipHeader', true)
-          this.$().parents('#list-area').addClass('social-media')
-        }
-      }.on('didInsertElement'),
+      @on("didInsertElement")
+      @observes("topics")
+      setupListStyle() {
+        let social = this.get('socialMediaStyle');
+        this.set('skipHeader', social || this.get('site.mobileView'));
+        this.$().parents('#list-area').toggleClass('social-media', social);
+      },
 
       hideCategoryColumn: function(){
         var handlerInfos = this.get('handlerInfos'),
@@ -68,13 +68,19 @@ export default {
       socialMediaStyle: function(){
         const handlerInfos = this.get('handlerInfos')
         if (handlerInfos[1].name === 'topic') {return false}
+        if (Discourse.SiteSettings.topic_list_social_media_only_latest && handlerInfos[2].name !== 'discovery.latest') {return false}
         return Discourse.SiteSettings.topic_list_social_media_discovery
-      }.property(),
+      }.property('topics'),
 
       handlerInfos: function() {
         const router = this.container.lookup('router:main');
         return router.currentState.routerJsState.handlerInfos
-      }.property()
+      }.property('topics'),
+
+      @on('willDestroyElement')
+      _tearDown() {
+        this.$().parents('#list-area').removeClass('social-media')
+      },
     })
 
     TopicListItem.reopen({
@@ -110,6 +116,7 @@ export default {
 
       _rearrangeDOM() {
         if (this.get('site.mobileView')) {return}
+        if (!this.$('.main-link')) {return}
         this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />");
         this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>");
         this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0]);
@@ -222,6 +229,11 @@ export default {
 
       @computed('thumbnails')
       showThumbnail() {
+        if (Discourse.SiteSettings.topic_list_social_media_only_latest &&
+            Discourse.SiteSettings.topic_list_social_media_only_latest_disable_thumbnails &&
+            !this.get('socialMediaStyle'))
+          return false
+
         return this.get('thumbnails') && (Discourse.SiteSettings.topic_list_thumbnails ||
                (this.get('category') && this.get('category.list_thumbnails')))
       },
