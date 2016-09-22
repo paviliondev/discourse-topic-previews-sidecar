@@ -230,7 +230,7 @@ export default {
       @computed('thumbnails')
       showThumbnail() {
         if (Discourse.SiteSettings.topic_list_social_media_only_latest &&
-            Discourse.SiteSettings.topic_list_social_media_disable_thumbnails &&
+            Discourse.SiteSettings.topic_list_social_media_only_latest_disable_thumbnails &&
             !this.get('socialMediaStyle'))
           return false
 

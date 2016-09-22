@@ -23,7 +23,7 @@ plugins:
   topic_list_social_media_only_latest:
     default: false
     client: true
-  topic_list_social_media_disable_thumbnails:
+  topic_list_social_media_only_latest_disable_thumbnails:
     default: false
     client: true
   topic_list_excerpt_length:
