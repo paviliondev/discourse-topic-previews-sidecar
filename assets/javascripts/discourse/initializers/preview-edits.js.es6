@@ -40,7 +40,7 @@ export default {
       @observes("topics")
       setupListStyle() {
         let social = this.get('socialMediaStyle');
-        this.set('skipHeader', social);
+        this.set('skipHeader', social || this.get('site.mobileView'));
         this.$().parents('#list-area').toggleClass('social-media', social);
       },
 
