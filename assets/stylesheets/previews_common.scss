@@ -1,7 +1,7 @@
 .topic-thumbnail {
   float: left;
   padding-right: 15px;
-  .no-thumbnail{
+  .no-thumbnail {
     display: none;
   }
 }
@@ -21,8 +21,8 @@ html:not(.mobile-view) #list-area.social-media {
   }
   .topic-list-item {
     margin-bottom: 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.04);
-    border: 1px solid rgba(0,0,0,.09);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.09);
     border-radius: 3px;
     display: inline-block;
     width: 100%;
@@ -99,7 +99,6 @@ html:not(.mobile-view) #list-area.social-media {
     float: left;
     clear: right;
   }
-
   .topic-excerpt {
     margin-top: 2px;
     padding-right: 10px;
@@ -162,7 +161,6 @@ html:not(.mobile-view) #list-area.social-media {
   i {
     vertical-align: bottom;
   }
-
   &.has-like, &.topic-like:not([disabled]):hover {
     color: $love;
   }
