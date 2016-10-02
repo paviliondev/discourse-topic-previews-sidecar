@@ -75,6 +75,7 @@ after_initialize do
         return if !img["src"]
         url = img["src"][0...255]
         @post.topic.update_column(:image_url, url)
+        return if SiteSetting.topic_list_hotlink_thumbnails
         create_topic_thumbnails(url)
       end
     end
@@ -116,12 +117,16 @@ after_initialize do
 
     def thumbnails
       return unless object.archetype == Archetype.default
-      thumbs = get_thumbnails || get_thumbnails_from_image_url
+      if SiteSetting.topic_list_hotlink_thumbnails
+        thumbs = { normal: object.image_url, retina: object.image_url }
+      else
+        thumbs = get_thumbnails || get_thumbnails_from_image_url
+      end
       thumbs
     end
 
     def include_thumbnails?
-      thumbnails.present? && thumbnails['normal'].present?
+      thumbnails.present? && (thumbnails[:normal].present? || thumbnails['normal'].present?)
     end
 
     def get_thumbnails

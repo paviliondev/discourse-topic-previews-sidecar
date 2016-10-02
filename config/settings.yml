@@ -38,3 +38,6 @@ plugins:
   topic_list_thumbnail_height:
     default: 100
     client: true
+  topic_list_hotlink_thumbnails:
+    default: false
+    client: true
