@@ -49,7 +49,7 @@ export default {
             handler1 = handlerInfos[1],
             handler2 = handlerInfos[2];
 
-        if (handler1.name === 'topic' || this.get('hideCategory')) {return}
+        if (handler1.name === 'topic' || this.get('hideCategory') || this.get('site.mobileView')) {return}
 
         if (Discourse.SiteSettings.topic_list_category_badge_move) {
           return this.set('hideCategory', true)
