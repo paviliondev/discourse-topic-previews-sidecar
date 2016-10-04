@@ -166,6 +166,8 @@ export default {
           this.$().addClass('social')
           this.$('.topic-intro').prependTo(this.$('.main-link'))
           this.$('.topic-title').prependTo(this.$('.main-link'))
+          if (this.$('.topic-details').children().length < 1)
+            this.$('.topic-details').hide()
         }
       },
 
