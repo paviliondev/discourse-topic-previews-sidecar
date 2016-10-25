@@ -28,17 +28,16 @@ after_initialize do
       def create_thumbnails(id, image, original_url)
         width = SiteSetting.topic_list_thumbnail_width
         height = SiteSetting.topic_list_thumbnail_height
-        normal = image ? thumbnail_url(image, width, height) : original_url
-        retina = image ? thumbnail_url(image, width*2, height*2) : original_url
+        normal = image ? thumbnail_url(image, width, height, original_url) : original_url
+        retina = image ? thumbnail_url(image, width*2, height*2, original_url) : original_url
         thumbnails = { normal: normal, retina: retina }
-        Rails.logger.info "Saving thumbnails: #{thumbnails}"
         save_thumbnails(id, thumbnails)
         return thumbnails
       end
 
-      def thumbnail_url (image, w, h)
+      def thumbnail_url (image, w, h, original_url)
         image.create_thumbnail!(w, h) if !image.has_thumbnail?(w, h)
-        image.thumbnail(w, h).url
+        image.has_thumbnail? ? image.thumbnail(w, h).url : original_url
       end
 
       def save_thumbnails(id, thumbnails)
