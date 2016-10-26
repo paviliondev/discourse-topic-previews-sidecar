@@ -9,16 +9,16 @@
       {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
     {{/if}}
   {{else}}
-    {{#if context.mobilePreviews}}
-      {{#if showThumbnail}}
-        {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
-      {{/if}}
-    {{else}}
+    {{#if showThumbnail}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+    {{/if}}
+    {{#unless mobileThumbnails}}
       <div class='pull-left'>
         <a href="{{topic.lastPostUrl}}">{{avatar topic.lastPoster imageSize="large"}}</a>
       </div>
-    {{/if}}
+    {{/unless}}
   {{/if}}
+
   <div class='topic-details'>
     {{#if context.socialMediaStyle}}
       {{raw "topic-status" topic=topic}}
@@ -60,17 +60,14 @@
 
     {{plugin-outlet "topic-list-tags"}}
 
-    {{#if context.socialMediaStyle}}
+    {{#if context.showActions}}
       {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay topicActions=context.topicActions}}
-    {{else}}
-      {{#if context.mobilePreviews}}
-        {{#if context.showActions}}
-          {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay topicActions=context.topicActions}}
-        {{/if}}
-      {{/if}}
+    {{/if}}
+
+    {{#unless context.socialMediaStyle}}
       <div class='num activity last'>
         <span class="age activity" title="{{topic.bumpedAtTitle}}"><a href="{{topic.lastPostUrl}}">{{format-date topic.bumpedAt format="tiny" noTitle="true"}}</a></span>
       </div>
-    {{/if}}
+    {{/unless}}
   </div>
 </td>

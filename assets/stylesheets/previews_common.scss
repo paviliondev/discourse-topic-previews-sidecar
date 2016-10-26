@@ -26,9 +26,12 @@ html:not(.mobile-view) #list-area.social-media {
     border-radius: 3px;
     display: inline-block;
     width: 100%;
-    .main-link {
+    td.main-link {
       border: none;
       padding: 15px;
+    }
+    td:not(.main-link) {
+      display: none;
     }
   }
   .topic-list-item-separator {
@@ -120,8 +123,6 @@ html:not(.mobile-view) #list-area.social-media {
 }
 
 .main-link .topic-category {
-  float: left;
-  clear: left;
   .badge-wrapper {
     font-size: 12px;
   }
@@ -129,11 +130,6 @@ html:not(.mobile-view) #list-area.social-media {
 
 .main-link .topic-statuses {
   line-height: 19px;
-}
-
-.topic-list .topic-actions {
-  float: left;
-  clear: both;
 }
 
 .like-count, .list-vote-count {
