@@ -107,7 +107,7 @@ export default {
         if ($('#suggested-topics').length) {
           this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
         } else {
-          this._rearrangeDOM()
+          Ember.run.scheduleOnce('render', this, this._rearrangeDOM)
           if (this.get('showActions')) {
             this._setupActions()
           }
@@ -116,7 +116,7 @@ export default {
 
       _rearrangeDOM() {
         if (this.get('site.mobileView')) {return}
-        if (!this.$('.main-link')) {return}
+        if (!this.$('.main-link').length) {return}
         this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />");
         this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>");
         this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0]);
