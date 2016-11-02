@@ -68,8 +68,14 @@ export default {
       socialMediaStyle: function(){
         const handlerInfos = this.get('handlerInfos')
         if (handlerInfos[1].name === 'topic') {return false}
-        if (Discourse.SiteSettings.topic_list_social_media_only_latest && handlerInfos[2].name !== 'discovery.latest') {return false}
-        return Discourse.SiteSettings.topic_list_social_media_discovery
+
+        var route = handlerInfos[2].name.replace('discovery.', '')
+
+        if (this.get('site.mobileView'))
+          route = route + ' mobile'
+
+        return Discourse.SiteSettings.topic_list_social_media_layout.indexOf(route) > -1
+
       }.property('topics'),
 
       handlerInfos: function() {
@@ -162,8 +168,6 @@ export default {
         }
 
         if (socialMediaStyle) {
-          this.$('td:not(.main-link)').hide()
-          this.$().addClass('social')
           this.$('.topic-intro').prependTo(this.$('.main-link'))
           this.$('.topic-title').prependTo(this.$('.main-link'))
           if (this.$('.topic-details').children().length < 1)
@@ -229,20 +233,24 @@ export default {
         return controller.get('category')
       },
 
+      @computed('currentRoute')
+      getCurrentRoute() {
+        const router = this.container.lookup('router:main')
+        var route = router.currentState.routerJsState.handlerInfos[2].name.replace('discovery.', '')
+        if (this.get('site.mobileView'))
+          route = route + ' mobile'
+        return route
+      },
+
       @computed('thumbnails')
       showThumbnail() {
-        if (Discourse.SiteSettings.topic_list_social_media_only_latest &&
-            Discourse.SiteSettings.topic_list_social_media_only_latest_disable_thumbnails &&
-            !this.get('socialMediaStyle'))
-          return false
-
-        return this.get('thumbnails') && (Discourse.SiteSettings.topic_list_thumbnails ||
-               (this.get('category') && this.get('category.list_thumbnails')))
+        return (this.get('thumbnails') && Discourse.SiteSettings.topic_list_thumbnails.indexOf(this.get('getCurrentRoute')) > -1) || 
+          (this.get('thumbnails') && this.get('category') && this.get('category.list_thumbnails'))
       },
 
       @computed()
-      mobilePreviews() {
-        return Discourse.SiteSettings.topic_list_mobile_previews
+      mobileThumbnails() {
+        return Discourse.SiteSettings.topic_list_thumbnails.indexOf(this.get('getCurrentRoute')) > -1
       },
 
       @computed()
@@ -267,11 +275,8 @@ export default {
 
       @computed()
       showExcerpt() {
-        if (this.get('site.mobileView') &&
-            !Discourse.SiteSettings.topic_list_mobile_previews &&
-            !Discourse.SiteSettings.topic_list_social_media_discovery) {return false}
-        return this.get('topic.excerpt') && (Discourse.SiteSettings.topic_list_excerpts ||
-                                            (this.get('category') && this.get('category.list_excerpts')))
+        return this.get('topic.excerpt') && ((Discourse.SiteSettings.topic_list_excerpts.indexOf(this.get('getCurrentRoute')) > -1) || 
+          (this.get('category') && this.get('category.list_excerpts')))
       },
 
       @computed()
@@ -283,7 +288,8 @@ export default {
       @computed()
       showActions() {
         const category = this.get('category')
-        return Discourse.SiteSettings.topic_list_actions || (category && category.list_actions)
+        return (Discourse.SiteSettings.topic_list_actions.indexOf(this.get('getCurrentRoute')) > -1) || 
+          (category && category.list_actions)
       },
 
       @computed('likeDifference')
