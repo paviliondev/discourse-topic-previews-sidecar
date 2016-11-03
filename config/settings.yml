@@ -1,5 +1,5 @@
 plugins:
-  topic_list_social_media_layout:
+  topic_list_social:
     client: true
     type: list
     default: ''
@@ -7,10 +7,10 @@ plugins:
      - latest
      - new
      - unread
-     - latest mobile
-     - new mobile
-     - unread mobile
-  topic_list_thumbnails:
+     - latest-mobile
+     - new-mobile
+     - unread-mobile
+  topic_list_thumbnail:
     client: true
     type: list
     default: ''
@@ -18,10 +18,10 @@ plugins:
      - latest
      - new
      - unread
-     - latest mobile
-     - new mobile
-     - unread mobile
-  topic_list_excerpts:
+     - latest-mobile
+     - new-mobile
+     - unread-mobile
+  topic_list_excerpt:
     client: true
     type: list
     default: ''
@@ -29,10 +29,10 @@ plugins:
      - latest
      - new
      - unread
-     - latest mobile
-     - new mobile
-     - unread mobile
-  topic_list_actions:
+     - latest-mobile
+     - new-mobile
+     - unread-mobile
+  topic_list_action:
     client: true
     type: list
     default: ''
@@ -40,9 +40,9 @@ plugins:
      - latest
      - new
      - unread
-     - latest mobile
-     - new mobile
-     - unread mobile
+     - latest-mobile
+     - new-mobile
+     - unread-mobile
   topic_list_category_badge_move:
     default: false
     client: true
