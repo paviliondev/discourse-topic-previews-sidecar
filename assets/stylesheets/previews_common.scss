@@ -53,12 +53,6 @@ html:not(.mobile-view) #list-area.social-style {
     margin-bottom: 5px;
     padding: 0;
   }
-  .topic-thumbnail {
-    float: none;
-    img {
-      width:100%;
-    }
-  }
   .badge-wrapper.box {
     margin: 0px;
   }
@@ -129,9 +123,16 @@ html:not(.mobile-view) #list-area.social-style {
 }
 
 .main-link .topic-category {
+  float: left;
+  clear: left;
   .badge-wrapper {
     font-size: 12px;
   }
+}
+
+.topic-list .topic-actions {
+  float: left;
+  clear: both;
 }
 
 .main-link .topic-statuses {
