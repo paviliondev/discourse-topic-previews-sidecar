@@ -3,7 +3,7 @@
 # version: 0.2
 # authors: Angus McLeod
 
-register_asset 'stylesheets/previews_common.scss'
+register_asset 'stylesheets/previews_common.scss', :desktop
 register_asset 'stylesheets/previews_mobile.scss'
 
 after_initialize do
@@ -37,7 +37,7 @@ after_initialize do
 
       def thumbnail_url (image, w, h, original_url)
         image.create_thumbnail!(w, h) if !image.has_thumbnail?(w, h)
-        image.has_thumbnail? ? image.thumbnail(w, h).url : original_url
+        image.has_thumbnail?(w, h) ? image.thumbnail(w, h).url : original_url
       end
 
       def save_thumbnails(id, thumbnails)
@@ -67,15 +67,15 @@ after_initialize do
       ListHelper.create_thumbnails(@post.topic.id, image, url)
     end
 
-    def update_topic_image
-      if @post.is_first_post?
-        img = extract_images_for_topic.first
-        Rails.logger.info "Updating topic image: #{img}"
-        return if !img["src"]
-        url = img["src"][0...255]
-        @post.topic.update_column(:image_url, url)
-        return if SiteSetting.topic_list_hotlink_thumbnails
-        create_topic_thumbnails(url)
+    def update_post_image
+      img = extract_images_for_post.first
+      if img["src"].present?
+        @post.update_column(:image_url, img["src"][0...255]) # post
+        if @post.is_first_post?
+          @post.topic.update_column(:image_url, img["src"][0...255]) # topic
+          return if SiteSetting.topic_list_hotlink_thumbnails
+          create_topic_thumbnails(url)
+        end
       end
     end
 

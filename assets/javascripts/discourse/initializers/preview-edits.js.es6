@@ -127,7 +127,7 @@ export default {
         if ($('#suggested-topics').length) {
           this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
         } else {
-          this._rearrangeDOM()
+          Ember.run.scheduleOnce('render', this, this._rearrangeDOM)
           if (this.get('showActions')) {
             this._setupActions()
           }
