@@ -7,9 +7,11 @@ plugins:
      - latest
      - new
      - unread
+     - top
      - latest-mobile
      - new-mobile
      - unread-mobile
+     - top-mobile
   topic_list_thumbnail:
     client: true
     type: list
@@ -18,9 +20,11 @@ plugins:
      - latest
      - new
      - unread
+     - top
      - latest-mobile
      - new-mobile
      - unread-mobile
+     - top-mobile
   topic_list_excerpt:
     client: true
     type: list
@@ -29,9 +33,11 @@ plugins:
      - latest
      - new
      - unread
+     - top
      - latest-mobile
      - new-mobile
      - unread-mobile
+     - top-mobile
   topic_list_action:
     client: true
     type: list
@@ -40,10 +46,25 @@ plugins:
      - latest
      - new
      - unread
+     - top
      - latest-mobile
      - new-mobile
      - unread-mobile
+     - top-mobile
   topic_list_category_badge_move:
+    client: true
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - latest-mobile
+     - new-mobile
+     - unread-mobile
+     - top-mobile
+  topic_list_set_category_defaults:
     default: false
     client: true
   topic_list_show_like_on_current_users_posts:

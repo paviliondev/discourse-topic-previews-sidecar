@@ -8,6 +8,7 @@ import { default as computed, on, observes } from 'ember-addons/ember-computed-d
 import { popupAjaxError } from 'discourse/lib/ajax-error';
 import DiscourseURL from 'discourse/lib/url';
 import { ajax } from 'discourse/lib/ajax';
+import EditCategorySettings from 'discourse/components/edit-category-settings';
 
 var animateHeart = function($elem, start, end, complete) {
   if (Ember.testing) { return Ember.run(this, complete); }
@@ -35,60 +36,70 @@ export default {
       return new Handlebars.SafeString(buttonHTML(button, params));
     });
 
+    EditCategorySettings.reopen({
+      choices: ['latest', 'new', 'unread', 'top', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile']
+    })
+
     TopicList.reopen({
+      category: Ember.computed.alias('parentView.model.category'),
 
-      @computed()
-      category() {
-        const controller = this.container.lookup('controller:discovery/topics')
-        return controller.get('category')
-      },
-
+      // this assumes topics change whenever the route changes
       @computed('topics')
-      handlerInfos() {
-        const router = this.container.lookup('router:main')
-        return router.currentState.routerJsState.handlerInfos
+      isDiscoveryTopicList() {
+        const parentComponentName = Object.getPrototypeOf(this.get('parentView'))._debugContainerKey.split(':')
+        return parentComponentName.length > 1 && parentComponentName[1] == 'discovery-topics-list'
       },
 
-      @computed('handlerInfos.@each.name')
-      parentRoute() {
-        return this.get('handlerInfos')[1].name
+      @computed('parentView.model.filter')
+      filter() {
+        let filter = this.get('parentView.model.filter')
+        if (this.get('site.mobileView')) {
+          filter += '-mobile'
+        }
+        return filter
       },
 
-      isDiscovery: Ember.computed.equal('parentRoute', 'discovery'),
+      settingEnabled(setting) {
+        if (!this.get('isDiscoveryTopicList')) { return false }
 
-      @computed('handlerInfos.@each.name')
-      childRoute() {
-        const childRoute = this.get('handlerInfos')[2]
-        if (!childRoute) { return false }
+        const category = this.get('category'),
+              filter = this.get('filter');
 
-        let routeName = childRoute.name.split('.')[1]
+        let filterArr = filter ? filter.split('/') : [],
+            filterType = filterArr[filterArr.length - 1],
+            catSetting = category ? category.get(setting) : false,
+            siteSetting = Discourse.SiteSettings[setting];
 
-        if (this.get('site.mobileView'))
-          routeName = routeName + '-mobile'
+        let catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1,
+            siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1,
+            siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
 
-        return routeName
+        return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled
       },
 
       @on('didInsertElement')
       hideCategoryColumn(){
-        if (!this.get('isDiscovery') || this.get('hideCategory')) {return}
-
-        const category = this.get('category')
-        if (Discourse.SiteSettings.topic_list_category_badge_move ||
-            (category && category.list_category_badge_move)) {
-          return this.set('hideCategory', true)
+        if (this.settingEnabled('topic_list_category_badge_move')) {
+          this.set('hideCategory', true)
         }
       },
 
-      @computed('isDiscovery', 'childRoute')
-      socialStyle(){
-        if (!this.get('isDiscovery')) {return false}
-        return Discourse.SiteSettings.topic_list_social.indexOf(this.get('childRoute')) > -1
+      @on('init')
+      @observes('isDiscoveryTopicList', 'filter', 'category')
+      setDisplayProperties() {
+        this.setProperties({
+          socialStyle: this.settingEnabled('topic_list_social'),
+          showThumbnail: this.settingEnabled('topic_list_thumbnail'),
+          showExcerpt: this.settingEnabled('topic_list_excerpt'),
+          showActions: this.settingEnabled('topic_list_action'),
+          showCategoryBadge: this.settingEnabled('topic_list_category_badge_move')
+        })
       },
 
       @on("didInsertElement")
       @observes("socialStyle")
       setupListStyle() {
+        if (!this.$()) {return}
         const social = this.get('socialStyle');
         this.set('skipHeader', social || this.get('site.mobileView'));
         this.$().parents('#list-area').toggleClass('social-style', social);
@@ -103,9 +114,13 @@ export default {
     TopicListItem.reopen({
       canBookmark: Ember.computed.bool('currentUser'),
       rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
-      isDiscovery: Ember.computed.alias('parentView.isDiscovery'),
-      childRoute: Ember.computed.alias('parentView.childRoute'),
       socialStyle: Ember.computed.alias('parentView.socialStyle'),
+      showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
+      showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
+      showActions: Ember.computed.alias('parentView.showActions'),
+      showCategoryBadge: Ember.computed.alias('parentView.showCategoryBadge'),
+
+      // Lifecyle logic
 
       @on('init')
       _init() {
@@ -197,7 +212,11 @@ export default {
         let postId = this.get('topic.topic_post_id'),
             $bookmark = this.$('.topic-bookmark'),
             $like = this.$('.topic-like');
-        $bookmark.on('click.topic-bookmark', () => {this.toggleBookmark($bookmark, postId)})
+
+        $bookmark.on('click.topic-bookmark', () => {
+          this.toggleBookmark($bookmark, postId)
+        })
+
         $like.on('click.topic-like', () => {
           if (this.get('currentUser')) {
             this.toggleLike($like, postId);
@@ -215,39 +234,7 @@ export default {
         this.$('.topic-like').off('click.topic-like')
       },
 
-      // Display toggles
-
-      @computed('isDiscovery', 'childRoute', 'thumbnails')
-      showThumbnail() {
-        if (!this.get('isDiscovery')) {return false}
-        const category = this.get('category')
-        return this.get('thumbnails') && (Discourse.SiteSettings.topic_list_thumbnail.indexOf(this.get('childRoute')) > -1 ||
-                                          (category && category.list_thumbnails))
-      },
-
-      @computed('isDiscovery', 'childRoute')
-      showExcerpt() {
-        if (!this.get('isDiscovery')) {return false}
-        const category = this.get('category')
-        return this.get('topic.excerpt') && (Discourse.SiteSettings.topic_list_excerpt.indexOf(this.get('childRoute')) > -1 ||
-                                             (category && category.list_excerpts))
-      },
-
-      @computed('isDiscovery', 'childRoute')
-      showActions() {
-        if (!this.get('isDiscovery')) {return false}
-        const category = this.get('category')
-        return Discourse.SiteSettings.topic_list_action.indexOf(this.get('childRoute')) > -1 ||
-               (category && category.list_actions)
-      },
-
-      @computed('isDiscovery', 'category')
-      showCategoryBadge() {
-        if (!this.get('isDiscovery')) {return false}
-        const category = this.get('category')
-        return Discourse.SiteSettings.topic_list_category_badge_move ||
-               (category && category.list_category_badge_move)
-      },
+      // Overrides
 
       @computed()
       expandPinned() {
@@ -284,7 +271,7 @@ export default {
       @computed()
       defaultThumbnail(){
         let topicCat = this.get('topic.category'),
-            catThumb = topicCat ? topicCat.list_default_thumbnail : false,
+            catThumb = topicCat ? topicCat.topic_list_default_thumbnail : false,
             defaultThumbnail = catThumb || Discourse.SiteSettings.topic_list_default_thumbnail;
         return defaultThumbnail ? defaultThumbnail : false
       },

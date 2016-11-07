@@ -1,32 +1,29 @@
 <section class='field'>
-  <label>
-    {{input type="checkbox" checked=category.custom_fields.list_thumbnails}}
-    {{i18n 'category.list_thumbnails'}}
-  </label>
+  <label>{{i18n 'category.topic_list_social'}}</label>
+  {{list-setting settingValue=category.custom_fields.topic_list_social choices=choices settingName='category.topic_list_social'}}
 </section>
 
 <section class='field'>
-  <label>
-    {{input type="checkbox" checked=category.custom_fields.list_excerpts}}
-    {{i18n 'category.list_excerpts'}}
-  </label>
+  <label>{{i18n 'category.topic_list_thumbnail'}}</label>
+  {{list-setting settingValue=category.custom_fields.topic_list_thumbnail choices=choices settingName='category.topic_list_thumbnail'}}
 </section>
 
 <section class='field'>
-  <label>
-    {{input type="checkbox" checked=category.custom_fields.list_actions}}
-    {{i18n 'category.list_actions'}}
-  </label>
+  <label>{{i18n 'category.topic_list_excerpt'}}</label>
+  {{list-setting settingValue=category.custom_fields.topic_list_excerpt choices=choices settingName='category.topic_list_excerpt'}}
 </section>
 
 <section class='field'>
-  <label>
-    {{input type="checkbox" checked=category.custom_fields.list_category_badge_move}}
-    {{i18n 'category.list_category_badge_move'}}
-  </label>
+  <label>{{i18n 'category.topic_list_action'}}</label>
+  {{list-setting settingValue=category.custom_fields.topic_list_action choices=choices settingName='category.topic_list_action'}}
 </section>
 
 <section class='field'>
-  <label>{{i18n 'category.list_default_thumbnail'}}</label>
-  {{text-field value=category.custom_fields.list_default_thumbnail placeholderKey="category.list_default_thumbnail_placeholder"}}
+  <label>{{i18n 'category.topic_list_category_badge_move'}}</label>
+  {{list-setting settingValue=category.custom_fields.topic_list_category_badge_move choices=choices settingName='category.topic_list_category_badge_move'}}
+</section>
+
+<section class='field'>
+  <label>{{i18n 'category.topic_list_default_thumbnail'}}</label>
+  {{text-field value=category.custom_fields.topic_list_default_thumbnail placeholderKey="category.topic_list_default_thumbnail_placeholder"}}
 </section>
