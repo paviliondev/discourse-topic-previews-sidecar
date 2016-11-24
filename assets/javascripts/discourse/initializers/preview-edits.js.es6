@@ -28,8 +28,8 @@ export default {
   name: 'preview-edits',
   initialize(){
 
-    registerUnbound('preview-unbound', function(thumbnails) {
-      return new Handlebars.SafeString(renderUnboundPreview(thumbnails));
+    registerUnbound('preview-unbound', function(thumbnails, params) {
+      return new Handlebars.SafeString(renderUnboundPreview(thumbnails, params));
     });
 
     registerUnbound('list-button', function(button, params) {

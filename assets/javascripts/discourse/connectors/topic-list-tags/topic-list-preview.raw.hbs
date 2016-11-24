@@ -1,7 +1,8 @@
 {{#unless context.site.mobileView}}
   {{#if context.showThumbnail}}
     {{raw "list/topic-thumbnail" topic=context.topic
-                                 thumbnails=context.thumbnails}}
+                                 thumbnails=context.thumbnails
+                                 isSocial=context.socialStyle}}
   {{/if}}
   {{#if context.socialStyle}}
     {{raw "list/topic-intro" topic=context.topic
