@@ -68,7 +68,7 @@ export default {
         let filterArr = filter ? filter.split('/') : [],
             filterType = filterArr[filterArr.length - 1],
             catSetting = category ? category.get(setting) : false,
-            siteSetting = Discourse.SiteSettings[setting];
+            siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
 
         let catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1,
             siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1,
