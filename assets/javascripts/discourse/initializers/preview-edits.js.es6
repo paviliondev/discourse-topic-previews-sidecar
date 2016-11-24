@@ -77,13 +77,6 @@ export default {
         return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled
       },
 
-      @on('didInsertElement')
-      hideCategoryColumn(){
-        if (this.settingEnabled('topic_list_category_badge_move')) {
-          this.set('hideCategory', true)
-        }
-      },
-
       @on('init')
       @observes('isDiscoveryTopicList', 'filter', 'category')
       setDisplayProperties() {
@@ -92,7 +85,9 @@ export default {
           showThumbnail: this.settingEnabled('topic_list_thumbnail'),
           showExcerpt: this.settingEnabled('topic_list_excerpt'),
           showActions: this.settingEnabled('topic_list_action'),
-          showCategoryBadge: this.settingEnabled('topic_list_category_badge_move')
+          showCategoryBadge: this.settingEnabled('topic_list_category_badge_move'),
+          hideCategory: this.settingEnabled('topic_list_category_badge_move'),
+          skipHeader: this.settingEnabled('topic_list_social') || this.get('site.mobileView')
         })
       },
 
@@ -100,9 +95,7 @@ export default {
       @observes("socialStyle")
       setupListStyle() {
         if (!this.$()) {return}
-        const social = this.get('socialStyle');
-        this.set('skipHeader', social || this.get('site.mobileView'));
-        this.$().parents('#list-area').toggleClass('social-style', social);
+        this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
       },
 
       @on('willDestroyElement')
