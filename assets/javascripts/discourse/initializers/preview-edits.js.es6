@@ -8,6 +8,7 @@ import { default as computed, on, observes } from 'ember-addons/ember-computed-d
 import { popupAjaxError } from 'discourse/lib/ajax-error';
 import DiscourseURL from 'discourse/lib/url';
 import { ajax } from 'discourse/lib/ajax';
+import EditCategorySettings from 'discourse/components/edit-category-settings';
 
 var animateHeart = function($elem, start, end, complete) {
   if (Ember.testing) { return Ember.run(this, complete); }
@@ -35,57 +36,91 @@ export default {
       return new Handlebars.SafeString(buttonHTML(button, params));
     });
 
+    EditCategorySettings.reopen({
+      choices: ['latest', 'new', 'unread', 'top', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile']
+    })
+
     TopicList.reopen({
-      @on("didInsertElement")
-      @observes("topics")
-      setupListStyle() {
-        let social = this.get('socialMediaStyle');
-        this.set('skipHeader', social || this.get('site.mobileView'));
-        this.$().parents('#list-area').toggleClass('social-media', social);
+      category: Ember.computed.alias('parentView.model.category'),
+
+      // this assumes topics change whenever the route changes
+      @computed('topics')
+      isDiscoveryTopicList() {
+        const parentComponentName = Object.getPrototypeOf(this.get('parentView'))._debugContainerKey.split(':')
+        return parentComponentName.length > 1 && parentComponentName[1] == 'discovery-topics-list'
       },
 
-      hideCategoryColumn: function(){
-        var handlerInfos = this.get('handlerInfos'),
-            handler1 = handlerInfos[1],
-            handler2 = handlerInfos[2];
-
-        if (handler1.name === 'topic' || this.get('hideCategory')) {return}
-
-        if (Discourse.SiteSettings.topic_list_category_badge_move) {
-          return this.set('hideCategory', true)
+      @computed('parentView.model.filter')
+      filter() {
+        let filter = this.get('parentView.model.filter')
+        if (this.get('site.mobileView')) {
+          filter += '-mobile'
         }
+        return filter
+      },
 
-        if ( handler2.name === 'discovery.category' ||
-             handler2.name === 'discovery.parentCategory') {
-          var category_id = handler2.context.category.id,
-              category = Discourse.Category.findById(category_id)
-          if (category.list_category_badge_move) {
-            return this.set('hideCategory', true)
-          }
+      settingEnabled(setting) {
+        if (!this.get('isDiscoveryTopicList')) { return false }
+
+        const category = this.get('category'),
+              filter = this.get('filter');
+
+        let filterArr = filter ? filter.split('/') : [],
+            filterType = filterArr[filterArr.length - 1],
+            catSetting = category ? category.get(setting) : false,
+            siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
+
+        let catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1,
+            siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1,
+            siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
+
+        return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled
+      },
+
+      @on('didInsertElement')
+      hideCategoryColumn(){
+        if (this.settingEnabled('topic_list_category_badge_move')) {
+          this.set('hideCategory', true)
         }
-      }.on('didInsertElement'),
+      },
 
-      socialMediaStyle: function(){
-        const handlerInfos = this.get('handlerInfos')
-        if (handlerInfos[1].name === 'topic') {return false}
-        if (Discourse.SiteSettings.topic_list_social_media_only_latest && handlerInfos[2].name !== 'discovery.latest') {return false}
-        return Discourse.SiteSettings.topic_list_social_media_discovery
-      }.property('topics'),
+      @on('init')
+      @observes('isDiscoveryTopicList', 'filter', 'category')
+      setDisplayProperties() {
+        this.setProperties({
+          socialStyle: this.settingEnabled('topic_list_social'),
+          showThumbnail: this.settingEnabled('topic_list_thumbnail'),
+          showExcerpt: this.settingEnabled('topic_list_excerpt'),
+          showActions: this.settingEnabled('topic_list_action'),
+          showCategoryBadge: this.settingEnabled('topic_list_category_badge_move')
+        })
+      },
 
-      handlerInfos: function() {
-        const router = this.container.lookup('router:main');
-        return router.currentState.routerJsState.handlerInfos
-      }.property('topics'),
+      @on("didInsertElement")
+      @observes("socialStyle")
+      setupListStyle() {
+        if (!this.$()) {return}
+        const social = this.get('socialStyle');
+        this.set('skipHeader', social || this.get('site.mobileView'));
+        this.$().parents('#list-area').toggleClass('social-style', social);
+      },
 
       @on('willDestroyElement')
       _tearDown() {
-        this.$().parents('#list-area').removeClass('social-media')
+        this.$().parents('#list-area').removeClass('social-style');
       },
     })
 
     TopicListItem.reopen({
       canBookmark: Ember.computed.bool('currentUser'),
       rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
+      socialStyle: Ember.computed.alias('parentView.socialStyle'),
+      showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
+      showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
+      showActions: Ember.computed.alias('parentView.showActions'),
+      showCategoryBadge: Ember.computed.alias('parentView.showCategoryBadge'),
+
+      // Lifecyle logic
 
       @on('init')
       _init() {
@@ -124,20 +159,13 @@ export default {
         this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0]);
         this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
 
-        var showExcerpt = this.get('showExcerpt'),
-            showCategoryBadge = this.get('showCategoryBadge'),
-            showActions = this.get('showActions'),
-            $excerpt = this.$('.topic-excerpt'),
-            socialMediaStyle = this.get('socialMediaStyle');
+        const showExcerpt = this.get('showExcerpt'),
+              showCategoryBadge = this.get('showCategoryBadge'),
+              showActions = this.get('showActions'),
+              $excerpt = this.$('.topic-excerpt'),
+              socialStyle = this.get('socialStyle');
 
-        $excerpt.on('click.topic-excerpt', () => {
-          var topic = this.get('topic'),
-              url = '/t/' + topic.slug + '/' + topic.id;
-          if (topic.topic_post_id) {
-            url += '/' + topic.topic_post_id
-          }
-          DiscourseURL.routeTo(url)
-        })
+        this._setupExcerptClick($excerpt)
 
         if (showCategoryBadge) {
           this.$('.discourse-tags').insertAfter(this.$('.topic-category'))
@@ -149,23 +177,21 @@ export default {
 
         if (showActions) {
           this.$('.list-vote-count').prependTo(this.$('.topic-actions'))
-          if ($excerpt) {
-            this.$('.topic-actions').insertAfter($excerpt)
+          if (showExcerpt) {
+            this.$('.topic-actions').insertAfter(this.$('.topic-excerpt'))
           }
         } else if (showExcerpt) {
           this.$('.list-vote-count').insertAfter($excerpt)
         }
 
-        if (!socialMediaStyle && showExcerpt) {
-          var height = 0;
+        if (!socialStyle && showExcerpt) {
+          let height = 0;
           this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){ height += $(this).height() })
-          var excerpt = 100 - height;
+          let excerpt = 100 - height;
           $excerpt.css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0))
         }
 
-        if (socialMediaStyle) {
-          this.$('td:not(.main-link)').hide()
-          this.$().addClass('social')
+        if (socialStyle) {
           this.$('.topic-intro').prependTo(this.$('.main-link'))
           this.$('.topic-title').prependTo(this.$('.main-link'))
           if (this.$('.topic-details').children().length < 1)
@@ -173,11 +199,26 @@ export default {
         }
       },
 
+      _setupExcerptClick($excerpt) {
+        $excerpt.on('click.topic-excerpt', () => {
+          let topic = this.get('topic'),
+              url = '/t/' + topic.slug + '/' + topic.id;
+          if (topic.topic_post_id) {
+            url += '/' + topic.topic_post_id
+          }
+          DiscourseURL.routeTo(url)
+        })
+      },
+
       _setupActions() {
-        var postId = this.get('topic.topic_post_id'),
+        let postId = this.get('topic.topic_post_id'),
             $bookmark = this.$('.topic-bookmark'),
             $like = this.$('.topic-like');
-        $bookmark.on('click.topic-bookmark', () => {this.toggleBookmark($bookmark, postId)})
+
+        $bookmark.on('click.topic-bookmark', () => {
+          this.toggleBookmark($bookmark, postId)
+        })
+
         $like.on('click.topic-like', () => {
           if (this.get('currentUser')) {
             this.toggleLike($like, postId);
@@ -188,14 +229,6 @@ export default {
         })
       },
 
-      _sizeThumbnails() {
-        this.$('.topic-thumbnail img').load(function(){
-          $(this).css({
-            'width': $(this)[0].naturalWidth
-          })
-        })
-      },
-
       @on('willDestroyElement')
       _tearDown() {
         this.$('.topic-excerpt').off('click.topic-excerpt')
@@ -203,11 +236,18 @@ export default {
         this.$('.topic-like').off('click.topic-like')
       },
 
+      // Overrides
+
       @computed()
-      socialMediaStyle() {
-        const component = this.container.lookup('component:topic-list')
-        return component.get('socialMediaStyle')
+      expandPinned() {
+        const pinned = this.get('topic.pinned');
+        if (!pinned) {return this.get('showExcerpt')}
+        if (this.get('controller.expandGloballyPinned') && this.get('topic.pinned_globally')) {return true;}
+        if (this.get('controller.expandAllPinned')) {return true;}
+        return false;
       },
+
+      // Display objects
 
       @computed()
       posterNames() {
@@ -225,34 +265,25 @@ export default {
         return posterNames
       },
 
-      @computed()
-      category() {
-        const controller = this.container.lookup('controller:discovery/topics')
-        return controller.get('category')
-      },
-
-      @computed('thumbnails')
-      showThumbnail() {
-        if (Discourse.SiteSettings.topic_list_social_media_only_latest &&
-            Discourse.SiteSettings.topic_list_social_media_only_latest_disable_thumbnails &&
-            !this.get('socialMediaStyle'))
-          return false
-
-        return this.get('thumbnails') && (Discourse.SiteSettings.topic_list_thumbnails ||
-               (this.get('category') && this.get('category.list_thumbnails')))
-      },
-
-      @computed()
-      mobilePreviews() {
-        return Discourse.SiteSettings.topic_list_mobile_previews
+      @computed('topic.thumbnails')
+      thumbnails(){
+        return this.get('topic.thumbnails') || this.get('defaultThumbnail')
       },
 
       @computed()
       defaultThumbnail(){
         let topicCat = this.get('topic.category'),
-            catThumb = topicCat ? topicCat.list_default_thumbnail : false,
+            catThumb = topicCat ? topicCat.topic_list_default_thumbnail : false,
             defaultThumbnail = catThumb || Discourse.SiteSettings.topic_list_default_thumbnail;
         return defaultThumbnail ? defaultThumbnail : false
+      },
+
+      _sizeThumbnails() {
+        this.$('.topic-thumbnail img').load(function(){
+          $(this).css({
+            'width': $(this)[0].naturalWidth
+          })
+        })
       },
 
       @observes('thumbnails')
@@ -262,35 +293,9 @@ export default {
         })
       },
 
-      @computed('topic.thumbnails')
-      thumbnails(){
-        return this.get('topic.thumbnails') || this.get('defaultThumbnail')
-      },
-
-      @computed()
-      showExcerpt() {
-        if (this.get('site.mobileView') &&
-            !Discourse.SiteSettings.topic_list_mobile_previews &&
-            !Discourse.SiteSettings.topic_list_social_media_discovery) {return false}
-        return this.get('topic.excerpt') && (Discourse.SiteSettings.topic_list_excerpts ||
-                                            (this.get('category') && this.get('category.list_excerpts')))
-      },
-
-      @computed()
-      showCategoryBadge() {
-        const category = this.get('category')
-        return Discourse.SiteSettings.topic_list_category_badge_move || (category && category.list_category_badge_move)
-      },
-
-      @computed()
-      showActions() {
-        const category = this.get('category')
-        return Discourse.SiteSettings.topic_list_actions || (category && category.list_actions)
-      },
-
       @computed('likeDifference')
       topicActions() {
-        var actions = []
+        let actions = []
         if (this.get('topic.topic_post_can_like') || !this.get('currentUser') ||
             Discourse.SiteSettings.topic_list_show_like_on_current_users_posts) {
           actions.push(this._likeButton())
@@ -298,7 +303,7 @@ export default {
         if (this.get('canBookmark')) {
           actions.push(this._bookmarkButton())
           Ember.run.scheduleOnce('afterRender', this, () => {
-            var $bookmarkStatus = this.$('.topic-statuses .op-bookmark')
+            let $bookmarkStatus = this.$('.topic-statuses .op-bookmark')
             if ($bookmarkStatus) {
               $bookmarkStatus.hide()
             }
@@ -308,26 +313,26 @@ export default {
       },
 
       likeCount() {
-        var likeDifference = this.get('likeDifference'),
+        let likeDifference = this.get('likeDifference'),
             count = (likeDifference == null ? this.get('topic.topic_post_like_count') : likeDifference) || 0;
         return count
       },
 
       @computed('likeDifference')
       likeCountDisplay() {
-        var count = this.likeCount(),
+        let count = this.likeCount(),
             message = count === 1 ? "post.has_likes.one" : "post.has_likes.other";
         return count > 0 ? I18n.t(message, { count }) : false
       },
 
       @computed('hasLiked')
       hasLikedDisplay() {
-        var hasLiked = this.get('hasLiked')
+        let hasLiked = this.get('hasLiked')
         return hasLiked == null ? this.get('topic.topic_post_liked') : hasLiked
       },
 
       changeLikeCount(change) {
-        var count = this.likeCount(),
+        let count = this.likeCount(),
             newCount = count + (change || 0);
         this.set('hasLiked', Boolean(change > 0))
         this.set('likeDifference', newCount)
@@ -340,16 +345,6 @@ export default {
           this._rearrangeDOM()
           this._setupActions()
         })
-      },
-
-      _bookmarkButton() {
-        var classes = 'topic-bookmark',
-            title = 'bookmarks.not_bookmarked';
-        if (this.get('topic.topic_post_bookmarked')) {
-          classes += ' bookmarked';
-          title = 'bookmarks.created';
-        }
-        return { class: classes, title: title, icon: 'bookmark'};
       },
 
       _likeButton() {
@@ -368,6 +363,18 @@ export default {
 
         return { class: classes, title: 'post.controls.like', icon: 'heart', disabled: disabled}
       },
+
+      _bookmarkButton() {
+        var classes = 'topic-bookmark',
+            title = 'bookmarks.not_bookmarked';
+        if (this.get('topic.topic_post_bookmarked')) {
+          classes += ' bookmarked';
+          title = 'bookmarks.created';
+        }
+        return { class: classes, title: title, icon: 'bookmark'};
+      },
+
+      // Action toggles and server methods
 
       toggleBookmark($bookmark, postId) {
         this.sendBookmark(postId, !$bookmark.hasClass('bookmarked'))
@@ -423,15 +430,6 @@ export default {
         }).catch(function(error) {
           popupAjaxError(error);
         });
-      },
-
-      @computed()
-      expandPinned() {
-        const pinned = this.get('topic.pinned');
-        if (!pinned) {return this.get('showExcerpt')}
-        if (this.get('controller.expandGloballyPinned') && this.get('topic.pinned_globally')) {return true;}
-        if (this.get('controller.expandAllPinned')) {return true;}
-        return false;
       }
     })
 

@@ -39,9 +39,13 @@
     right: 0;
     bottom: 0;
   }
+  img.thumbnail {
+    max-width:80px;
+    max-height:80px;
+  }
 }
 
-.mobile-view #list-area.social-media {
+.mobile-view #list-area.social-style {
   td a.title {
     font-size: 18px;
   }
@@ -72,6 +76,8 @@
     padding: 0;
     float: none;
     overflow: initial;
+    clear: both;
+    min-height: initial;
   }
   .topic-details:before {
     display: none;
@@ -94,5 +100,17 @@
   }
   .topic-actions {
     font-size: 1em;
+  }
+  .topic-thumbnail {
+    width:100%;
+    a {
+      display: block;
+    }
+    img.thumbnail {
+      width:100%;
+      max-width:100%;
+      max-height:200px;
+      object-fit:cover;
+    }
   }
 }

@@ -10,7 +10,7 @@
   padding: 0;
 }
 
-html:not(.mobile-view) #list-area.social-media {
+html:not(.mobile-view) #list-area.social-style {
   .show-more {
     top: 0;
   }
@@ -26,9 +26,12 @@ html:not(.mobile-view) #list-area.social-media {
     border-radius: 3px;
     display: inline-block;
     width: 100%;
-    .main-link {
+    td.main-link {
       border: none;
       padding: 15px;
+    }
+    td:not(.main-link) {
+      display: none;
     }
   }
   .topic-list-item-separator {
@@ -41,7 +44,7 @@ html:not(.mobile-view) #list-area.social-media {
   }
 }
 
-#list-area.social-media {
+#list-area.social-style {
   .topic-details {
     float: left;
     max-height: none;
@@ -127,13 +130,13 @@ html:not(.mobile-view) #list-area.social-media {
   }
 }
 
-.main-link .topic-statuses {
-  line-height: 19px;
-}
-
 .topic-list .topic-actions {
   float: left;
   clear: both;
+}
+
+.main-link .topic-statuses {
+  line-height: 19px;
 }
 
 .like-count, .list-vote-count {
@@ -207,4 +210,8 @@ html:not(.mobile-view) #list-area.social-media {
 
 .topic-list td.posters {
   white-space: nowrap;
+}
+
+.category-custom-settings-outlet .select2-container {
+  width: 100%
 }

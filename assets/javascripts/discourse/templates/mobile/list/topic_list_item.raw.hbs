@@ -1,5 +1,5 @@
 <td>
-  {{#if context.socialMediaStyle}}
+  {{#if context.socialStyle}}
     {{topic-link topic}}
     {{raw "list/topic-intro" topic=topic
                              posterNames=context.posterNames
@@ -9,18 +9,17 @@
       {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
     {{/if}}
   {{else}}
-    {{#if context.mobilePreviews}}
-      {{#if showThumbnail}}
-        {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
-      {{/if}}
+    {{#if showThumbnail}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
     {{else}}
       <div class='pull-left'>
         <a href="{{topic.lastPostUrl}}">{{avatar topic.lastPoster imageSize="large"}}</a>
       </div>
     {{/if}}
   {{/if}}
+
   <div class='topic-details'>
-    {{#if context.socialMediaStyle}}
+    {{#if context.socialStyle}}
       {{raw "topic-status" topic=topic}}
       {{#if topic.unseen}}
         <span class="badge-notification new-topic"></span>
@@ -35,7 +34,7 @@
       </div>
     {{/if}}
 
-    {{#unless context.socialMediaStyle}}
+    {{#unless context.socialStyle}}
       <div class='pull-right'>
         {{raw "list/post-count-or-badges" topic=topic postBadgesEnabled=showTopicPostBadges}}
       </div>
@@ -45,7 +44,7 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#unless context.socialMediaStyle}}
+    {{#unless context.socialStyle}}
       {{#if showCategoryBadge}}
         {{raw "list/topic-category" category=context.topic.category}}
       {{/if}}
@@ -60,17 +59,14 @@
 
     {{plugin-outlet "topic-list-tags"}}
 
-    {{#if context.socialMediaStyle}}
+    {{#if context.showActions}}
       {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay topicActions=context.topicActions}}
-    {{else}}
-      {{#if context.mobilePreviews}}
-        {{#if context.showActions}}
-          {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay topicActions=context.topicActions}}
-        {{/if}}
-      {{/if}}
+    {{/if}}
+
+    {{#unless context.socialStyle}}
       <div class='num activity last'>
         <span class="age activity" title="{{topic.bumpedAtTitle}}"><a href="{{topic.lastPostUrl}}">{{format-date topic.bumpedAt format="tiny" noTitle="true"}}</a></span>
       </div>
-    {{/if}}
+    {{/unless}}
   </div>
 </td>

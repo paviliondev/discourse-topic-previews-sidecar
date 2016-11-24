@@ -3,15 +3,11 @@
 # version: 0.2
 # authors: Angus McLeod
 
-register_asset 'stylesheets/previews_common.scss', :desktop
+register_asset 'stylesheets/previews_common.scss'
 register_asset 'stylesheets/previews_mobile.scss'
 
 after_initialize do
-
-  Category.register_custom_field_type('list_thumbnails', :boolean)
-  Category.register_custom_field_type('list_excerpts', :boolean)
-  Category.register_custom_field_type('list_actions', :boolean)
-  Category.register_custom_field_type('list_category_badge_move', :boolean)
+  Category.register_custom_field_type('topic_list_category_badge_move', :boolean)
   Topic.register_custom_field_type('thumbnails', :json)
 
   @nil_thumbs = TopicCustomField.where( name: 'thumbnails', value: nil )
@@ -200,9 +196,9 @@ after_initialize do
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
   TopicList.preloaded_custom_fields << "thumbnails" if TopicList.respond_to? :preloaded_custom_fields
 
-  add_to_serializer(:basic_category, :list_excerpts) {object.custom_fields["list_excerpts"]}
-  add_to_serializer(:basic_category, :list_thumbnails) {object.custom_fields["list_thumbnails"]}
-  add_to_serializer(:basic_category, :list_actions) {object.custom_fields["list_actions"]}
-  add_to_serializer(:basic_category, :list_category_badge_move) {object.custom_fields["list_category_badge_move"]}
-  add_to_serializer(:basic_category, :list_default_thumbnail) {object.custom_fields["list_default_thumbnail"]}
+  add_to_serializer(:basic_category, :topic_list_excerpt) {object.custom_fields["topic_list_excerpt"]}
+  add_to_serializer(:basic_category, :topic_list_thumbnail) {object.custom_fields["topic_list_thumbnail"]}
+  add_to_serializer(:basic_category, :topic_list_action) {object.custom_fields["topic_list_action"]}
+  add_to_serializer(:basic_category, :topic_list_category_badge_move) {object.custom_fields["topic_list_category_badge_move"]}
+  add_to_serializer(:basic_category, :topic_list_default_thumbnail) {object.custom_fields["topic_list_default_thumbnail"]}
 end
