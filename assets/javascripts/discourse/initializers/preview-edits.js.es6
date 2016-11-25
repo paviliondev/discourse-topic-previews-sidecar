@@ -79,9 +79,11 @@ export default {
 
       @on('didInsertElement')
       hideCategoryColumn(){
-        if (this.settingEnabled('topic_list_category_badge_move')) {
-          this.set('hideCategory', true)
-        }
+        Ember.run.scheduleOnce('afterRender', () => {
+          if (this.settingEnabled('topic_list_category_badge_move')) {
+            this.set('hideCategory', true)
+          }
+        });
       },
 
       @on('init')
@@ -99,10 +101,12 @@ export default {
       @on("didInsertElement")
       @observes("socialStyle")
       setupListStyle() {
-        if (!this.$()) {return}
-        const social = this.get('socialStyle');
-        this.set('skipHeader', social || this.get('site.mobileView'));
-        this.$().parents('#list-area').toggleClass('social-style', social);
+        Ember.run.scheduleOnce('afterRender', () => {
+          if (!this.$()) {return}
+          const social = this.get('socialStyle');
+          this.set('skipHeader', social || this.get('site.mobileView'));
+          this.$().parents('#list-area').toggleClass('social-style', social);
+        });
       },
 
       @on('willDestroyElement')
