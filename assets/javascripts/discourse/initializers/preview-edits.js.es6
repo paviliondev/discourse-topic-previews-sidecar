@@ -164,7 +164,7 @@ export default {
             height += $(this).height()
           })
           let excerpt = 100 - height;
-          $excerpt.css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0))
+          this.$('.topic-excerpt').css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0))
         }
       },
 
