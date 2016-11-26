@@ -129,77 +129,61 @@ export default {
 
       @on('didInsertElement')
       _setupDOM() {
-        if (this.get('showThumbnail')) {
-          this._sizeThumbnails()
-        }
         if ($('#suggested-topics').length) {
           this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
         } else {
-          Ember.run.scheduleOnce('render', this, () => {
-            this._rearrangeDOM()
-            if (this.get('showActions')) {
-              this._setupActions()
-            }
-          })
+          this._afterRender()
         }
       },
 
-      _rearrangeDOM() {
-        if (this.get('site.mobileView')) {return}
-        if (!this.$('.main-link')) {return}
-        this.$('.main-link').children().not('.topic-thumbnail').wrapAll("<div class='topic-details' />");
-        this.$('.topic-details').children('.topic-statuses, .title, .topic-post-badges').wrapAll("<div class='topic-title'/>");
-        this.$('.topic-thumbnail').prependTo(this.$('.main-link')[0]);
-        this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
-
-        const showExcerpt = this.get('showExcerpt'),
-              showCategoryBadge = this.get('showCategoryBadge'),
-              showActions = this.get('showActions'),
-              $excerpt = this.$('.topic-excerpt'),
-              socialStyle = this.get('socialStyle');
-
-        this._setupExcerptClick($excerpt)
-
-        if (showCategoryBadge) {
-          this.$('.discourse-tags').insertAfter(this.$('.topic-category'))
-        } else if (showActions) {
-          this.$('.discourse-tags').insertAfter(this.$('.topic-actions'))
-        } else if (showExcerpt) {
-          this.$('.discourse-tags').insertAfter($excerpt)
-        }
-
-        if (showActions) {
-          this.$('.list-vote-count').prependTo(this.$('.topic-actions'))
-          if (showExcerpt) {
-            this.$('.topic-actions').insertAfter(this.$('.topic-excerpt'))
+      @observes('thumbnails')
+      _afterRender() {
+        Ember.run.scheduleOnce('afterRender', this, () => {
+          this._setupTitleCSS()
+          if (this.get('showThumbnail')) {
+            this._sizeThumbnails()
           }
-        } else if (showExcerpt) {
-          this.$('.list-vote-count').insertAfter($excerpt)
-        }
+          if (this.get('showExcerpt')) {
+            this._setupExcerptClick()
+            this._setupExcerptHeight()
+          }
+          if (this.get('showActions')) {
+            this._setupActions()
+          }
+        })
+      },
 
-        if (!socialStyle && showExcerpt) {
+      _setupTitleCSS() {
+        this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
+      },
+
+      _setupExcerptHeight() {
+        if (!this.get('socialStyle') && this.get('showExcerpt')) {
           let height = 0;
-          this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){ height += $(this).height() })
+          this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){
+            height += $(this).height()
+          })
           let excerpt = 100 - height;
           $excerpt.css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0))
         }
-
-        if (socialStyle) {
-          this.$('.topic-intro').prependTo(this.$('.main-link'))
-          this.$('.topic-title').prependTo(this.$('.main-link'))
-          if (this.$('.topic-details').children().length < 1)
-            this.$('.topic-details').hide()
-        }
       },
 
-      _setupExcerptClick($excerpt) {
-        $excerpt.on('click.topic-excerpt', () => {
+      _setupExcerptClick() {
+        this.$('.topic-excerpt').on('click.topic-excerpt', () => {
           let topic = this.get('topic'),
               url = '/t/' + topic.slug + '/' + topic.id;
           if (topic.topic_post_id) {
             url += '/' + topic.topic_post_id
           }
           DiscourseURL.routeTo(url)
+        })
+      },
+
+      _sizeThumbnails() {
+        this.$('.topic-thumbnail img').load(function(){
+          $(this).css({
+            'width': $(this)[0].naturalWidth
+          })
         })
       },
 
@@ -271,21 +255,6 @@ export default {
         return defaultThumbnail ? defaultThumbnail : false
       },
 
-      _sizeThumbnails() {
-        this.$('.topic-thumbnail img').load(function(){
-          $(this).css({
-            'width': $(this)[0].naturalWidth
-          })
-        })
-      },
-
-      @observes('thumbnails')
-      _rerenderOnThumbnailChange() {
-        Ember.run.scheduleOnce('afterRender', this, () => {
-          this._rearrangeDOM()
-        })
-      },
-
       @computed('likeDifference')
       topicActions() {
         let actions = []
@@ -329,15 +298,8 @@ export default {
             newCount = count + (change || 0);
         this.set('hasLiked', Boolean(change > 0))
         this.set('likeDifference', newCount)
-        this._likeRerender()
-      },
-
-      _likeRerender(){
         this.rerenderBuffer()
-        Ember.run.scheduleOnce('afterRender', this, () => {
-          this._rearrangeDOM()
-          this._setupActions()
-        })
+        this._afterRender()
       },
 
       _likeButton() {
