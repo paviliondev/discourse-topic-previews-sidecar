@@ -1,0 +1,8 @@
+<div class="topic-title">
+  {{raw "topic-status" topic=topic}}
+  {{topic-link topic}}
+  {{plugin-outlet "topic-list-after-title"}}
+  {{#if showTopicPostBadges}}
+    {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
+  {{/if}}
+</div>
