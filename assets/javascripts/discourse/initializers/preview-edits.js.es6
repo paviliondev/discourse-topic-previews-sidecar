@@ -26,7 +26,7 @@ var animateHeart = function($elem, start, end, complete) {
 
 export default {
   name: 'preview-edits',
-  initialize(){
+  initialize(container){
 
     registerUnbound('preview-unbound', function(thumbnails, params) {
       return new Handlebars.SafeString(renderUnboundPreview(thumbnails, params));
@@ -140,7 +140,7 @@ export default {
       _afterRender() {
         Ember.run.scheduleOnce('afterRender', this, () => {
           this._setupTitleCSS()
-          if (this.get('showThumbnail')) {
+          if (this.get('showThumbnail') && this.get('socialStyle')) {
             this._sizeThumbnails()
           }
           if (this.get('showExcerpt')) {
@@ -200,7 +200,7 @@ export default {
           if (this.get('currentUser')) {
             this.toggleLike($like, postId);
           } else {
-            const controller = this.container.lookup('controller:application');
+            const controller = container.lookup('controller:application');
             controller.send('showLogin');
           }
         })

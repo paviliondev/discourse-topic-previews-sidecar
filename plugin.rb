@@ -66,9 +66,10 @@ after_initialize do
     def update_post_image
       img = extract_images_for_post.first
       if img["src"].present?
-        @post.update_column(:image_url, img["src"][0...255]) # post
+        url = img["src"][0...255]
+        @post.update_column(:image_url, url) # post
         if @post.is_first_post?
-          @post.topic.update_column(:image_url, img["src"][0...255]) # topic
+          @post.topic.update_column(:image_url, url) # topic
           return if SiteSetting.topic_list_hotlink_thumbnails
           create_topic_thumbnails(url)
         end
