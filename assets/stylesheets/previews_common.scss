@@ -15,7 +15,7 @@ html:not(.mobile-view) #list-area.social-style {
     top: 0;
   }
   tbody {
-    width: 600px;
+    max-width: 600px;
     display: table;
     margin: 0 auto;
   }
@@ -41,6 +41,9 @@ html:not(.mobile-view) #list-area.social-style {
     td {
       display: block;
     }
+  }
+  img.thumbnail {
+    max-width: 100%;
   }
 }
 
