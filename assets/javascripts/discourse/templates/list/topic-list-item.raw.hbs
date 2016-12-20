@@ -31,7 +31,7 @@
         {{/each}}
         </div>
       {{/if}}
-      {{plugin-outlet "topic-list-tags"}}
+      {{raw-plugin-outlet name="topic-list-tags"}}
     {{/unless}}
 
     {{#if expandPinned}}

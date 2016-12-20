@@ -1,6 +1,5 @@
 import { registerUnbound } from 'discourse-common/lib/helpers';
-import renderUnboundPreview from 'discourse/plugins/discourse-topic-previews/lib/render-preview';
-import buttonHTML from 'discourse/plugins/discourse-topic-previews/lib/list-button';
+import { findRawTemplate } from 'discourse/lib/raw-templates';
 import testImageUrl from 'discourse/plugins/discourse-topic-previews/lib/test-image-url';
 import TopicListItem from 'discourse/components/topic-list-item';
 import TopicList from 'discourse/components/topic-list';
@@ -28,29 +27,17 @@ export default {
   name: 'preview-edits',
   initialize(container){
 
-    registerUnbound('preview-unbound', function(thumbnails, params) {
-      return new Handlebars.SafeString(renderUnboundPreview(thumbnails, params));
-    });
-
-    registerUnbound('list-button', function(button, params) {
-      return new Handlebars.SafeString(buttonHTML(button, params));
-    });
-
     EditCategorySettings.reopen({
       choices: ['latest', 'new', 'unread', 'top', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile']
     })
 
     TopicList.reopen({
-      category: Ember.computed.alias('parentView.model.category'),
 
-      // this assumes topics change whenever the route changes
-      @computed('topics')
       isDiscoveryTopicList() {
         const parentComponentName = Object.getPrototypeOf(this.get('parentView'))._debugContainerKey.split(':')
         return parentComponentName.length > 1 && parentComponentName[1] == 'discovery-topics-list'
       },
 
-      @computed('parentView.model.filter')
       filter() {
         let filter = this.get('parentView.model.filter')
         if (this.get('site.mobileView')) {
@@ -60,10 +47,10 @@ export default {
       },
 
       settingEnabled(setting) {
-        if (!this.get('isDiscoveryTopicList')) { return false }
+        if (!this.isDiscoveryTopicList()) { return false }
 
         const category = this.get('category'),
-              filter = this.get('filter');
+              filter = this.filter();
 
         let filterArr = filter ? filter.split('/') : [],
             filterType = filterArr[filterArr.length - 1],
@@ -77,18 +64,41 @@ export default {
         return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled
       },
 
-      @on('init')
-      @observes('isDiscoveryTopicList', 'filter', 'category')
-      setDisplayProperties() {
-        this.setProperties({
-          socialStyle: this.settingEnabled('topic_list_social'),
-          showThumbnail: this.settingEnabled('topic_list_thumbnail'),
-          showExcerpt: this.settingEnabled('topic_list_excerpt'),
-          showActions: this.settingEnabled('topic_list_action'),
-          showCategoryBadge: this.settingEnabled('topic_list_category_badge_move'),
-          hideCategory: this.settingEnabled('topic_list_category_badge_move'),
-          skipHeader: this.settingEnabled('topic_list_social') || this.get('site.mobileView')
-        })
+      // @computed('topics') is used because topics change whenever the route changes
+
+      @computed('topics')
+      socialStyle() {
+        return this.settingEnabled('topic_list_social');
+      },
+
+      @computed('topics')
+      showThumbnail() {
+        return this.settingEnabled('topic_list_thumbnail')
+      },
+
+      @computed('topics')
+      showExcerpt() {
+        return this.settingEnabled('topic_list_excerpt')
+      },
+
+      @computed('topics')
+      showActions() {
+        return this.settingEnabled('topic_list_action')
+      },
+
+      @computed('topics')
+      showCategoryBadge() {
+        return this.settingEnabled('topic_list_category_badge_move')
+      },
+
+      @computed('topics')
+      hideCategory() {
+        return this.settingEnabled('topic_list_category_badge_move')
+      },
+
+      @computed('topics')
+      skipHeader() {
+        return this.settingEnabled('topic_list_social') || this.get('site.mobileView')
       },
 
       @on("didInsertElement")
@@ -116,7 +126,7 @@ export default {
       // Lifecyle logic
 
       @on('init')
-      _init() {
+      _setupProperties() {
         const topic = this.get('topic');
         if (topic.get('thumbnails')) {
           testImageUrl(topic.get('thumbnails.normal'), function(imageLoaded) {
@@ -133,6 +143,13 @@ export default {
           this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
         } else {
           this._afterRender()
+        }
+      },
+
+      buildBuffer(buffer) {
+        const template = findRawTemplate('javascripts/list/topic-list-item');
+        if (template) {
+          buffer.push(template(this));
         }
       },
 
