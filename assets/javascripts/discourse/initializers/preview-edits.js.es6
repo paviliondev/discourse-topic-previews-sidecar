@@ -145,14 +145,7 @@ export default {
           this._afterRender()
         }
       },
-
-      buildBuffer(buffer) {
-        const template = findRawTemplate('javascripts/list/topic-list-item');
-        if (template) {
-          buffer.push(template(this));
-        }
-      },
-
+      
       @observes('thumbnails')
       _afterRender() {
         Ember.run.scheduleOnce('afterRender', this, () => {
