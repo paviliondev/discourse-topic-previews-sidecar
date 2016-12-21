@@ -92,13 +92,14 @@ export default {
       },
 
       @computed('topics')
-      hideCategory() {
-        return this.settingEnabled('topic_list_category_badge_move')
-      },
-
-      @computed('topics')
       skipHeader() {
         return this.settingEnabled('topic_list_social') || this.get('site.mobileView')
+      },
+
+      @on('didInsertElement')
+      @observes('topics')
+      setHideCategory() {
+        this.set('hideCategory', this.settingEnabled('topic_list_category_badge_move'))
       },
 
       @on("didInsertElement")
@@ -145,7 +146,7 @@ export default {
           this._afterRender()
         }
       },
-      
+
       @observes('thumbnails')
       _afterRender() {
         Ember.run.scheduleOnce('afterRender', this, () => {
