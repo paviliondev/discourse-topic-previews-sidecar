@@ -6,6 +6,47 @@
 register_asset 'stylesheets/previews_common.scss'
 register_asset 'stylesheets/previews_mobile.scss'
 
+module TopicListAddon
+  def load_topics
+    @topics = super
+
+    # TODO: better to keep track of previewed posts' id so they can be loaded at once
+    posts_map = {}
+    post_actions_map = {}
+    accepted_anwser_post_ids = []
+    normal_topic_ids = []
+    previewed_post_ids = []
+    @topics.each do |topic|
+      if post_id = topic.custom_fields["accepted_answer_post_id"]&.to_i
+        accepted_anwser_post_ids << post_id
+      else
+        normal_topic_ids << topic.id
+      end
+    end
+
+    Post.where("id IN (?)", accepted_anwser_post_ids).each do |post|
+      posts_map[post.topic_id] = post
+      previewed_post_ids << post.id
+    end
+    Post.where("post_number = 1 AND topic_id IN (?)", normal_topic_ids).each do |post|
+      posts_map[post.topic_id] = post
+      previewed_post_ids << post.id
+    end
+    if @current_user
+      PostAction.where("post_id IN (?) AND user_id = ?", previewed_post_ids, @current_user.id).each do |post_action|
+        (post_actions_map[post_action.post_id] ||= []) << post_action
+      end
+    end
+
+    @topics.each do |topic|
+      topic.previewed_post = posts_map[topic.id]
+      topic.previewed_post_actions = post_actions_map[topic.previewed_post.id] if topic.previewed_post
+    end
+
+    @topics
+  end
+end
+
 after_initialize do
   Category.register_custom_field_type('topic_list_category_badge_move', :boolean)
   Topic.register_custom_field_type('thumbnails', :json)
@@ -43,6 +84,63 @@ after_initialize do
         topic.save_custom_fields
       end
     end
+  end
+
+  class ::Topic
+    attr_accessor :previewed_post
+    attr_accessor :previewed_post_actions
+  end
+
+  require_dependency 'guardian/post_guardian'
+  module ::PostGuardian
+    # Passing existing loaded topic record avoids an N+1.
+    def previewed_post_can_act?(post, topic, action_key, opts={})
+      taken = opts[:taken_actions].try(:keys).to_a
+      is_flag = PostActionType.is_flag?(action_key)
+      already_taken_this_action = taken.any? && taken.include?(PostActionType.types[action_key])
+      already_did_flagging      = taken.any? && (taken & PostActionType.flag_types.values).any?
+
+      result = if authenticated? && post && !@user.anonymous?
+
+        return false if action_key == :notify_moderators && !SiteSetting.enable_private_messages
+
+        # we allow flagging for trust level 1 and higher
+        # always allowed for private messages
+        (is_flag && not(already_did_flagging) && (@user.has_trust_level?(TrustLevel[1]) || topic.private_message?)) ||
+
+        # not a flagging action, and haven't done it already
+        not(is_flag || already_taken_this_action) &&
+
+        # nothing except flagging on archived topics
+        not(topic.try(:archived?)) &&
+
+        # nothing except flagging on deleted posts
+        not(post.trashed?) &&
+
+        # don't like your own stuff
+        not(action_key == :like && is_my_own?(post)) &&
+
+        # new users can't notify_user because they are not allowed to send private messages
+        not(action_key == :notify_user && !@user.has_trust_level?(SiteSetting.min_trust_to_send_messages)) &&
+
+        # non-staff can't send an official warning
+        not(action_key == :notify_user && !is_staff? && opts[:is_warning].present? && opts[:is_warning] == 'true') &&
+
+        # can't send private messages if they're disabled globally
+        not(action_key == :notify_user && !SiteSetting.enable_private_messages) &&
+
+        # no voting more than once on single vote topics
+        not(action_key == :vote && opts[:voted_in_topic] && topic.has_meta_data_boolean?(:single_vote))
+      end
+
+      !!result
+    end
+  end
+
+  TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
+  TopicList.preloaded_custom_fields << "thumbnails" if TopicList.respond_to? :preloaded_custom_fields
+  TopicList.class_eval do
+    prepend TopicListAddon
   end
 
   require 'cooked_post_processor'
@@ -89,22 +187,23 @@ after_initialize do
                :topic_post_bookmarked,
                :topic_post_is_current_users
 
-    def first_post_id
-     first = Post.find_by(topic_id: object.id, post_number: 1)
-     first ? first.id : false
+    def include_topic_post_id?
+      object.previewed_post.present?
     end
 
     def topic_post_id
-      accepted_id = object.custom_fields["accepted_answer_post_id"].to_i
-      return accepted_id > 0 ? accepted_id : first_post_id
+      object.previewed_post&.id
     end
-    alias :include_topic_post_id? :first_post_id
 
     def excerpt
-      cooked = Post.where(id: topic_post_id).pluck('cooked')
-      excerpt = PrettyText.excerpt(cooked[0], SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
-      excerpt.gsub!(/(\[#{I18n.t 'excerpt_image'}\])/, "") if excerpt
-      excerpt
+      if object.previewed_post
+        cooked = object.previewed_post.cooked
+        excerpt = PrettyText.excerpt(cooked, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
+        excerpt.gsub!(/(\[#{I18n.t 'excerpt_image'}\])/, "") if excerpt
+        excerpt
+      else
+        object.excerpt
+      end
     end
 
     def include_excerpt?
@@ -142,60 +241,50 @@ after_initialize do
     end
 
     def topic_post_actions
-      return [] if !scope.current_user
-      PostAction.where(post_id: topic_post_id, user_id: scope.current_user.id)
+      object.previewed_post_actions || []
     end
 
     def topic_like_action
       topic_post_actions.select {|a| a.post_action_type_id == PostActionType.types[:like]}
     end
 
-    def topic_post
-      Post.find(topic_post_id)
-    end
-
     def topic_post_bookmarked
       !!topic_post_actions.any?{|a| a.post_action_type_id == PostActionType.types[:bookmark]}
     end
-    alias :include_topic_post_bookmarked? :first_post_id
+    alias :include_topic_post_bookmarked? :topic_post_id
 
     def topic_post_liked
       topic_like_action.any?
     end
-    alias :include_topic_post_liked? :first_post_id
+    alias :include_topic_post_liked? :topic_post_id
 
     def topic_post_like_count
-      topic_post.like_count
+      object.previewed_post&.like_count
     end
-    alias :include_topic_post_like_count? :first_post_id
 
     def include_topic_post_like_count?
-      first_post_id && topic_post_like_count > 0
+      object.previewed_post&.id && topic_post_like_count > 0
     end
 
     def topic_post_can_like
-      post = topic_post
       return false if !scope.current_user || topic_post_is_current_users
-      scope.post_can_act?(post, PostActionType.types[:like], taken_actions: topic_post_actions)
+      scope.previewed_post_can_act?(object.previewed_post, object, PostActionType.types[:like], taken_actions: topic_post_actions)
     end
-    alias :include_topic_post_can_like? :first_post_id
+    alias :include_topic_post_can_like? :topic_post_id
 
     def topic_post_is_current_users
-      return scope.current_user && (topic_post.user_id == scope.current_user.id)
+      return scope.current_user && (object.previewed_post&.user_id == scope.current_user.id)
     end
-    alias :include_topic_post_is_current_users? :first_post_id
+    alias :include_topic_post_is_current_users? :topic_post_id
 
     def topic_post_can_unlike
       return false if !scope.current_user
       action = topic_like_action[0]
       !!(action && (action.user_id == scope.current_user.id) && (action.created_at > SiteSetting.post_undo_action_window_mins.minutes.ago))
     end
-    alias :include_topic_post_can_unlike? :first_post_id
+    alias :include_topic_post_can_unlike? :topic_post_id
 
   end
-
-  TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
-  TopicList.preloaded_custom_fields << "thumbnails" if TopicList.respond_to? :preloaded_custom_fields
 
   add_to_serializer(:basic_category, :topic_list_excerpt) {object.custom_fields["topic_list_excerpt"]}
   add_to_serializer(:basic_category, :topic_list_thumbnail) {object.custom_fields["topic_list_thumbnail"]}
