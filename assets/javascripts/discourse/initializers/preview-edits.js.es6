@@ -27,10 +27,6 @@ export default {
   name: 'preview-edits',
   initialize(container){
 
-    EditCategorySettings.reopen({
-      choices: ['latest', 'new', 'unread', 'top', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile']
-    })
-
     TopicList.reopen({
 
       isDiscoveryTopicList() {
