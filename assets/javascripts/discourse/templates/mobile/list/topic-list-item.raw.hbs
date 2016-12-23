@@ -57,7 +57,7 @@
       {{/if}}
     {{/unless}}
 
-    {{plugin-outlet "topic-list-tags"}}
+    {{raw-plugin-outlet name="topic-list-tags"}}
 
     {{#if context.showActions}}
       {{raw "list/topic-actions" likeCountDisplay=context.likeCountDisplay topicActions=context.topicActions}}
