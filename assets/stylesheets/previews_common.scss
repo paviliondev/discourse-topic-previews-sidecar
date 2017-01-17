@@ -19,6 +19,9 @@ html:not(.mobile-view) #list-area.social-style {
     display: table;
     margin: 0 auto;
   }
+  .topic-statuses {
+    float: right;
+  }
   .topic-list-item {
     margin-bottom: 10px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
@@ -54,6 +57,7 @@ html:not(.mobile-view) #list-area.social-style {
   }
   .topic-intro, .topic-thumbnail {
     padding: 0;
+    margin-bottom: 5px;
   }
   .badge-wrapper.box {
     margin: 0px;
@@ -79,16 +83,25 @@ html:not(.mobile-view) #list-area.social-style {
   .topic-meta-social {
     float: right;
   }
+  .discourse-tags {
+    margin-top: 2px;
+  }
 }
 
 .topic-intro {
   div.inline, span.inline {
     float: none;
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
     padding: 0 5px 0 0;
     margin: 0;
-    width: auto;
+    line-height: 20px;
+    .badge-wrapper {
+      margin: 0;
+    }
+  }
+  .topic-intro-details-wrapper {
+    height: 20px;
   }
   div.sub, span.sub {
     padding: 0;

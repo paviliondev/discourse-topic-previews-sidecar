@@ -7,15 +7,22 @@
     {{/each}}
   </div>
   <div class="topic-intro-details inline">
-    <div>
+    <div class="topic-intro-details-wrapper">
       <div class="topic-poster-names inline">
         {{{posterNames}}}
       </div>
       <div class='topic-category inline'>
         {{category-link topic.category}}
       </div>
+      {{#if topic.tags}}
+        <div class='discourse-tags inline'>
+        {{#each topic.visibleListTags as |tag|}}
+          {{discourse-tag tag}}
+        {{/each}}
+        </div>
+      {{/if}}
     </div>
-    <div>
+    <div class="topic-intro-details-wrapper">
       <div class="topic-views {{topic.viewsHeat}} inline sub">
         {{number topic.views numberKey="views_long"}}
         {{i18n 'views_lowercase' count=topic.views}}
