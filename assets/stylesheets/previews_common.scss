@@ -53,14 +53,13 @@ html:not(.mobile-view) #list-area.social-style {
     max-height: none;
   }
   .topic-intro, .topic-thumbnail {
-    margin-bottom: 5px;
     padding: 0;
   }
   .badge-wrapper.box {
     margin: 0px;
   }
   .topic-title {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 7px;
     a.title {
       color: #222;
@@ -77,13 +76,12 @@ html:not(.mobile-view) #list-area.social-style {
     float: none;
     display: inline-block;
   }
+  .topic-meta-social {
+    float: right;
+  }
 }
 
 .topic-intro {
-  img {
-    width: 40px;
-    height: 40px;
-  }
   div.inline, span.inline {
     float: none;
     display: inline-block;
