@@ -189,7 +189,8 @@ after_initialize do
                :topic_post_can_like,
                :topic_post_can_unlike,
                :topic_post_bookmarked,
-               :topic_post_is_current_users
+               :topic_post_is_current_users,
+               :topic_post_number
 
     def include_topic_post_id?
       object.previewed_post.present?
@@ -197,6 +198,10 @@ after_initialize do
 
     def topic_post_id
       object.previewed_post&.id
+    end
+
+    def topic_post_number
+      object.previewed_post&.post_number
     end
 
     def excerpt

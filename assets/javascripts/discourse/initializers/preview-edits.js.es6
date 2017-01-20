@@ -179,8 +179,8 @@ export default {
         this.$('.topic-excerpt').on('click.topic-excerpt', () => {
           let topic = this.get('topic'),
               url = '/t/' + topic.slug + '/' + topic.id;
-          if (topic.topic_post_id) {
-            url += '/' + topic.topic_post_id
+          if (topic.topic_post_number) {
+            url += '/' + topic.topic_post_number
           }
           DiscourseURL.routeTo(url)
         })
