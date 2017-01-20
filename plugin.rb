@@ -286,6 +286,7 @@ after_initialize do
 
   end
 
+  add_to_serializer(:basic_category, :topic_list_social) {object.custom_fields["topic_list_social"]}
   add_to_serializer(:basic_category, :topic_list_excerpt) {object.custom_fields["topic_list_excerpt"]}
   add_to_serializer(:basic_category, :topic_list_thumbnail) {object.custom_fields["topic_list_thumbnail"]}
   add_to_serializer(:basic_category, :topic_list_action) {object.custom_fields["topic_list_action"]}
