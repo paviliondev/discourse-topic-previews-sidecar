@@ -51,6 +51,9 @@ html:not(.mobile-view) #list-area.social-style {
 }
 
 #list-area.social-style {
+  .main-link {
+    display: block;
+  }
   .topic-details {
     float: left;
     max-height: none;
