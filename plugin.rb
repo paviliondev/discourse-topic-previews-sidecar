@@ -62,6 +62,21 @@ after_initialize do
 
   module ListHelper
     class << self
+      def create_topic_thumbnails(post, url)
+        local = UrlHelper.is_local(url)
+        image = local ? Upload.find_by(sha1: url[/[a-z0-9]{40,}/i]) : get_linked_image(post, url)
+        Rails.logger.info "Creating thumbnails with: #{image}"
+        create_thumbnails(post.topic.id, image, url)
+      end
+
+      def get_linked_image(post, url)
+        max_size = SiteSetting.max_image_size_kb.kilobytes
+        file = FileHelper.download(url, max_size, "discourse", true) rescue nil
+        Rails.logger.info "Downloaded linked image: #{file}"
+        image = file ? Upload.create_for(post.user_id, file, file.path.split('/')[-1], File.size(file.path)) : nil
+        image
+      end
+
       def create_thumbnails(id, image, original_url)
         width = SiteSetting.topic_list_thumbnail_width
         height = SiteSetting.topic_list_thumbnail_height
@@ -145,22 +160,6 @@ after_initialize do
 
   require 'cooked_post_processor'
   class ::CookedPostProcessor
-
-    def get_linked_image(url)
-      max_size = SiteSetting.max_image_size_kb.kilobytes
-      file = FileHelper.download(url, max_size, "discourse", true) rescue nil
-      Rails.logger.info "Downloaded linked image: #{file}"
-      image = file ? Upload.create_for(@post.user_id, file, file.path.split('/')[-1], File.size(file.path)) : nil
-      image
-    end
-
-    def create_topic_thumbnails(url)
-      local = UrlHelper.is_local(url)
-      image = local ? Upload.find_by(sha1: url[/[a-z0-9]{40,}/i]) : get_linked_image(url)
-      Rails.logger.info "Creating thumbnails with: #{image}"
-      ListHelper.create_thumbnails(@post.topic.id, image, url)
-    end
-
     def update_post_image
       img = extract_images_for_post.first
       if img["src"].present?
@@ -169,11 +168,16 @@ after_initialize do
         if @post.is_first_post?
           @post.topic.update_column(:image_url, url) # topic
           return if SiteSetting.topic_list_hotlink_thumbnails
-          create_topic_thumbnails(url)
+          ListHelper.create_topic_thumbnails(post, url)
         end
       end
     end
+  end
 
+  DiscourseEvent.on(:accepted_solution) do |post|
+    if post.image_url
+      ListHelper.create_topic_thumbnails(post, post.image_url)
+    end
   end
 
   require 'topic_list_item_serializer'
