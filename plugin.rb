@@ -168,7 +168,7 @@ after_initialize do
         if @post.is_first_post?
           @post.topic.update_column(:image_url, url) # topic
           return if SiteSetting.topic_list_hotlink_thumbnails
-          ListHelper.create_topic_thumbnails(post, url)
+          ListHelper.create_topic_thumbnails(@post, url)
         end
       end
     end
