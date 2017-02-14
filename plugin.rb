@@ -48,7 +48,6 @@ module TopicListAddon
 end
 
 after_initialize do
-  Category.register_custom_field_type('topic_list_category_badge_move', :boolean)
   Topic.register_custom_field_type('thumbnails', :json)
 
   @nil_thumbs = TopicCustomField.where( name: 'thumbnails', value: nil )

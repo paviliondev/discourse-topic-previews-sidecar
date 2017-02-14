@@ -17,6 +17,7 @@
   }
   .topic-category {
     margin-top: 6px;
+    display: inline-block;
   }
   .topic-actions {
     margin-top: 7px;
@@ -42,6 +43,10 @@
   img.thumbnail {
     max-width:80px;
     max-height:80px;
+  }
+  .discourse-tags {
+    float: initial;
+    clear: initial;
   }
 }
 
