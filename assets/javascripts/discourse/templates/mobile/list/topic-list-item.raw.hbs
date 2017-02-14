@@ -23,11 +23,7 @@
       {{/if}}
     {{else}}
       <div class='main-link'>
-        {{raw "topic-status" topic=topic}}
-        {{topic-link topic}}
-        {{#if topic.unseen}}
-          <span class="badge-notification new-topic"></span>
-        {{/if}}
+        {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges}}
       </div>
     {{/if}}
 
