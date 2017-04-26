@@ -144,7 +144,7 @@ export default {
       _setupDOM() {
         const topic = this.get('topic');
         if (topic.get('thumbnails') && this.get('thumbnailFirstXRows') && (this.$().index() > this.get('thumbnailFirstXRows'))) {
-          topic.set('thumbnails', null)
+          this.set('showThumbnail', false)
         }
 
         if ($('#suggested-topics').length) {
