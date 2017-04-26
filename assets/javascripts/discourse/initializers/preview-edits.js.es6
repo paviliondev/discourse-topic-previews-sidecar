@@ -92,6 +92,11 @@ export default {
         return this.settingEnabled('topic_list_social') || this.get('site.mobileView')
       },
 
+      @computed('topics')
+      thumbnailFirstXRows() {
+        return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows
+      },
+
       @on('didInsertElement')
       @observes('topics')
       setHideCategory() {
@@ -119,6 +124,7 @@ export default {
       showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
       showActions: Ember.computed.alias('parentView.showActions'),
       showCategoryBadge: Ember.computed.alias('parentView.showCategoryBadge'),
+      thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
 
       // Lifecyle logic
 
@@ -136,6 +142,11 @@ export default {
 
       @on('didInsertElement')
       _setupDOM() {
+        const topic = this.get('topic');
+        if (topic.get('thumbnails') && this.get('thumbnailFirstXRows') && (this.$().index() > this.get('thumbnailFirstXRows'))) {
+          this.set('showThumbnail', false)
+        }
+
         if ($('#suggested-topics').length) {
           this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
         } else {

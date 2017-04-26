@@ -12,3 +12,4 @@ en:
     topic_list_thumbnail_width: "Width of topic preview thumbnail."
     topic_list_thumbnail_height: "Height of topic preview thumbnail."
     topic_list_hotlink_thumbnails: "Use topic image_url in thumbnails directly, rather than generated thumbnails. Warning: this means each full sized topic image will be loaded when the topic list loads and will affect performance."
+    topic_list_thumbnail_first_x_rows: "Show thumbnail only for first X rows. Enter 0 to show on all rows."

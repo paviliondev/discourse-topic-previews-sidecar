@@ -85,3 +85,6 @@ plugins:
   topic_list_hotlink_thumbnails:
     default: false
     client: true
+  topic_list_thumbnail_first_x_rows:
+    default: 0
+    client: true
