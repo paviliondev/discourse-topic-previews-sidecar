@@ -30,8 +30,12 @@ export default {
     TopicList.reopen({
 
       isDiscoveryTopicList() {
-        const parentComponentName = Object.getPrototypeOf(this.get('parentView'))._debugContainerKey.split(':')
-        return parentComponentName.length > 1 && parentComponentName[1] == 'discovery-topics-list'
+        const parentComponentKey = this.get('parentView')._debugContainerKey;
+        if (parentComponentKey) {
+          const parentComponentName = parentComponentKey.split(':');
+          return parentComponentName.length > 1 && parentComponentName[1] == 'discovery-topics-list';
+        }
+        return false;
       },
 
       filter() {
