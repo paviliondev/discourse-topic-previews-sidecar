@@ -70,9 +70,24 @@ after_initialize do
 
       def get_linked_image(post, url)
         max_size = SiteSetting.max_image_size_kb.kilobytes
-        file = FileHelper.download(url, max_size, "discourse", true) rescue nil
-        Rails.logger.info "Downloaded linked image: #{file}"
-        image = file ? Upload.create_for(post.user_id, file, file.path.split('/')[-1], File.size(file.path)) : nil
+        image = nil
+
+        begin
+          hotlinked = FileHelper.download(
+            url,
+            max_file_size: max_size,
+            tmp_file_name: "discourse-hotlinked",
+            follow_redirect: true
+          )
+        rescue Discourse::InvalidParameters
+        end
+
+        if hotlinked
+          filename = File.basename(URI.parse(url).path)
+          filename << File.extname(hotlinked.path) unless filename["."]
+          image = UploadCreator.new(hotlinked, filename, origin: url).create_for(post.user_id)
+        end
+
         image
       end
 
@@ -161,12 +176,15 @@ after_initialize do
   class ::CookedPostProcessor
     def update_post_image
       img = extract_images_for_post.first
+
       if img["src"].present?
         url = img["src"][0...255]
         @post.update_column(:image_url, url) # post
+
         if @post.is_first_post?
           @post.topic.update_column(:image_url, url) # topic
           return if SiteSetting.topic_list_hotlink_thumbnails
+
           ListHelper.create_topic_thumbnails(@post, url)
         end
       end
