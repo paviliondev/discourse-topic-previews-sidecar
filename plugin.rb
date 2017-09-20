@@ -50,10 +50,10 @@ end
 after_initialize do
   Topic.register_custom_field_type('thumbnails', :json)
 
-  @nil_thumbs = TopicCustomField.where( name: 'thumbnails', value: nil )
+  @nil_thumbs = TopicCustomField.where(name: 'thumbnails', value: nil)
   if @nil_thumbs.length
     @nil_thumbs.each do |thumb|
-      hash = { :normal => '', :retina => ''}
+      hash = { normal: '', retina: '' }
       thumb.value = ::JSON.generate(hash)
       thumb.save!
     end
@@ -72,14 +72,16 @@ after_initialize do
         max_size = SiteSetting.max_image_size_kb.kilobytes
         image = nil
 
-        begin
-          hotlinked = FileHelper.download(
-            url,
-            max_file_size: max_size,
-            tmp_file_name: "discourse-hotlinked",
-            follow_redirect: true
-          )
-        rescue Discourse::InvalidParameters
+        unless Rails.env.test?
+          begin
+            hotlinked = FileHelper.download(
+              url,
+              max_file_size: max_size,
+              tmp_file_name: "discourse-hotlinked",
+              follow_redirect: true
+            )
+          rescue Discourse::InvalidParameters
+          end
         end
 
         if hotlinked
@@ -95,7 +97,7 @@ after_initialize do
         width = SiteSetting.topic_list_thumbnail_width
         height = SiteSetting.topic_list_thumbnail_height
         normal = image ? thumbnail_url(image, width, height, original_url) : original_url
-        retina = image ? thumbnail_url(image, width*2, height*2, original_url) : original_url
+        retina = image ? thumbnail_url(image, width * 2, height * 2, original_url) : original_url
         thumbnails = { normal: normal, retina: retina }
         save_thumbnails(id, thumbnails)
         return thumbnails
@@ -123,7 +125,7 @@ after_initialize do
   require_dependency 'guardian/post_guardian'
   module ::PostGuardian
     # Passing existing loaded topic record avoids an N+1.
-    def previewed_post_can_act?(post, topic, action_key, opts={})
+    def previewed_post_can_act?(post, topic, action_key, opts = {})
       taken = opts[:taken_actions].try(:keys).to_a
       is_flag = PostActionType.is_flag?(action_key)
       already_taken_this_action = taken.any? && taken.include?(PostActionType.types[action_key])
@@ -271,11 +273,11 @@ after_initialize do
     end
 
     def topic_like_action
-      topic_post_actions.select {|a| a.post_action_type_id == PostActionType.types[:like]}
+      topic_post_actions.select { |a| a.post_action_type_id == PostActionType.types[:like] }
     end
 
     def topic_post_bookmarked
-      !!topic_post_actions.any?{|a| a.post_action_type_id == PostActionType.types[:bookmark]}
+      !!topic_post_actions.any? { |a| a.post_action_type_id == PostActionType.types[:bookmark] }
     end
     alias :include_topic_post_bookmarked? :topic_post_id
 
@@ -312,10 +314,10 @@ after_initialize do
 
   end
 
-  add_to_serializer(:basic_category, :topic_list_social) {object.custom_fields["topic_list_social"]}
-  add_to_serializer(:basic_category, :topic_list_excerpt) {object.custom_fields["topic_list_excerpt"]}
-  add_to_serializer(:basic_category, :topic_list_thumbnail) {object.custom_fields["topic_list_thumbnail"]}
-  add_to_serializer(:basic_category, :topic_list_action) {object.custom_fields["topic_list_action"]}
-  add_to_serializer(:basic_category, :topic_list_category_badge_move) {object.custom_fields["topic_list_category_badge_move"]}
-  add_to_serializer(:basic_category, :topic_list_default_thumbnail) {object.custom_fields["topic_list_default_thumbnail"]}
+  add_to_serializer(:basic_category, :topic_list_social) { object.custom_fields["topic_list_social"] }
+  add_to_serializer(:basic_category, :topic_list_excerpt) { object.custom_fields["topic_list_excerpt"] }
+  add_to_serializer(:basic_category, :topic_list_thumbnail) { object.custom_fields["topic_list_thumbnail"] }
+  add_to_serializer(:basic_category, :topic_list_action) { object.custom_fields["topic_list_action"] }
+  add_to_serializer(:basic_category, :topic_list_category_badge_move) { object.custom_fields["topic_list_category_badge_move"] }
+  add_to_serializer(:basic_category, :topic_list_default_thumbnail) { object.custom_fields["topic_list_default_thumbnail"] }
 end
