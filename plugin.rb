@@ -178,6 +178,7 @@ after_initialize do
   class ::CookedPostProcessor
     def update_post_image
       img = extract_images_for_post.first
+      return if img.blank?
 
       if img["src"].present?
         url = img["src"][0...255]
