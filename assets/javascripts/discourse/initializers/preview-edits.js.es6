@@ -1,13 +1,10 @@
-import { registerUnbound } from 'discourse-common/lib/helpers';
-import { findRawTemplate } from 'discourse/lib/raw-templates';
-import testImageUrl from 'discourse/plugins/discourse-topic-previews/lib/test-image-url';
+import testImageUrl from '../lib/test-image-url';
 import TopicListItem from 'discourse/components/topic-list-item';
 import TopicList from 'discourse/components/topic-list';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 import { popupAjaxError } from 'discourse/lib/ajax-error';
 import DiscourseURL from 'discourse/lib/url';
 import { ajax } from 'discourse/lib/ajax';
-import EditCategorySettings from 'discourse/components/edit-category-settings';
 
 var animateHeart = function($elem, start, end, complete) {
   if (Ember.testing) { return Ember.run(this, complete); }
@@ -21,11 +18,13 @@ var animateHeart = function($elem, start, end, complete) {
           },
           duration: 150
         }, 'linear');
-}
+};
 
 export default {
   name: 'preview-edits',
   initialize(container){
+
+    if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
 
     TopicList.reopen({
 
@@ -33,21 +32,21 @@ export default {
         const parentComponentKey = this.get('parentView')._debugContainerKey;
         if (parentComponentKey) {
           const parentComponentName = parentComponentKey.split(':');
-          return parentComponentName.length > 1 && parentComponentName[1] == 'discovery-topics-list';
+          return parentComponentName.length > 1 && parentComponentName[1] === 'discovery-topics-list';
         }
         return false;
       },
 
       filter() {
-        let filter = this.get('parentView.model.filter')
+        let filter = this.get('parentView.model.filter');
         if (this.get('site.mobileView')) {
-          filter += '-mobile'
+          filter += '-mobile';
         }
-        return filter
+        return filter;
       },
 
       settingEnabled(setting) {
-        if (!this.isDiscoveryTopicList()) { return false }
+        if (!this.isDiscoveryTopicList()) { return false; }
 
         const category = this.get('category'),
               filter = this.filter();
@@ -61,7 +60,7 @@ export default {
             siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1,
             siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
 
-        return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled
+        return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled;
       },
 
       // @computed('topics') is used because topics change whenever the route changes
@@ -73,44 +72,45 @@ export default {
 
       @computed('topics')
       showThumbnail() {
-        return this.settingEnabled('topic_list_thumbnail')
+        return this.settingEnabled('topic_list_thumbnail');
       },
 
       @computed('topics')
       showExcerpt() {
-        return this.settingEnabled('topic_list_excerpt')
+        return this.settingEnabled('topic_list_excerpt');
       },
 
       @computed('topics')
       showActions() {
-        return this.settingEnabled('topic_list_action')
+        return this.settingEnabled('topic_list_action');
       },
 
       @computed('topics')
       showCategoryBadge() {
-        return this.settingEnabled('topic_list_category_badge_move')
+        return this.settingEnabled('topic_list_category_badge_move');
       },
 
       @computed('topics')
       skipHeader() {
-        return this.settingEnabled('topic_list_social') || this.get('site.mobileView')
+        return this.settingEnabled('topic_list_social') || this.get('site.mobileView');
       },
 
       @computed('topics')
       thumbnailFirstXRows() {
-        return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows
+        return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
       },
 
       @on('didInsertElement')
       @observes('topics')
       setHideCategory() {
-        this.set('hideCategory', this.settingEnabled('topic_list_category_badge_move'))
+        if (this.get('site.mobileView')) return;
+        this.set('hideCategory', this.settingEnabled('topic_list_category_badge_move'));
       },
 
       @on("didInsertElement")
       @observes("socialStyle")
       setupListStyle() {
-        if (!this.$()) {return}
+        if (!this.$()) {return;}
         this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
       },
 
@@ -118,7 +118,7 @@ export default {
       _tearDown() {
         this.$().parents('#list-area').removeClass('social-style');
       },
-    })
+    });
 
     TopicListItem.reopen({
       canBookmark: Ember.computed.bool('currentUser'),
@@ -138,7 +138,7 @@ export default {
         if (topic.get('thumbnails')) {
           testImageUrl(topic.get('thumbnails.normal'), function(imageLoaded) {
             if (!imageLoaded) {
-              topic.set('thumbnails', null)
+              topic.set('thumbnails', null);
             }
           });
         }
@@ -148,31 +148,31 @@ export default {
       _setupDOM() {
         const topic = this.get('topic');
         if (topic.get('thumbnails') && this.get('thumbnailFirstXRows') && (this.$().index() > this.get('thumbnailFirstXRows'))) {
-          this.set('showThumbnail', false)
+          this.set('showThumbnail', false);
         }
 
         if ($('#suggested-topics').length) {
-          this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide()
+          this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide();
         } else {
-          this._afterRender()
+          this._afterRender();
         }
       },
 
       @observes('thumbnails')
       _afterRender() {
         Ember.run.scheduleOnce('afterRender', this, () => {
-          this._setupTitleCSS()
+          this._setupTitleCSS();
           if (this.get('showThumbnail') && this.get('socialStyle')) {
-            this._sizeThumbnails()
+            this._sizeThumbnails();
           }
           if (this.get('showExcerpt')) {
-            this._setupExcerptClick()
-            this._setupExcerptHeight()
+            this._setupExcerptClick();
+            this._setupExcerptHeight();
           }
           if (this.get('showActions')) {
-            this._setupActions()
+            this._setupActions();
           }
-        })
+        });
       },
 
       _setupTitleCSS() {
@@ -183,10 +183,10 @@ export default {
         if (!this.get('socialStyle') && this.get('showExcerpt')) {
           let height = 0;
           this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){
-            height += $(this).height()
-          })
+            height += $(this).height();
+          });
           let excerpt = 100 - height;
-          this.$('.topic-excerpt').css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0))
+          this.$('.topic-excerpt').css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0));
         }
       },
 
@@ -195,18 +195,18 @@ export default {
           let topic = this.get('topic'),
               url = '/t/' + topic.slug + '/' + topic.id;
           if (topic.topic_post_number) {
-            url += '/' + topic.topic_post_number
+            url += '/' + topic.topic_post_number;
           }
-          DiscourseURL.routeTo(url)
-        })
+          DiscourseURL.routeTo(url);
+        });
       },
 
       _sizeThumbnails() {
         this.$('.topic-thumbnail img').load(function(){
           $(this).css({
             'width': $(this)[0].naturalWidth
-          })
-        })
+          });
+        });
       },
 
       _setupActions() {
@@ -215,8 +215,8 @@ export default {
             $like = this.$('.topic-like');
 
         $bookmark.on('click.topic-bookmark', () => {
-          this.toggleBookmark($bookmark, postId)
-        })
+          this.toggleBookmark($bookmark, postId);
+        });
 
         $like.on('click.topic-like', () => {
           if (this.get('currentUser')) {
@@ -225,14 +225,14 @@ export default {
             const controller = container.lookup('controller:application');
             controller.send('showLogin');
           }
-        })
+        });
       },
 
       @on('willDestroyElement')
       _tearDown() {
-        this.$('.topic-excerpt').off('click.topic-excerpt')
-        this.$('.topic-bookmark').off('click.topic-bookmark')
-        this.$('.topic-like').off('click.topic-like')
+        this.$('.topic-excerpt').off('click.topic-excerpt');
+        this.$('.topic-bookmark').off('click.topic-bookmark');
+        this.$('.topic-like').off('click.topic-like');
       },
 
       // Overrides
@@ -240,7 +240,7 @@ export default {
       @computed()
       expandPinned() {
         const pinned = this.get('topic.pinned');
-        if (!pinned) {return this.get('showExcerpt')}
+        if (!pinned) {return this.get('showExcerpt');}
         if (this.get('controller.expandGloballyPinned') && this.get('topic.pinned_globally')) {return true;}
         if (this.get('controller.expandAllPinned')) {return true;}
         return false;
@@ -250,23 +250,23 @@ export default {
 
       @computed()
       posterNames() {
-        let posters = this.get('topic.posters')
-        let posterNames = ''
+        let posters = this.get('topic.posters');
+        let posterNames = '';
         posters.forEach((poster, i) => {
-          let name = poster.user.name ? poster.user.name : poster.user.username
-          posterNames += '<a href="' + poster.user.path + '" data-user-card="' + poster.user.username + '" + class="' + poster.extras + '">' + name + '</a>'
+          let name = poster.user.name ? poster.user.name : poster.user.username;
+          posterNames += '<a href="' + poster.user.path + '" data-user-card="' + poster.user.username + '" + class="' + poster.extras + '">' + name + '</a>';
           if (i === posters.length - 2) {
-            posterNames += '<span> & </span>'
-          } else if (i != posters.length - 1) {
-            posterNames += '<span>, </span>'
+            posterNames += '<span> & </span>';
+          } else if (i !== posters.length - 1) {
+            posterNames += '<span>, </span>';
           }
-        })
-        return posterNames
+        });
+        return posterNames;
       },
 
       @computed('topic.thumbnails')
       thumbnails(){
-        return this.get('topic.thumbnails') || this.get('defaultThumbnail')
+        return this.get('topic.thumbnails') || this.get('defaultThumbnail');
       },
 
       @computed()
@@ -274,54 +274,54 @@ export default {
         let topicCat = this.get('topic.category'),
             catThumb = topicCat ? topicCat.topic_list_default_thumbnail : false,
             defaultThumbnail = catThumb || Discourse.SiteSettings.topic_list_default_thumbnail;
-        return defaultThumbnail ? defaultThumbnail : false
+        return defaultThumbnail ? defaultThumbnail : false;
       },
 
       @computed('likeDifference')
       topicActions() {
-        let actions = []
+        let actions = [];
         if (this.get('topic.topic_post_can_like') || !this.get('currentUser') ||
             Discourse.SiteSettings.topic_list_show_like_on_current_users_posts) {
-          actions.push(this._likeButton())
+          actions.push(this._likeButton());
         }
         if (this.get('canBookmark')) {
-          actions.push(this._bookmarkButton())
+          actions.push(this._bookmarkButton());
           Ember.run.scheduleOnce('afterRender', this, () => {
-            let $bookmarkStatus = this.$('.topic-statuses .op-bookmark')
+            let $bookmarkStatus = this.$('.topic-statuses .op-bookmark');
             if ($bookmarkStatus) {
-              $bookmarkStatus.hide()
+              $bookmarkStatus.hide();
             }
-          })
+          });
         }
-        return actions
+        return actions;
       },
 
       likeCount() {
         let likeDifference = this.get('likeDifference'),
             count = (likeDifference == null ? this.get('topic.topic_post_like_count') : likeDifference) || 0;
-        return count
+        return count;
       },
 
       @computed('likeDifference')
       likeCountDisplay() {
         let count = this.likeCount(),
             message = count === 1 ? "post.has_likes.one" : "post.has_likes.other";
-        return count > 0 ? I18n.t(message, { count }) : false
+        return count > 0 ? I18n.t(message, { count }) : false;
       },
 
       @computed('hasLiked')
       hasLikedDisplay() {
-        let hasLiked = this.get('hasLiked')
-        return hasLiked == null ? this.get('topic.topic_post_liked') : hasLiked
+        let hasLiked = this.get('hasLiked');
+        return hasLiked == null ? this.get('topic.topic_post_liked') : hasLiked;
       },
 
       changeLikeCount(change) {
         let count = this.likeCount(),
             newCount = count + (change || 0);
-        this.set('hasLiked', Boolean(change > 0))
-        this.set('likeDifference', newCount)
-        this.rerenderBuffer()
-        this._afterRender()
+        this.set('hasLiked', Boolean(change > 0));
+        this.set('likeDifference', newCount);
+        this.rerenderBuffer();
+        this._afterRender();
       },
 
       _likeButton() {
@@ -329,16 +329,16 @@ export default {
             disabled = false;
 
         if (Discourse.SiteSettings.topic_list_show_like_on_current_users_posts) {
-          disabled = this.get('topic.topic_post_is_current_users')
+          disabled = this.get('topic.topic_post_is_current_users');
         }
 
         if (this.get('hasLikedDisplay')) {
-          classes += ' has-like'
-          let unlikeDisabled = this.get('topic.topic_post_can_unlike') ? false : this.get('likeDifference') == null
-          disabled = disabled ? true : unlikeDisabled
+          classes += ' has-like';
+          let unlikeDisabled = this.get('topic.topic_post_can_unlike') ? false : this.get('likeDifference') == null;
+          disabled = disabled ? true : unlikeDisabled;
         }
 
-        return { class: classes, title: 'post.controls.like', icon: 'heart', disabled: disabled}
+        return { class: classes, title: 'post.controls.like', icon: 'heart', disabled: disabled};
       },
 
       _bookmarkButton() {
@@ -354,21 +354,21 @@ export default {
       // Action toggles and server methods
 
       toggleBookmark($bookmark, postId) {
-        this.sendBookmark(postId, !$bookmark.hasClass('bookmarked'))
-        $bookmark.toggleClass('bookmarked')
+        this.sendBookmark(postId, !$bookmark.hasClass('bookmarked'));
+        $bookmark.toggleClass('bookmarked');
       },
 
       toggleLike($like, postId) {
         if (this.get('hasLikedDisplay')) {
-          this.removeLike(postId)
-          this.changeLikeCount(-1)
+          this.removeLike(postId);
+          this.changeLikeCount(-1);
         } else {
           const scale = [1.0, 1.5];
           return new Ember.RSVP.Promise(resolve => {
             animateHeart($like, scale[0], scale[1], () => {
               animateHeart($like, scale[1], scale[0], () => {
                 this.addLike(postId);
-                this.changeLikeCount(1)
+                this.changeLikeCount(1);
                 resolve();
               });
             });
@@ -408,7 +408,7 @@ export default {
           popupAjaxError(error);
         });
       }
-    })
+    });
 
   }
-}
+};

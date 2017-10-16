@@ -15,4 +15,4 @@ var testImageUrl = function(url, callback) {
   img.src = url;
 };
 
-export default testImageUrl
+export default testImageUrl;

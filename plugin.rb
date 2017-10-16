@@ -1,46 +1,51 @@
-# name: discourse-topic-previews
-# about: A Discourse plugin that gives you a topic preview image in the topic list
-# version: 0.2
+# name: discourse-topic-list-previews
+# about: Allows you to add topic previews and other topic features to topic lists
+# version: 0.3
 # authors: Angus McLeod
+# url: https://github.com/angusmcleod/discourse-topic-previews
 
 register_asset 'stylesheets/previews_common.scss'
 register_asset 'stylesheets/previews_mobile.scss'
+
+enabled_site_setting :topic_list_previews_enabled
 
 module TopicListAddon
   def load_topics
     @topics = super
 
-    # TODO: better to keep track of previewed posts' id so they can be loaded at once
-    posts_map = {}
-    post_actions_map = {}
-    accepted_anwser_post_ids = []
-    normal_topic_ids = []
-    previewed_post_ids = []
-    @topics.each do |topic|
-      if post_id = topic.custom_fields["accepted_answer_post_id"]&.to_i
-        accepted_anwser_post_ids << post_id
-      else
-        normal_topic_ids << topic.id
+    if SiteSetting.topic_list_previews_enabled
+      # TODO: better to keep track of previewed posts' id so they can be loaded at once
+      posts_map = {}
+      post_actions_map = {}
+      accepted_anwser_post_ids = []
+      normal_topic_ids = []
+      previewed_post_ids = []
+      @topics.each do |topic|
+        if post_id = topic.custom_fields["accepted_answer_post_id"]&.to_i
+          accepted_anwser_post_ids << post_id
+        else
+          normal_topic_ids << topic.id
+        end
       end
-    end
 
-    Post.where("id IN (?)", accepted_anwser_post_ids).each do |post|
-      posts_map[post.topic_id] = post
-      previewed_post_ids << post.id
-    end
-    Post.where("post_number = 1 AND topic_id IN (?)", normal_topic_ids).each do |post|
-      posts_map[post.topic_id] = post
-      previewed_post_ids << post.id
-    end
-    if @current_user
-      PostAction.where("post_id IN (?) AND user_id = ?", previewed_post_ids, @current_user.id).each do |post_action|
-        (post_actions_map[post_action.post_id] ||= []) << post_action
+      Post.where("id IN (?)", accepted_anwser_post_ids).each do |post|
+        posts_map[post.topic_id] = post
+        previewed_post_ids << post.id
       end
-    end
+      Post.where("post_number = 1 AND topic_id IN (?)", normal_topic_ids).each do |post|
+        posts_map[post.topic_id] = post
+        previewed_post_ids << post.id
+      end
+      if @current_user
+        PostAction.where("post_id IN (?) AND user_id = ?", previewed_post_ids, @current_user.id).each do |post_action|
+          (post_actions_map[post_action.post_id] ||= []) << post_action
+        end
+      end
 
-    @topics.each do |topic|
-      topic.previewed_post = posts_map[topic.id]
-      topic.previewed_post_actions = post_actions_map[topic.previewed_post.id] if topic.previewed_post
+      @topics.each do |topic|
+        topic.previewed_post = posts_map[topic.id]
+        topic.previewed_post_actions = post_actions_map[topic.previewed_post.id] if topic.previewed_post
+      end
     end
 
     @topics
@@ -49,6 +54,7 @@ end
 
 after_initialize do
   Topic.register_custom_field_type('thumbnails', :json)
+  SiteSetting.create_thumbnails = true
 
   @nil_thumbs = TopicCustomField.where(name: 'thumbnails', value: nil)
   if @nil_thumbs.length
@@ -174,8 +180,8 @@ after_initialize do
     prepend TopicListAddon
   end
 
-  require 'cooked_post_processor'
-  class ::CookedPostProcessor
+  require_dependency 'cooked_post_processor'
+  ::CookedPostProcessor.class_eval do
     def update_post_image
       img = extract_images_for_post.first
       return if img.blank?
@@ -186,7 +192,8 @@ after_initialize do
 
         if @post.is_first_post?
           @post.topic.update_column(:image_url, url) # topic
-          return if SiteSetting.topic_list_hotlink_thumbnails
+          return if SiteSetting.topic_list_hotlink_thumbnails ||
+                    !SiteSetting.topic_list_previews_enabled
 
           ListHelper.create_topic_thumbnails(@post, url)
         end
@@ -195,7 +202,7 @@ after_initialize do
   end
 
   DiscourseEvent.on(:accepted_solution) do |post|
-    if post.image_url
+    if post.image_url && SiteSetting.topic_list_previews_enabled
       ListHelper.create_topic_thumbnails(post, post.image_url)
     end
   end
@@ -213,7 +220,7 @@ after_initialize do
                :topic_post_number
 
     def include_topic_post_id?
-      object.previewed_post.present?
+      object.previewed_post.present? && SiteSetting.topic_list_previews_enabled
     end
 
     def topic_post_id
@@ -236,7 +243,7 @@ after_initialize do
     end
 
     def include_excerpt?
-      object.excerpt.present?
+      object.excerpt.present? && SiteSetting.topic_list_previews_enabled
     end
 
     def thumbnails
@@ -250,7 +257,7 @@ after_initialize do
     end
 
     def include_thumbnails?
-      thumbnails.present? && (thumbnails[:normal].present? || thumbnails['normal'].present?)
+      thumbnails.present? && (thumbnails[:normal].present? || thumbnails['normal'].present?) && SiteSetting.topic_list_previews_enabled
     end
 
     def get_thumbnails
@@ -280,38 +287,38 @@ after_initialize do
     def topic_post_bookmarked
       !!topic_post_actions.any? { |a| a.post_action_type_id == PostActionType.types[:bookmark] }
     end
-    alias :include_topic_post_bookmarked? :topic_post_id
+    alias :include_topic_post_bookmarked? :include_topic_post_id?
 
     def topic_post_liked
       topic_like_action.any?
     end
-    alias :include_topic_post_liked? :topic_post_id
+    alias :include_topic_post_liked? :include_topic_post_id?
 
     def topic_post_like_count
       object.previewed_post&.like_count
     end
 
     def include_topic_post_like_count?
-      object.previewed_post&.id && topic_post_like_count > 0
+      object.previewed_post&.id && topic_post_like_count > 0 && SiteSetting.topic_list_previews_enabled
     end
 
     def topic_post_can_like
       return false if !scope.current_user || topic_post_is_current_users
       scope.previewed_post_can_act?(object.previewed_post, object, PostActionType.types[:like], taken_actions: topic_post_actions)
     end
-    alias :include_topic_post_can_like? :topic_post_id
+    alias :include_topic_post_can_like? :include_topic_post_id?
 
     def topic_post_is_current_users
       return scope.current_user && (object.previewed_post&.user_id == scope.current_user.id)
     end
-    alias :include_topic_post_is_current_users? :topic_post_id
+    alias :include_topic_post_is_current_users? :include_topic_post_id?
 
     def topic_post_can_unlike
       return false if !scope.current_user
       action = topic_like_action[0]
       !!(action && (action.user_id == scope.current_user.id) && (action.created_at > SiteSetting.post_undo_action_window_mins.minutes.ago))
     end
-    alias :include_topic_post_can_unlike? :topic_post_id
+    alias :include_topic_post_can_unlike? :include_topic_post_id?
 
   end
 

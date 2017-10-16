@@ -1,6 +1,6 @@
 import { registerUnbound } from 'discourse-common/lib/helpers';
-import renderUnboundPreview from 'discourse/plugins/discourse-topic-previews/lib/render-preview';
-import buttonHTML from 'discourse/plugins/discourse-topic-previews/lib/list-button';
+import renderUnboundPreview from '../lib/render-preview';
+import buttonHTML from '../lib/list-button';
 
 registerUnbound('preview-unbound', function(thumbnails, params) {
   return new Handlebars.SafeString(renderUnboundPreview(thumbnails, params));

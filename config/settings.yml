@@ -88,3 +88,6 @@ plugins:
   topic_list_thumbnail_first_x_rows:
     default: 0
     client: true
+  topic_list_previews_enabled:
+    default: true
+    client: true
