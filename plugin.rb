@@ -184,6 +184,17 @@ after_initialize do
   ::CookedPostProcessor.class_eval do
     def update_post_image
       img = extract_images_for_post.first
+
+      if @has_oneboxes
+        cooked = PrettyText.cook(@post.raw)
+        all_oneboxes = []
+        Oneboxer.each_onebox_link(cooked) do |url, element|
+          html = Nokogiri::HTML::fragment(Oneboxer.cached_preview(url))
+          all_oneboxes.push(html.at_css('img'))
+        end
+        img = all_oneboxes.first if all_oneboxes.first != img
+      end
+
       return if img.blank?
 
       if img["src"].present?
