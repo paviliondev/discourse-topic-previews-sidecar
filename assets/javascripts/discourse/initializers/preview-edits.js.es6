@@ -27,6 +27,7 @@ export default {
     if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
 
     TopicList.reopen({
+      classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions'],
 
       isDiscoveryTopicList() {
         const parentComponentKey = this.get('parentView')._debugContainerKey;
