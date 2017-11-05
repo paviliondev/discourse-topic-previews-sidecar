@@ -1,24 +1,10 @@
-import testImageUrl from '../lib/test-image-url';
+import { testImageUrl, animateHeart } from '../lib/utilities';
 import TopicListItem from 'discourse/components/topic-list-item';
 import TopicList from 'discourse/components/topic-list';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 import { popupAjaxError } from 'discourse/lib/ajax-error';
 import DiscourseURL from 'discourse/lib/url';
 import { ajax } from 'discourse/lib/ajax';
-
-var animateHeart = function($elem, start, end, complete) {
-  if (Ember.testing) { return Ember.run(this, complete); }
-
-  $elem.stop()
-       .css('textIndent', start)
-       .animate({ textIndent: end }, {
-          complete,
-          step(now) {
-            $(this).css('transform','scale('+now+')');
-          },
-          duration: 150
-        }, 'linear');
-};
 
 export default {
   name: 'preview-edits',
@@ -136,10 +122,14 @@ export default {
       @on('init')
       _setupProperties() {
         const topic = this.get('topic');
-        if (topic.get('thumbnails')) {
-          testImageUrl(topic.get('thumbnails.normal'), function(imageLoaded) {
+        const thumbnails = topic.get('thumbnails');
+        const defaultThumbnail = this.get('defaultThumbnail');
+        if (thumbnails) {
+          testImageUrl(thumbnails, (imageLoaded) => {
             if (!imageLoaded) {
-              topic.set('thumbnails', null);
+              Ember.run.scheduleOnce('afterRender', this, () => {
+                this.$('img.thumbnail').attr('src', defaultThumbnail);
+              });
             }
           });
         }
