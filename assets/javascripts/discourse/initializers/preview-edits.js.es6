@@ -18,9 +18,7 @@ export default {
 
         filter() {
           let filter = this.get('parentView.model.filter');
-          if (this.get('site.mobileView')) {
-            filter += '-mobile';
-          }
+          if (this.get('site.mobileView')) filter += '-mobile';
           return filter;
         },
 
@@ -28,17 +26,17 @@ export default {
           const discoveryList = this.get('discoveryList');
           if (!discoveryList) return false;
 
-          const category = this.get('category'),
-                filter = this.filter();
+          const category = this.get('category');
+          const filter = this.filter();
 
-          let filterArr = filter ? filter.split('/') : [],
-              filterType = filterArr[filterArr.length - 1],
-              catSetting = category ? category.get(setting) : false,
-              siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
+          const filterArr = filter ? filter.split('/') : [];
+          const filterType = filterArr[filterArr.length - 1];
+          const catSetting = category ? category.get(setting) : false;
+          const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
 
-          let catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1,
-              siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1,
-              siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
+          const catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1;
+          const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
+          const siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
 
           return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled;
         },
@@ -72,7 +70,7 @@ export default {
 
         @computed('currentRoute')
         skipHeader() {
-          return this.settingEnabled('topic_list_social') || this.get('site.mobileView');
+          return this.get('socialStyle') || this.get('site.mobileView');
         },
 
         @computed('currentRoute')
