@@ -12,6 +12,8 @@ export default {
 
     withPluginApi('0.8.12', (api) => {
       api.modifyClass('component:topic-list', {
+        router: Ember.inject.service('-routing'),
+        currentRoute: Ember.computed.alias('router.router.currentRouteName'),
         classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions'],
 
         filter() {
@@ -43,43 +45,43 @@ export default {
 
         // @computed('topics') is used because topics change whenever the route changes
 
-        @computed('topics')
+        @computed('currentRoute')
         socialStyle() {
           return this.settingEnabled('topic_list_social');
         },
 
-        @computed('topics')
+        @computed('currentRoute')
         showThumbnail() {
           return this.settingEnabled('topic_list_thumbnail');
         },
 
-        @computed('topics')
+        @computed('currentRoute')
         showExcerpt() {
           return this.settingEnabled('topic_list_excerpt');
         },
 
-        @computed('topics')
+        @computed('currentRoute')
         showActions() {
           return this.settingEnabled('topic_list_action');
         },
 
-        @computed('topics')
+        @computed('currentRoute')
         showCategoryBadge() {
           return this.settingEnabled('topic_list_category_badge_move');
         },
 
-        @computed('topics')
+        @computed('currentRoute')
         skipHeader() {
           return this.settingEnabled('topic_list_social') || this.get('site.mobileView');
         },
 
-        @computed('topics')
+        @computed('currentRoute')
         thumbnailFirstXRows() {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         },
 
         @on('didInsertElement')
-        @observes('topics')
+        @observes('currentRoute')
         setHideCategory() {
           if (this.get('site.mobileView')) return;
           this.set('hideCategory', this.settingEnabled('topic_list_category_badge_move'));
