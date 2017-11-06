@@ -1,6 +1,7 @@
 .topic-thumbnail {
   float: left;
   padding-right: 15px;
+
   .no-thumbnail {
     display: none;
   }
@@ -14,16 +15,18 @@ html:not(.mobile-view) #list-area.social-style {
   .show-more {
     top: 0;
   }
+
   tbody {
     max-width: 600px;
     display: table;
     margin: 0 auto;
   }
+
   .topic-statuses {
     float: right;
   }
+
   .topic-list-item {
-    margin-bottom: 10px;
     border-radius: 3px;
     display: inline-block;
     width: 100%;
@@ -35,6 +38,7 @@ html:not(.mobile-view) #list-area.social-style {
       display: none;
     }
   }
+
   .topic-list-item-separator {
     display: inline-block;
     width: 100%;
@@ -43,53 +47,11 @@ html:not(.mobile-view) #list-area.social-style {
       display: block;
     }
   }
+
   img.thumbnail {
     max-width: 100%;
   }
-}
 
-#list-area.social-style {
-  .main-link {
-    display: block;
-  }
-  .topic-details {
-    float: left;
-    max-height: none;
-  }
-  .topic-intro, .topic-thumbnail {
-    padding: 0;
-    margin: 5px 0;
-  }
-  .badge-wrapper.box {
-    margin: 0px;
-  }
-  .topic-title {
-    font-size: 16px;
-    margin-bottom: 7px;
-    a.title {
-      color: #222;
-    }
-    .badge-notification.new-topic {
-      vertical-align: top;
-      display: inline-block;
-    }
-  }
-  .topic-replies {
-    cursor: pointer;
-  }
-  .topic-excerpt {
-    float: none;
-    display: inline-block;
-  }
-  .topic-meta-social {
-    float: right;
-  }
-  .discourse-tags {
-    margin-top: 2px;
-  }
-}
-
-.topic-intro {
   div.inline, span.inline {
     float: none;
     display: inline-block;
@@ -101,31 +63,113 @@ html:not(.mobile-view) #list-area.social-style {
       margin: 0;
     }
   }
-  .topic-intro-details-wrapper {
-    height: 20px;
+
+  .topic-poster-names a {
+    font-size: 0.9em;
   }
+
   div.sub, span.sub {
     padding: 0;
     font-size: 12px;
   }
+
   .middot:after {
     content: '\00B7';
+  }
+}
+
+#list-area.social-style {
+  .main-link {
+    display: block;
+  }
+
+  .topic-details {
+    float: left;
+    max-height: none;
+  }
+
+  .topic-intro, .topic-thumbnail {
+    padding: 0;
+    margin: 7px 0;
+  }
+
+  .badge-wrapper.box {
+    margin: 0px;
+  }
+
+  .topic-title {
+    font-size: 16px;
+    display: flex;
+
+    .link-top-line {
+      flex: 1 1 auto;
+    }
+
+    a.title {
+      color: #222;
+    }
+
+    .badge-notification.new-topic {
+      vertical-align: top;
+      display: inline-block;
+    }
+
+    .topic-users {
+      float: right;
+    }
+  }
+
+  .topic-replies {
+    cursor: pointer;
+  }
+
+  .topic-excerpt {
+    float: none;
+    display: inline-block;
+  }
+
+  .topic-meta-social {
+    float: right;
+  }
+
+  .discourse-tags {
+    margin-top: 2px;
+  }
+
+  .topic-details {
+    width: 100%;
+  }
+
+  .activity, .age {
+    width: initial;
+  }
+
+  .list-button {
+    padding: 0;
+  }
+
+  .topic-footer {
+    display: flex;
+    justify-content: space-between;
   }
 }
 
 .topic-details {
   overflow: hidden;
   max-height: 100px;
+
   &:before {
     float: left;
     content: '';
     min-height: 20px;
   }
+
   .discourse-tags {
     float: left;
     clear: right;
     margin: 5px 0;
   }
+
   .topic-excerpt {
     margin-top: 2px;
     padding-right: 10px;
@@ -141,6 +185,7 @@ html:not(.mobile-view) #list-area.social-style {
 .main-link .topic-category {
   float: left;
   clear: left;
+
   .badge-wrapper {
     font-size: 12px;
   }
@@ -161,6 +206,7 @@ html:not(.mobile-view) #list-area.social-style {
   display: inline-block;
   vertical-align: bottom;
   margin-right: 2px;
+
   .vote-count {
     height: initial;
     line-height: initial;
@@ -185,18 +231,23 @@ html:not(.mobile-view) #list-area.social-style {
   border: none;
   padding: 2px 4px;
   overflow: hidden;
+
   i {
     vertical-align: bottom;
   }
+
   &.has-like, &.topic-like:not([disabled]):hover {
     color: $love;
   }
+
   &.has-like[disabled]:hover {
     background: transparent;
   }
+
   &.has-like[disabled]:active {
     box-shadow: none;
   }
+
   &.bookmarked, &.topic-bookmark:hover {
     i.fa-bookmark {
       color: $tertiary;
@@ -208,6 +259,7 @@ html:not(.mobile-view) #list-area.social-style {
   .fa-heart {
     color: inherit !important;
   }
+
   &.has-like {
     .fa-heart {
       color: $love !important;
@@ -218,6 +270,7 @@ html:not(.mobile-view) #list-area.social-style {
 .topic-list .posters {
   width: initial;
   min-width: initial;
+
   > a {
     float: initial;
     margin: initial;
@@ -230,4 +283,8 @@ html:not(.mobile-view) #list-area.social-style {
 
 .category-custom-settings-outlet .select2-container {
   width: 100%
+}
+
+.topic-meta {
+  float: right;
 }

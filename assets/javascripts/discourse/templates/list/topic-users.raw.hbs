@@ -1,0 +1,21 @@
+<div class='topic-users'>
+  <div class="inline">
+    {{#each topic.posters as |poster|}}
+      <a href="{{poster.user.path}}" data-user-card="{{poster.user.username}}" class="{{poster.extras}}">
+        {{avatar poster avatarTemplatePath="user.avatar_template" usernamePath="user.username" imageSize="small"}}
+      </a>
+    {{/each}}
+  </div>
+  <div class="inline">
+    <div class="topic-poster-names inline">
+      {{{posterNames}}}
+    </div>
+    {{#if topic.tags}}
+      <div class='discourse-tags inline'>
+      {{#each topic.visibleListTags as |tag|}}
+        {{discourse-tag tag}}
+      {{/each}}
+      </div>
+    {{/if}}
+  </div>
+</div>
