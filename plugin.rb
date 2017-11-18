@@ -187,12 +187,20 @@ after_initialize do
 
       if @has_oneboxes
         cooked = PrettyText.cook(@post.raw)
-        all_oneboxes = []
-        Oneboxer.each_onebox_link(cooked) do |url, element|
-          html = Nokogiri::HTML::fragment(Oneboxer.cached_preview(url))
-          all_oneboxes.push(html.at_css('img'))
+        if img
+          alt = img.attribute("alt")
+          img_index = cooked.index(alt) if alt
         end
-        img = all_oneboxes.first if all_oneboxes.first != img
+
+        prior_oneboxes = []
+        Oneboxer.each_onebox_link(cooked) do |url, element|
+          if img && cooked.index(element) < img_index
+            html = Nokogiri::HTML::fragment(Oneboxer.cached_preview(url))
+            prior_oneboxes.push(html.at_css('img'))
+          end
+        end
+
+        img = prior_oneboxes.first if prior_oneboxes.any?
       end
 
       return if img.blank?
