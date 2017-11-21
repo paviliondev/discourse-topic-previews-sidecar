@@ -119,7 +119,8 @@ export default {
             testImageUrl(thumbnails, (imageLoaded) => {
               if (!imageLoaded) {
                 Ember.run.scheduleOnce('afterRender', this, () => {
-                  this.$('img.thumbnail').attr('src', defaultThumbnail);
+                  const $thumbnail = this.$('img.thumbnail');
+                  if ($thumbnail) $thumbnail.attr('src', defaultThumbnail);
                 });
               }
             });
