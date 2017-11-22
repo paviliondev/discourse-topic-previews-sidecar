@@ -1,7 +1,9 @@
 import { on } from 'ember-addons/ember-computed-decorators';
 
 export default Ember.Component.extend({
-  classNames: 'featured-images',
+  classNameBindings: [':featured-images', 'hasImages'],
+  hasImages: Ember.computed.notEmpty('featuredList'),
+  featuredList: null,
 
   @on('init')
   images() {
