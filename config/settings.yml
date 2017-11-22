@@ -91,3 +91,10 @@ plugins:
   topic_list_previews_enabled:
     default: true
     client: true
+  topic_list_featured_images:
+    default: false
+    client: true
+  topic_list_featured_images_tag:
+    type: list
+    default: ''
+    client: true
