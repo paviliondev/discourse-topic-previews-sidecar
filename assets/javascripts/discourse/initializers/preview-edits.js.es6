@@ -18,13 +18,30 @@ export default {
 
         filter() {
           let filter = this.get('parentView.model.filter');
-          if (this.get('site.mobileView')) filter += '-mobile';
+          const mobile = this.get('site.mobileView');
+          if (mobile) filter += '-mobile';
           return filter;
         },
 
+        // needed because discoveryList is not used in mobile discourse/topics yet
+        @computed()
+        mobileDiscoveryList() {
+          const parentComponentKey = this.get('parentView')._debugContainerKey;
+          if (parentComponentKey) {
+            const parentComponentName = parentComponentKey.split(':');
+            return parentComponentName.length > 1 && parentComponentName[1] === 'discovery-topics-list';
+          }
+        },
+
         settingEnabled(setting) {
-          const discoveryList = this.get('discoveryList');
-          if (!discoveryList) return false;
+          const mobile = this.get('site.mobileView');
+          if (mobile) {
+            const mobileDiscoveryList = this.get('mobileDiscoveryList');
+            if (!mobileDiscoveryList) return false;
+          } else {
+            const discoveryList = this.get('discoveryList');
+            if (!discoveryList) return false;
+          }
 
           const category = this.get('category');
           const filter = this.filter();
@@ -40,8 +57,6 @@ export default {
 
           return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled;
         },
-
-        // @computed('topics') is used because topics change whenever the route changes
 
         @computed('currentRoute')
         socialStyle() {
