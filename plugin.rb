@@ -187,10 +187,11 @@ after_initialize do
 
       if @has_oneboxes
         cooked = PrettyText.cook(@post.raw)
+        img_id = img.attribute("alt") || img.attribute("src") if img
 
         prior_oneboxes = []
         Oneboxer.each_onebox_link(cooked) do |url, element|
-          if !img || (img && cooked.index(element).to_i < cooked.index(img.attribute("alt")).to_i)
+          if !img || (img && cooked.index(element).to_i < cooked.index(img_id).to_i)
             html = Nokogiri::HTML::fragment(Oneboxer.cached_preview(url))
             prior_oneboxes.push(html.at_css('img'))
           end
