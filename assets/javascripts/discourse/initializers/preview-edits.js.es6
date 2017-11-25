@@ -18,6 +18,8 @@ export default {
 
         filter() {
           let filter = this.get('parentView.model.filter');
+          const currentRoute = this.get('currentRoute');
+          if (currentRoute.indexOf('tags') > -1) filter = 'tags';
           const mobile = this.get('site.mobileView');
           if (mobile) filter += '-mobile';
           return filter;
@@ -44,14 +46,11 @@ export default {
             if (!discoveryList) return false;
           }
 
-          const currentRoute = this.get('currentRoute');
           const category = this.get('category');
           const catSetting = category ? category.get(setting) : false;
           const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
-
           const filterArr = filter ? filter.split('/') : [];
-          let filterType = filterArr[filterArr.length - 1];
-          if (currentRoute.indexOf('tags') > -1) filterType = 'tags';
+          const filterType = filterArr[filterArr.length - 1];
 
           const catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1;
           const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
