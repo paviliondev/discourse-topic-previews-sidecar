@@ -249,10 +249,9 @@ after_initialize do
 
     def excerpt
       if object.previewed_post
-        cooked = object.previewed_post.cooked
-        excerpt = PrettyText.excerpt(cooked, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
-        excerpt.gsub!(/(\[#{I18n.t 'excerpt_image'}\])/, "") if excerpt
-        excerpt
+        doc = Nokogiri::HTML::fragment(object.previewed_post.cooked)
+        doc.search('.//img').remove
+        PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
       else
         object.excerpt
       end
