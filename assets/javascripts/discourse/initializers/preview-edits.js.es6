@@ -166,7 +166,6 @@ export default {
             }
             if (this.get('showExcerpt')) {
               this._setupExcerptClick();
-              this._setupExcerptHeight();
             }
             if (this.get('showActions')) {
               this._setupActions();
@@ -176,17 +175,6 @@ export default {
 
         _setupTitleCSS() {
           this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
-        },
-
-        _setupExcerptHeight() {
-          if (!this.get('socialStyle') && this.get('showExcerpt')) {
-            let height = 0;
-            this.$('.topic-details > :not(.topic-excerpt):not(.discourse-tags)').each(function(){
-              height += $(this).height();
-            });
-            let excerpt = 100 - height;
-            this.$('.topic-excerpt').css('max-height', (excerpt >= 17 ? (excerpt > 35 ? excerpt : 17) : 0));
-          }
         },
 
         _setupExcerptClick() {
