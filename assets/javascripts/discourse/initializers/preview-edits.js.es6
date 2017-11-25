@@ -36,7 +36,7 @@ export default {
         settingEnabled(setting) {
           const mobile = this.get('site.mobileView');
           const filter = this.filter();
-          if (mobile || filter.indexOf('tags') > -1) {
+          if (mobile || (filter && filter.indexOf('tags') > -1)) {
             const mobileDiscoveryList = this.get('mobileDiscoveryList');
             if (!mobileDiscoveryList) return false;
           } else {
