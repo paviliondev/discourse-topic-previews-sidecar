@@ -9,7 +9,7 @@
     {{raw "list/topic-list-title" topic=topic socialStyle=socialStyle}}
   {{/if}}
   {{#if showThumbnail}}
-    {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+    {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category}}
   {{/if}}
   <div class="topic-details">
     {{#unless socialStyle}}

@@ -8,3 +8,7 @@ en:
       topic_list_category_badge_move: "Show category badge under topic title in selected lists in this category."
       topic_list_default_thumbnail: "Image URL for thumbnail shown if topic in this category has no preview thumbnail set."
       topic_list_default_thumbnail_placeholder: "Default thumbnail URL"
+      topic_list_thumbnail_width: "Width of thumbnails in this category (rebake your posts if you change this)."
+      topic_list_thumbnail_height: "Height of thumbnails in this category (rebake your posts if you change this)."
+      topic_list_thumbnail_width_placeholder: "px"
+      topic_list_thumbnail_height_placeholder: "px"

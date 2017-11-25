@@ -54,6 +54,8 @@ end
 
 after_initialize do
   Topic.register_custom_field_type('thumbnails', :json)
+  Category.register_custom_field_type('thumbnail_width', :integer)
+  Category.register_custom_field_type('thumbnail_height', :integer)
   SiteSetting.create_thumbnails = true
 
   @nil_thumbs = TopicCustomField.where(name: 'thumbnails', value: nil)
@@ -71,7 +73,7 @@ after_initialize do
         local = UrlHelper.is_local(url)
         image = local ? Upload.find_by(sha1: url[/[a-z0-9]{40,}/i]) : get_linked_image(post, url)
         Rails.logger.info "Creating thumbnails with: #{image}"
-        create_thumbnails(post.topic.id, image, url)
+        create_thumbnails(post.topic, image, url)
       end
 
       def get_linked_image(post, url)
@@ -99,13 +101,15 @@ after_initialize do
         image
       end
 
-      def create_thumbnails(id, image, original_url)
-        width = SiteSetting.topic_list_thumbnail_width
-        height = SiteSetting.topic_list_thumbnail_height
+      def create_thumbnails(topic, image, original_url)
+        category_height = topic.category ? topic.category.custom_fields['topic_list_thumbnail_height'] : false
+        category_width = topic.category ? topic.category.custom_fields['topic_list_thumbnail_width'] : false
+        width = category_height ? category_height : SiteSetting.topic_list_thumbnail_width
+        height = category_width ? category_width : SiteSetting.topic_list_thumbnail_height
         normal = image ? thumbnail_url(image, width, height, original_url) : original_url
         retina = image ? thumbnail_url(image, width * 2, height * 2, original_url) : original_url
         thumbnails = { normal: normal, retina: retina }
-        save_thumbnails(id, thumbnails)
+        save_thumbnails(topic.id, thumbnails)
         return thumbnails
       end
 
@@ -288,7 +292,7 @@ after_initialize do
 
     def get_thumbnails_from_image_url
       image = Upload.get_from_url(object.image_url) rescue false
-      return ListHelper.create_thumbnails(object.id, image, object.image_url)
+      return ListHelper.create_thumbnails(object, image, object.image_url)
     end
 
     def topic_post_actions
@@ -343,4 +347,6 @@ after_initialize do
   add_to_serializer(:basic_category, :topic_list_action) { object.custom_fields["topic_list_action"] }
   add_to_serializer(:basic_category, :topic_list_category_badge_move) { object.custom_fields["topic_list_category_badge_move"] }
   add_to_serializer(:basic_category, :topic_list_default_thumbnail) { object.custom_fields["topic_list_default_thumbnail"] }
+  add_to_serializer(:basic_category, :topic_list_thumbnail_width) { object.custom_fields['topic_list_thumbnail_width'] }
+  add_to_serializer(:basic_category, :topic_list_thumbnail_height) { object.custom_fields['topic_list_thumbnail_height'] }
 end

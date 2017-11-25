@@ -28,4 +28,14 @@
     <label>{{i18n 'category.topic_list_default_thumbnail'}}</label>
     {{text-field value=category.custom_fields.topic_list_default_thumbnail placeholderKey="category.topic_list_default_thumbnail_placeholder"}}
   </section>
+
+  <section class='field'>
+    <label>{{i18n 'category.topic_list_thumbnail_width'}}</label>
+    {{input type='integer' class='input-small' value=category.custom_fields.topic_list_thumbnail_width placeholderKey="category.topic_list_thumbnail_width_placeholder"}}
+  </section>
+
+  <section class='field'>
+    <label>{{i18n 'category.topic_list_thumbnail_height'}}</label>
+    {{input type='integer' class='input-small' value=category.custom_fields.topic_list_thumbnail_height placeholderKey="category.topic_list_thumbnail_height_placeholder"}}
+  </section>
 {{/if}}

@@ -123,6 +123,7 @@ export default {
         showActions: Ember.computed.alias('parentView.showActions'),
         showCategoryBadge: Ember.computed.alias('parentView.showCategoryBadge'),
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
+        category: Ember.computed.alias('parentView.category'),
 
         // Lifecyle logic
 

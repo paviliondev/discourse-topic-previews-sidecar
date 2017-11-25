@@ -12,8 +12,10 @@ var renderUnboundPreview = function(thumbnails, params) {
     return '<img class="thumbnail" src="' + url + '"/>';
   }
   const attrPrefix = params.isSocial ? 'max-' : '';
-  const height = Discourse.SiteSettings.topic_list_thumbnail_height;
-  const width = Discourse.SiteSettings.topic_list_thumbnail_width;
+  const category_width = params.category ? params.category.topic_list_thumbnail_width : false;
+  const category_height = params.category ? params.category.topic_list_thumbnail_height : false;
+  const height = category_width || Discourse.SiteSettings.topic_list_thumbnail_height;
+  const width = category_height || Discourse.SiteSettings.topic_list_thumbnail_width;
   const style = `object-fit:cover;${attrPrefix}height:${height}px;${attrPrefix}width:${width}px`;
   return '<img class="thumbnail" src="' + url + '" style="' + style + '" />';
 };

@@ -285,8 +285,14 @@ html:not(.mobile-view) #list-area.social-style {
   white-space: nowrap;
 }
 
-.category-custom-settings-outlet .select2-container {
-  width: 100%
+.category-custom-settings-outlet {
+  .select2-container {
+    width: 100%
+  }
+
+  .input-small {
+    width: 60px;
+  }
 }
 
 .topic-meta {
