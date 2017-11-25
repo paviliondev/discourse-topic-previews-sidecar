@@ -2,6 +2,14 @@
   <div class='topic-category inline sub'>
     {{category-link topic.category}}
   </div>
+  <span class="middot inline sub"></span>
+  {{#if topic.tags}}
+    <div class='discourse-tags inline sub'>
+    {{#each topic.visibleListTags as |tag|}}
+      {{discourse-tag tag}}
+    {{/each}}
+    </div>
+  {{/if}}
   {{raw-plugin-outlet name="topic-list-tags"}}
   <span class="middot inline sub"></span>
   <div class="topic-views {{topic.viewsHeat}} inline sub">
