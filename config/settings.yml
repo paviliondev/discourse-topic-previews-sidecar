@@ -8,10 +8,12 @@ plugins:
      - new
      - unread
      - top
+     - tags
      - latest-mobile
      - new-mobile
      - unread-mobile
      - top-mobile
+     - tags-mobile
   topic_list_thumbnail:
     client: true
     type: list
@@ -21,10 +23,12 @@ plugins:
      - new
      - unread
      - top
+     - tags
      - latest-mobile
      - new-mobile
      - unread-mobile
      - top-mobile
+     - tags-mobile
   topic_list_excerpt:
     client: true
     type: list
@@ -34,10 +38,12 @@ plugins:
      - new
      - unread
      - top
+     - tags
      - latest-mobile
      - new-mobile
      - unread-mobile
      - top-mobile
+     - tags-mobile
   topic_list_action:
     client: true
     type: list
@@ -47,10 +53,12 @@ plugins:
      - new
      - unread
      - top
+     - tags
      - latest-mobile
      - new-mobile
      - unread-mobile
      - top-mobile
+     - tags-mobile
   topic_list_category_badge_move:
     client: true
     type: list
@@ -60,10 +68,12 @@ plugins:
      - new
      - unread
      - top
+     - tags
      - latest-mobile
      - new-mobile
      - unread-mobile
      - top-mobile
+     - tags-mobile
   topic_list_set_category_defaults:
     default: false
     client: true

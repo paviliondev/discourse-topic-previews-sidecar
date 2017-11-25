@@ -23,7 +23,7 @@ export default {
           return filter;
         },
 
-        // needed because discoveryList is not used in mobile discourse/topics yet
+        // needed because discoveryList is not used in mobile discourse/topics yet, or in /tags
         @computed()
         mobileDiscoveryList() {
           const parentComponentKey = this.get('parentView')._debugContainerKey;
@@ -35,7 +35,8 @@ export default {
 
         settingEnabled(setting) {
           const mobile = this.get('site.mobileView');
-          if (mobile) {
+          const filter = this.filter();
+          if (mobile || filter.indexOf('tags') > -1) {
             const mobileDiscoveryList = this.get('mobileDiscoveryList');
             if (!mobileDiscoveryList) return false;
           } else {
@@ -43,13 +44,14 @@ export default {
             if (!discoveryList) return false;
           }
 
+          const currentRoute = this.get('currentRoute');
           const category = this.get('category');
-          const filter = this.filter();
-
-          const filterArr = filter ? filter.split('/') : [];
-          const filterType = filterArr[filterArr.length - 1];
           const catSetting = category ? category.get(setting) : false;
           const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
+
+          const filterArr = filter ? filter.split('/') : [];
+          let filterType = filterArr[filterArr.length - 1];
+          if (currentRoute.indexOf('tags') > -1) filterType = 'tags';
 
           const catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1;
           const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;

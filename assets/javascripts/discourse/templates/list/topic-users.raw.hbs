@@ -6,16 +6,4 @@
       </a>
     {{/each}}
   </div>
-  <div class="inline">
-    <div class="topic-poster-names inline">
-      {{{posterNames}}}
-    </div>
-    {{#if topic.tags}}
-      <div class='discourse-tags inline'>
-      {{#each topic.visibleListTags as |tag|}}
-        {{discourse-tag tag}}
-      {{/each}}
-      </div>
-    {{/if}}
-  </div>
 </div>
