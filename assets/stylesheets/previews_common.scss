@@ -72,10 +72,10 @@ html:not(.mobile-view) #list-area.social-style {
     padding: 0;
     font-size: 12px;
   }
+}
 
-  .middot:after {
-    content: '\00B7';
-  }
+.middot:after {
+  content: '\00B7';
 }
 
 #list-area.social-style {

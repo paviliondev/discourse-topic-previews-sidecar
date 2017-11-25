@@ -1,7 +1,6 @@
 <td>
   {{#if socialStyle}}
-    {{topic-link topic}}
-    {{raw "list/topic-intro" topic=topic}}
+    {{raw "list/topic-list-title" topic=topic socialStyle=socialStyle mobileView=site.mobileView}}
     {{#if showThumbnail}}
       {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
     {{/if}}
@@ -37,7 +36,12 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#unless socialStyle}}
+    {{#if socialStyle}}
+      {{raw "list/topic-meta" title=view.title likesHeat=view.likesHeat topic=topic}}
+      {{#if showActions}}
+        {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
+      {{/if}}
+    {{else}}
       {{#unless hideCategory}}
         {{raw "list/topic-category" category=topic.category}}
       {{/unless}}
@@ -48,18 +52,16 @@
         {{/each}}
         </div>
       {{/if}}
-    {{/unless}}
 
-    {{raw-plugin-outlet name="topic-list-tags"}}
+      {{raw-plugin-outlet name="topic-list-tags"}}
 
-    {{#if showActions}}
-      {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
-    {{/if}}
+      {{#if showActions}}
+        {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
+      {{/if}}
 
-    {{#unless socialStyle}}
       <div class='num activity last'>
         <span class="age activity" title="{{topic.bumpedAtTitle}}"><a href="{{topic.lastPostUrl}}">{{format-date topic.bumpedAt format="tiny" noTitle="true"}}</a></span>
       </div>
-    {{/unless}}
+    {{/if}}
   </div>
 </td>

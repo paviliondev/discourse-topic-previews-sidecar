@@ -11,7 +11,6 @@
     min-height: 45px;
   }
   .topic-excerpt {
-    margin-top: 5px;
     max-height: initial;
     width: 100%;
   }
@@ -20,7 +19,9 @@
     display: inline-block;
   }
   .topic-actions {
-    margin-top: 7px;
+    margin-top: 5px;
+    height: 16px;
+    float: none;
   }
   .list-button {
     font-size: 1.2em;
@@ -54,29 +55,7 @@
   td a.title {
     font-size: 18px;
   }
-  .topic-intro {
-    margin: 8px 0;
-    font-size: 1em;
-    img {
-      width: 40px;
-      height: 40px;
-    }
-    div.inline, span.inline {
-      float: none;
-      display: inline-block;
-      vertical-align: top;
-      padding: 0 5px 0 0;
-      margin: 0;
-      width: auto;
-    }
-    div.sub, span.sub {
-      padding: 0;
-      font-size: 1em;
-    }
-    .middot:after {
-      content: '\00B7';
-    }
-  }
+
   .topic-details {
     padding: 0;
     float: none;
@@ -84,16 +63,20 @@
     clear: both;
     min-height: initial;
   }
+
   .topic-details:before {
     display: none;
   }
+
   .main-link {
     width: 100%;
   }
+
   .topic-statuses {
     display: initial;
     float: left;
   }
+
   .topic-excerpt {
     font-size: 1em;
     float: none;
@@ -103,9 +86,7 @@
     margin-top: 5px;
     max-height: initial;
   }
-  .topic-actions {
-    font-size: 1em;
-  }
+
   .topic-thumbnail {
     width:100%;
     a {
@@ -116,6 +97,32 @@
       max-width:100%;
       max-height:200px;
       object-fit:cover;
+    }
+  }
+
+  .topic-meta {
+    display: inline-block;
+    width: 100%;
+
+    .inline {
+      display: inline-block;
+      font-size: 0.9em;
+
+      .badge-wrapper.bullet {
+        margin: 0;
+      }
+
+      .posts-map {
+        font-size: 1em;
+      }
+    }
+  }
+
+  .topic-actions {
+    float: right;
+
+    .list-button {
+      margin-left: 10px;
     }
   }
 }
