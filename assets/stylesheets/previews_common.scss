@@ -309,7 +309,8 @@ html:not(.mobile-view) #list-area.social-style {
   .images {
     padding: 0 10px;
     display: flex;
-    overflow: scroll;
+    overflow-x: scroll;
+    overflow-y: hidden;
 
     .topic-thumbnail {
       float: none;
