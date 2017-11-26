@@ -1,7 +1,7 @@
 <div class="images">
   {{#each featuredImageList as |t|}}
     <div class="topic-thumbnail">
-      <a href='{{t.url}}'>
+      <a href='t/{{t.id}}'>
         {{preview-unbound t.thumbnails featured=featured}}
       </a>
     </div>
