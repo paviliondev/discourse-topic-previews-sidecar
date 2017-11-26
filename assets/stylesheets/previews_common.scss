@@ -30,10 +30,12 @@ html:not(.mobile-view) #list-area.social-style {
     border-radius: 3px;
     display: inline-block;
     width: 100%;
+
     td.main-link {
       border: none;
       padding: 15px;
     }
+
     td:not(.main-link) {
       display: none;
     }
@@ -43,6 +45,7 @@ html:not(.mobile-view) #list-area.social-style {
     display: inline-block;
     width: 100%;
     margin-bottom: 10px;
+
     td {
       display: block;
     }
@@ -98,7 +101,7 @@ html:not(.mobile-view) #list-area.social-style {
   }
 
   .topic-title {
-    font-size: 16px;
+    font-size: 1.143em;
     display: flex;
     margin-bottom: 5px;
 
