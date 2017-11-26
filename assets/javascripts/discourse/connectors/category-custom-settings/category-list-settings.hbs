@@ -38,4 +38,9 @@
     <label>{{i18n 'category.topic_list_thumbnail_height'}}</label>
     {{input type='integer' class='input-small' value=category.custom_fields.topic_list_thumbnail_height placeholderKey="category.topic_list_thumbnail_height_placeholder"}}
   </section>
+
+  <section class='field'>
+    {{input type='checkbox' checked=category.custom_fields.topic_list_featured_images}}
+    <span>{{i18n 'category.topic_list_featured_images'}}</span>
+  </section>
 {{/if}}

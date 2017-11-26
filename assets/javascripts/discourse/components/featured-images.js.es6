@@ -1,16 +1,22 @@
 import { on } from 'ember-addons/ember-computed-decorators';
+import { ajax } from 'discourse/lib/ajax';
 
 export default Ember.Component.extend({
   classNameBindings: [':featured-images', 'hasImages'],
-  hasImages: Ember.computed.notEmpty('featuredList'),
-  featuredList: null,
+  hasImages: Ember.computed.notEmpty('featuredImageList'),
+  featuredImageList: null,
 
   @on('init')
   images() {
     const tagId = this.siteSettings.topic_list_featured_images_tag;
-    this.store.findFiltered('topicList', {filter: 'tags/' + tagId}).then((list) => {
-      if (list && list.topics) {
-        this.set('featuredList', list.topics);
+    ajax(`/tags/${tagId}`, {
+      data: { featured_images: true }
+    }).then((result) => {
+      const topicList = result.topic_list;
+      if (topicList && topicList.topics && topicList.topics.length > 0) {
+        const topics = topicList.topics.filter((t) => t.thumbnails);
+        const count = this.siteSettings.topic_list_featured_images_count;
+        this.set('featuredImageList', topics.slice(0, count));
       }
     });
   }

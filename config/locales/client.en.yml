@@ -12,3 +12,4 @@ en:
       topic_list_thumbnail_height: "Height of thumbnails in this category (rebake your posts if you change this)."
       topic_list_thumbnail_width_placeholder: "px"
       topic_list_thumbnail_height_placeholder: "px"
+      topic_list_featured_images: "Enable featured images in this category."

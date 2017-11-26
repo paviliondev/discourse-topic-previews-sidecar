@@ -304,4 +304,21 @@ html:not(.mobile-view) #list-area.social-style {
 
 .featured-images.has-images {
   display: inline-block;
+  width: 100%;
+
+  .images {
+    padding: 0 10px;
+    display: flex;
+
+    .topic-thumbnail {
+      float: none;
+      padding-right: 10px;
+    }
+  }
+
+  .featured-link {
+    margin-top: 10px;
+    padding-right: 10px;
+    float: right;
+  }
 }

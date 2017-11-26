@@ -104,7 +104,19 @@ plugins:
   topic_list_featured_images:
     default: false
     client: true
+  topic_list_featured_images_category:
+    default: false
+    client: true
   topic_list_featured_images_tag:
     type: list
     default: ''
+    client: true
+  topic_list_featured_images_count:
+    default: 4
+    client: true
+  topic_list_featured_width:
+    default: 100
+    client: true
+  topic_list_featured_height:
+    default: 100
     client: true

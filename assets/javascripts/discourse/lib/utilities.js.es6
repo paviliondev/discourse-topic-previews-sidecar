@@ -10,12 +10,14 @@ var renderUnboundPreview = function(thumbnails, params) {
   const url = previewUrl(thumbnails);
   if (Discourse.Site.currentProp('mobileView')) {
     return '<img class="thumbnail" src="' + url + '"/>';
-  }
+  };
   const attrPrefix = params.isSocial ? 'max-' : '';
   const category_width = params.category ? params.category.topic_list_thumbnail_width : false;
   const category_height = params.category ? params.category.topic_list_thumbnail_height : false;
-  const height = category_height || Discourse.SiteSettings.topic_list_thumbnail_height;
-  const width = category_width || Discourse.SiteSettings.topic_list_thumbnail_width;
+  const featured_width = params.featured ? Discourse.SiteSettings.topic_list_featured_width : false;
+  const featured_height = params.featured ? Discourse.SiteSettings.topic_list_featured_height : false;
+  const height = featured_width || category_height || Discourse.SiteSettings.topic_list_thumbnail_height;
+  const width = featured_height || category_width || Discourse.SiteSettings.topic_list_thumbnail_width;
   const style = `object-fit:cover;${attrPrefix}height:${height}px;${attrPrefix}width:${width}px`;
   return '<img class="thumbnail" src="' + url + '" style="' + style + '" />';
 };

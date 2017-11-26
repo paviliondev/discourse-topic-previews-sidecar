@@ -1,5 +1,5 @@
-{{#if siteSettings.topic_list_featured_images}}
+{{#if (featuredImagesEnabled category)}}
   {{#unless site.mobileView}}
-    {{featured-images category=category}}
+    {{featured-images category=category featured=true}}
   {{/unless}}
 {{/if}}

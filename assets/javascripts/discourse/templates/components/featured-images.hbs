@@ -1,3 +1,12 @@
-{{#each featuredList as |t|}}
-  {{raw "list/topic-thumbnail" topic=t thumbnails=t.thumbnails}}
-{{/each}}
+<div class="images">
+  {{#each featuredImageList as |t|}}
+    <div class="topic-thumbnail">
+      <a href='{{t.url}}'>
+        {{preview-unbound t.thumbnails featured=featured}}
+      </a>
+    </div>
+  {{/each}}
+</div>
+<div class="featured-link">
+  {{discourse-tag siteSettings.topic_list_featured_images_tag}}
+</div>

@@ -56,6 +56,7 @@ after_initialize do
   Topic.register_custom_field_type('thumbnails', :json)
   Category.register_custom_field_type('thumbnail_width', :integer)
   Category.register_custom_field_type('thumbnail_height', :integer)
+  Category.register_custom_field_type('topic_list_featured_images', :boolean)
   SiteSetting.create_thumbnails = true
 
   @nil_thumbs = TopicCustomField.where(name: 'thumbnails', value: nil)
@@ -265,9 +266,23 @@ after_initialize do
       object.excerpt.present? && SiteSetting.topic_list_previews_enabled
     end
 
+    def featured_images_enabled
+      if !object.category || SiteSetting.topic_list_featured_images_category
+        SiteSetting.topic_list_featured_images
+      else
+        object.category.custom_fields['topic_list_featured_images']
+      end
+    end
+
+    def featured_images
+      featured_images_enabled &&
+      scope.featured_images &&
+      tags.include?(SiteSetting.topic_list_featured_images_tag)
+    end
+
     def thumbnails
       return unless object.archetype == Archetype.default
-      if SiteSetting.topic_list_hotlink_thumbnails
+      if SiteSetting.topic_list_hotlink_thumbnails || featured_images
         thumbs = { normal: object.image_url, retina: object.image_url }
       else
         thumbs = get_thumbnails || get_thumbnails_from_image_url
@@ -280,14 +295,14 @@ after_initialize do
     end
 
     def get_thumbnails
-      thumbnails = object.custom_fields['thumbnails']
-      if thumbnails.is_a?(String)
-        thumbnails = ::JSON.parse(thumbnails)
+      thumbs = object.custom_fields['thumbnails']
+      if thumbs.is_a?(String)
+        thumbs = ::JSON.parse(thumbs)
       end
-      if thumbnails.is_a?(Array)
-        thumbnails = thumbnails[0]
+      if thumbs.is_a?(Array)
+        thumbs = thumbs[0]
       end
-      thumbnails.is_a?(Hash) ? thumbnails : false
+      thumbs.is_a?(Hash) ? thumbs : false
     end
 
     def get_thumbnails_from_image_url
@@ -338,7 +353,20 @@ after_initialize do
       !!(action && (action.user_id == scope.current_user.id) && (action.created_at > SiteSetting.post_undo_action_window_mins.minutes.ago))
     end
     alias :include_topic_post_can_unlike? :include_topic_post_id?
+  end
 
+  Guardian.class_eval do
+    attr_accessor :featured_images
+  end
+
+  TagsController.class_eval do
+    before_action :include_featured_images_param
+
+    def include_featured_images_param
+      if params[:featured_images]
+        guardian.featured_images = true
+      end
+    end
   end
 
   add_to_serializer(:basic_category, :topic_list_social) { object.custom_fields["topic_list_social"] }
@@ -349,4 +377,5 @@ after_initialize do
   add_to_serializer(:basic_category, :topic_list_default_thumbnail) { object.custom_fields["topic_list_default_thumbnail"] }
   add_to_serializer(:basic_category, :topic_list_thumbnail_width) { object.custom_fields['topic_list_thumbnail_width'] }
   add_to_serializer(:basic_category, :topic_list_thumbnail_height) { object.custom_fields['topic_list_thumbnail_height'] }
+  add_to_serializer(:basic_category, :topic_list_featured_images) { object.custom_fields['topic_list_featured_images'] }
 end
