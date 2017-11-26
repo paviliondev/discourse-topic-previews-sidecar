@@ -102,10 +102,10 @@ after_initialize do
       end
 
       def create_thumbnails(topic, image, original_url)
-        category_height = topic.category ? topic.category.custom_fields['topic_list_thumbnail_height'] : false
-        category_width = topic.category ? topic.category.custom_fields['topic_list_thumbnail_width'] : false
-        width = category_width ? category_width : SiteSetting.topic_list_thumbnail_width
-        height = category_height ? category_height : SiteSetting.topic_list_thumbnail_height
+        category_height = topic.category ? topic.category.custom_fields['topic_list_thumbnail_height'] : ''
+        category_width = topic.category ? topic.category.custom_fields['topic_list_thumbnail_width'] : ''
+        width = category_width.present? ? category_width : SiteSetting.topic_list_thumbnail_width
+        height = category_height.present? ? category_height : SiteSetting.topic_list_thumbnail_height
         normal = image ? thumbnail_url(image, width, height, original_url) : original_url
         retina = image ? thumbnail_url(image, width * 2, height * 2, original_url) : original_url
         thumbnails = { normal: normal, retina: retina }
