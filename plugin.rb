@@ -291,7 +291,17 @@ after_initialize do
     end
 
     def include_thumbnails?
-      thumbnails.present? && (thumbnails[:normal].present? || thumbnails['normal'].present?) && SiteSetting.topic_list_previews_enabled
+      SiteSetting.topic_list_previews_enabled &&
+      thumbnails.present? &&
+      thumbnails['normal'] &&
+      is_thumbnail?(thumbnails['normal'])
+    end
+
+    def is_thumbnail?(path)
+      path.is_a?(String) &&
+      path != 'false' &&
+      path != 'null' &&
+      path != 'nil'
     end
 
     def get_thumbnails

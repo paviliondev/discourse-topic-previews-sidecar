@@ -140,7 +140,8 @@ export default {
                     const $thumbnail = this.$('img.thumbnail');
                     if ($thumbnail) $thumbnail.attr('src', defaultThumbnail);
                   } else {
-                    this.$('.topic-thumbnail').hide();
+                    const $container = this.$('.topic-thumbnail');
+                    if ($container) $container.hide();
                   }
                 });
               }

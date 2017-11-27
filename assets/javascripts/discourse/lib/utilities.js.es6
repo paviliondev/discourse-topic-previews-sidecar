@@ -1,13 +1,26 @@
+var isThumbnail = function(path) {
+  return typeof path === 'string' &&
+         path !== 'false' &&
+         path !== 'nil' &&
+         path !== 'null' &&
+         path !== '';
+};
+
 var previewUrl = function(thumbnails) {
-  if (thumbnails.retina) {
+  if (thumbnails.retina && isThumbnail(thumbnails.retina)) {
     return window.devicePixelRatio >= 2 ? thumbnails.retina : thumbnails.normal;
-  } else {
+  } else if (thumbnails.normal && isThumbnail(thumbnails.normal)) {
+    return thumbnails.normal;
+  } else if (thumbnails && isThumbnail(thumbnails)) {
     return thumbnails;
-  };
+  } else {
+    return false;
+  }
 };
 
 var renderUnboundPreview = function(thumbnails, params) {
   const url = previewUrl(thumbnails);
+  if (!url) return '';
   if (Discourse.Site.currentProp('mobileView')) {
     return '<img class="thumbnail" src="' + url + '"/>';
   };
