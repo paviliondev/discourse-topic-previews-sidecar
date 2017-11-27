@@ -283,18 +283,17 @@ after_initialize do
     def thumbnails
       return unless object.archetype == Archetype.default
       if SiteSetting.topic_list_hotlink_thumbnails || featured_images
-        thumbs = { normal: object.image_url, retina: object.image_url }
+        { normal: object.image_url, retina: object.image_url }
       else
-        thumbs = get_thumbnails || get_thumbnails_from_image_url
+        get_thumbnails || get_thumbnails_from_image_url
       end
-      thumbs
     end
 
     def include_thumbnails?
       SiteSetting.topic_list_previews_enabled &&
       thumbnails.present? &&
-      thumbnails['normal'] &&
-      is_thumbnail?(thumbnails['normal'])
+      thumbnails[:normal].present? &&
+      is_thumbnail?(thumbnails[:normal])
     end
 
     def is_thumbnail?(path)
