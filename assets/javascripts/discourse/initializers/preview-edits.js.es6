@@ -259,7 +259,7 @@ export default {
 
         @computed('topic.thumbnails')
         thumbnails(){
-          return this.get('topic.thumbnails') || this.get('defaultThumbnail');
+          return this.get('topic.thumbnails');
         },
 
         @computed()
