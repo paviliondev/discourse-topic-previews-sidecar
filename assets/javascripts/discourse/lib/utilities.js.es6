@@ -37,7 +37,7 @@ var renderUnboundPreview = function(thumbnails, params) {
 
 var testImageUrl = function(thumbnails, callback) {
   const url = previewUrl(thumbnails);
-  let timeout = 5000;
+  let timeout = Discourse.SiteSettings.topic_list_test_image_url_timeout;
   let timer, img = new Image();
   img.onerror = img.onabort = function () {
     clearTimeout(timer);
