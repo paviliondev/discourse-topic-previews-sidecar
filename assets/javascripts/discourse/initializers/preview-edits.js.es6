@@ -146,6 +146,8 @@ export default {
                 });
               }
             });
+          } else if (defaultThumbnail && Discourse.SiteSettings.topic_list_default_thumbnail_fallback) {
+            this.set('thumbnails', defaultThumbnail);
           }
         },
 

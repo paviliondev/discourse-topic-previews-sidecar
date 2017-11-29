@@ -86,6 +86,9 @@ plugins:
   topic_list_default_thumbnail:
     default: ''
     client: true
+  topic_list_default_thumbnail_fallback:
+    default: false
+    client: true
   topic_list_thumbnail_width:
     default: 100
     client: true
