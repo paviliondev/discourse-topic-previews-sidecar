@@ -97,8 +97,10 @@ export default {
         @on('didInsertElement')
         @observes('currentRoute')
         setHideCategory() {
-          if (this.get('site.mobileView')) return;
-          this.set('hideCategory', this.settingEnabled('topic_list_category_badge_move'));
+          const mobile = this.get('site.mobileView');
+          if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
+            this.set('hideCategory', true);
+          }
         },
 
         @on("didInsertElement")
