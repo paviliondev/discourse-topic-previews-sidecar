@@ -312,9 +312,25 @@ html:not(.mobile-view) #list-area.social-style {
     overflow-x: scroll;
     overflow-y: hidden;
 
-    .topic-thumbnail {
-      float: none;
-      padding-right: 10px;
+    .featured-image {
+      margin-right: 10px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .featured-details {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(62, 66, 79, 0.8);
+      padding: 15px;
+
+      .excerpt {
+        color: $secondary;
+        padding-bottom: 15px;
+      }
     }
   }
 

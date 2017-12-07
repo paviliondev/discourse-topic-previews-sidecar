@@ -238,7 +238,8 @@ after_initialize do
                :topic_post_can_unlike,
                :topic_post_bookmarked,
                :topic_post_is_current_users,
-               :topic_post_number
+               :topic_post_number,
+               :topic_post_username
 
     def include_topic_post_id?
       object.previewed_post.present? && SiteSetting.topic_list_previews_enabled
@@ -278,6 +279,14 @@ after_initialize do
       featured_images_enabled &&
       scope.featured_images &&
       tags.include?(SiteSetting.topic_list_featured_images_tag)
+    end
+
+    def topic_post_username
+      object.previewed_post.user.username
+    end
+
+    def include_topic_post_username?
+      featured_images
     end
 
     def thumbnails
