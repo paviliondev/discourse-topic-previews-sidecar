@@ -314,21 +314,34 @@ html:not(.mobile-view) #list-area.social-style {
 
     .featured-image {
       margin-right: 10px;
-      position: relative;
       cursor: pointer;
+      position: relative;
+
+      &.show-details .featured-details {
+        background-color: rgba(62, 66, 79, 0.8);
+
+        .content, .content a {
+          color: $secondary;
+        }
+      }
     }
 
     .featured-details {
+      transition: background-color 200ms linear;
+      background-color: rgba(0,0,0,0);
+      padding: 15px;
       position: absolute;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
-      background-color: rgba(62, 66, 79, 0.8);
-      padding: 15px;
+
+      .content, .content a {
+        color: transparent;
+        transition: color 200ms linear;
+      }
 
       .excerpt {
-        color: $secondary;
         padding-bottom: 15px;
       }
     }

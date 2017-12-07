@@ -1,7 +1,7 @@
 import DiscourseUrl from 'discourse/lib/url';
 
 export default Ember.Component.extend({
-  classNames: ['featured-image'],
+  classNameBindings: [':featured-image', "showDetails"],
 
   mouseEnter() {
     this.set('showDetails', true);
