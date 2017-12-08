@@ -1,11 +1,15 @@
 {{preview-unbound topic.thumbnails featured=true}}
 <div class="featured-details">
   <div class="content">
+    <div class="title">
+      {{topic.title}}
+    </div>
     <div class="excerpt">
       {{{topic.excerpt}}}
     </div>
     <span class="user">
-      {{topic.topic_post_username}}
+      {{topic.topic_post_user.username}}
+      {{avatar topic.topic_post_user imageSize="small"}}
     </span>
   </div>
 </div>

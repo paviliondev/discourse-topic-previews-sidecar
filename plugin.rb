@@ -239,7 +239,7 @@ after_initialize do
                :topic_post_bookmarked,
                :topic_post_is_current_users,
                :topic_post_number,
-               :topic_post_username
+               :topic_post_user
 
     def include_topic_post_id?
       object.previewed_post.present? && SiteSetting.topic_list_previews_enabled
@@ -281,11 +281,11 @@ after_initialize do
       tags.include?(SiteSetting.topic_list_featured_images_tag)
     end
 
-    def topic_post_username
-      object.previewed_post.user.username
+    def topic_post_user
+      BasicUserSerializer.new(object.previewed_post.user, scope: scope, root: false).as_json
     end
 
-    def include_topic_post_username?
+    def include_topic_post_user?
       featured_images
     end
 
