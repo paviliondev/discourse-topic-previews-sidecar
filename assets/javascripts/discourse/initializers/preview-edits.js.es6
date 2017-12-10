@@ -17,6 +17,7 @@ export default {
         classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle'],
         suggestedList: Ember.computed.equal('parentView.parentView.parentView.elementId', 'suggested-topics'),
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
+        listChanged: false,
 
         @on('init')
         setup() {
@@ -29,11 +30,12 @@ export default {
 
         @on('didInsertElement')
         @observes('currentRoute')
-        setHideCategory() {
+        setupListChanged() {
           const mobile = this.get('site.mobileView');
           if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
             this.set('hideCategory', true);
           }
+          this.toggleProperty('listChanged');
         },
 
         @on("didInsertElement")
@@ -83,37 +85,37 @@ export default {
           return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled;
         },
 
-        @computed('currentRoute')
+        @computed('listChanged')
         socialStyle() {
           return this.settingEnabled('topic_list_social');
         },
 
-        @computed('currentRoute')
+        @computed('listChanged')
         showThumbnail() {
           return this.settingEnabled('topic_list_thumbnail');
         },
 
-        @computed('currentRoute')
+        @computed('listChanged')
         showExcerpt() {
           return this.settingEnabled('topic_list_excerpt');
         },
 
-        @computed('currentRoute')
+        @computed('listChanged')
         showActions() {
           return this.settingEnabled('topic_list_action');
         },
 
-        @computed('currentRoute')
+        @computed('listChanged')
         showCategoryBadge() {
           return this.settingEnabled('topic_list_category_badge_move');
         },
 
-        @computed('currentRoute')
+        @computed('listChanged')
         skipHeader() {
           return this.get('socialStyle') || this.get('site.mobileView');
         },
 
-        @computed('currentRoute')
+        @computed('listChanged')
         thumbnailFirstXRows() {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         }
