@@ -14,37 +14,61 @@ export default {
       api.modifyClass('component:topic-list', {
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
-        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions'],
+        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle'],
+        suggestedList: Ember.computed.equal('parentView.parentView.parentView.elementId', 'suggested-topics'),
+        discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
+
+        @on('init')
+        setup() {
+          const suggestedList = this.get('suggestedList');
+          if (suggestedList) {
+            const category = this.get('parentView.parentView.parentView.topic.category');
+            this.set('category', category);
+          }
+        },
+
+        @on('didInsertElement')
+        @observes('currentRoute')
+        setHideCategory() {
+          const mobile = this.get('site.mobileView');
+          if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
+            this.set('hideCategory', true);
+          }
+        },
+
+        @on("didInsertElement")
+        @observes("socialStyle")
+        setupListStyle() {
+          if (!this.$()) {return;}
+          this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
+        },
+
+        @on('willDestroyElement')
+        _tearDown() {
+          this.$().parents('#list-area').removeClass('social-style');
+        },
 
         filter() {
           let filter = this.get('parentView.model.filter');
+
           const currentRoute = this.get('currentRoute');
           if (currentRoute.indexOf('tags') > -1) filter = 'tags';
+
+          const suggestedList = this.get('suggestedList');
+          if (suggestedList) filter = 'suggested';
+
           const mobile = this.get('site.mobileView');
           if (mobile) filter += '-mobile';
+
           return filter;
         },
 
-        // needed because discoveryList is not used in mobile discourse/topics yet, or in /tags
-        @computed()
-        mobileDiscoveryList() {
-          const parentComponentKey = this.get('parentView')._debugContainerKey;
-          if (parentComponentKey) {
-            const parentComponentName = parentComponentKey.split(':');
-            return parentComponentName.length > 1 && parentComponentName[1] === 'discovery-topics-list';
-          }
-        },
-
         settingEnabled(setting) {
-          const mobile = this.get('site.mobileView');
           const filter = this.filter();
-          if (mobile || (filter && filter.indexOf('tags') > -1)) {
-            const mobileDiscoveryList = this.get('mobileDiscoveryList');
-            if (!mobileDiscoveryList) return false;
-          } else {
-            const discoveryList = this.get('discoveryList');
-            if (!discoveryList) return false;
-          }
+          const discoveryList = this.get('discoveryList');
+          const suggestedList = this.get('suggestedList');
+
+          if (!discoveryList && !suggestedList) return false;
 
           const category = this.get('category');
           const catSetting = category ? category.get(setting) : false;
@@ -92,27 +116,6 @@ export default {
         @computed('currentRoute')
         thumbnailFirstXRows() {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
-        },
-
-        @on('didInsertElement')
-        @observes('currentRoute')
-        setHideCategory() {
-          const mobile = this.get('site.mobileView');
-          if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
-            this.set('hideCategory', true);
-          }
-        },
-
-        @on("didInsertElement")
-        @observes("socialStyle")
-        setupListStyle() {
-          if (!this.$()) {return;}
-          this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
-        },
-
-        @on('willDestroyElement')
-        _tearDown() {
-          this.$().parents('#list-area').removeClass('social-style');
         }
       });
 
@@ -160,11 +163,7 @@ export default {
             this.set('showThumbnail', false);
           }
 
-          if ($('#suggested-topics').length) {
-            this.$('.topic-thumbnail, .topic-category, .topic-actions, .topic-excerpt').hide();
-          } else {
-            this._afterRender();
-          }
+          this._afterRender();
         },
 
         @observes('thumbnails')

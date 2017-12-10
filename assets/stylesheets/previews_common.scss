@@ -11,7 +11,7 @@
   padding: 0;
 }
 
-html:not(.mobile-view) #list-area.social-style {
+html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style {
   .show-more {
     top: 0;
   }
@@ -81,7 +81,7 @@ html:not(.mobile-view) #list-area.social-style {
   content: '\00B7';
 }
 
-#list-area.social-style {
+#list-area.social-style, #suggested-topics .social-style {
   .main-link {
     display: block;
   }

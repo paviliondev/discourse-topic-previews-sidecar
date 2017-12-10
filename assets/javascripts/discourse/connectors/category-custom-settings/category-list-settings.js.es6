@@ -1,5 +1,5 @@
-const listChoices = ['latest', 'new', 'unread', 'top', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile'];
-const listSettings = ['social','thumbnail','excerpt','action','category_badge_move'];
+const listChoices = ['latest', 'new', 'unread', 'top', 'suggested', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'suggested-mobile'];
+const listSettings = ['social', 'thumbnail', 'excerpt', 'action', 'category_badge_move'];
 
 export default {
   setupComponent(args, component) {
