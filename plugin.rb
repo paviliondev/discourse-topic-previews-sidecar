@@ -125,6 +125,11 @@ after_initialize do
         topic.custom_fields['thumbnails'] = thumbnails
         topic.save_custom_fields
       end
+
+      def remove_topic_thumbnails(topic)
+        topic.custom_fields.delete('thumbnails')
+        topic.save_custom_fields(true)
+      end
     end
   end
 
@@ -205,9 +210,14 @@ after_initialize do
         img = prior_oneboxes.first if prior_oneboxes.any?
       end
 
-      return if img.blank?
+      if img.blank?
+        @post.update_column(:image_url, nil)
 
-      if img["src"].present?
+        if @post.is_first_post?
+          @post.topic.update_column(:image_url, nil)
+          ListHelper.remove_topic_thumbnails(@post.topic)
+        end
+      elsif img["src"].present?
         url = img["src"][0...255]
         @post.update_column(:image_url, url) # post
 
