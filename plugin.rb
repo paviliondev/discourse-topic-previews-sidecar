@@ -385,14 +385,43 @@ after_initialize do
     attr_accessor :featured_images
   end
 
-  TagsController.class_eval do
-    before_action :include_featured_images_param
-
+  module TagsControllerExtension
     def include_featured_images_param
       if params[:featured_images]
         guardian.featured_images = true
       end
     end
+
+    def build_topic_list_options
+      options = super
+      if params[:tags_created_at]
+        options[:tags_created_at] = params[:tags_created_at]
+      end
+      options
+    end
+  end
+
+  require_dependency 'tags_controller'
+  class ::TagsController
+    before_action :include_featured_images_param
+    prepend TagsControllerExtension
+  end
+
+  TopicQuery.public_valid_options << :tags_created_at
+
+  module PreviewsTopicQueryExtension
+    def apply_ordering(result, options)
+      if options[:tags_created_at]
+        featured_tag_id = Tag.where(name: SiteSetting.topic_list_featured_images_tag).pluck(:id).first
+        return result.order("(SELECT created_at FROM topic_tags WHERE topic_id = topics.id AND tag_id = #{featured_tag_id}) DESC")
+      end
+      super
+    end
+  end
+
+  require_dependency 'topic_query'
+  class ::TopicQuery
+    prepend PreviewsTopicQueryExtension
   end
 
   add_to_serializer(:basic_category, :topic_list_social) { object.custom_fields["topic_list_social"] }

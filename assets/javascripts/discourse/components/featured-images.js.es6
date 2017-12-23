@@ -10,7 +10,10 @@ export default Ember.Component.extend({
   images() {
     const tagId = this.siteSettings.topic_list_featured_images_tag;
     ajax(`/tags/${tagId}`, {
-      data: { featured_images: true }
+      data: {
+        featured_images: true,
+        tags_created_at: true
+      }
     }).then((result) => {
       const topicList = result.topic_list;
       if (topicList && topicList.topics && topicList.topics.length > 0) {
