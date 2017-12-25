@@ -1,0 +1,5 @@
+{{#if (featuredImagesEnabled model.category model)}}
+  {{#unless site.mobileView}}
+    {{featured-images category=model.category}}
+  {{/unless}}
+{{/if}}
