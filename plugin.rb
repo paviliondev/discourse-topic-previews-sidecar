@@ -58,6 +58,8 @@ after_initialize do
   Category.register_custom_field_type('thumbnail_height', :integer)
   Category.register_custom_field_type('topic_list_featured_images', :boolean)
   SiteSetting.create_thumbnails = true
+  TopicQuery.valid_options.push(:tags_created_at)
+  TopicQuery.public_valid_options.push(:tags_created_at)
 
   @nil_thumbs = TopicCustomField.where(name: 'thumbnails', value: nil)
   if @nil_thumbs.length
@@ -406,8 +408,6 @@ after_initialize do
     before_action :include_featured_images_param
     prepend TagsControllerExtension
   end
-
-  TopicQuery.public_valid_options << :tags_created_at
 
   module PreviewsTopicQueryExtension
     def apply_ordering(result, options)
