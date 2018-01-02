@@ -194,8 +194,15 @@ after_initialize do
 
   require_dependency 'cooked_post_processor'
   ::CookedPostProcessor.class_eval do
+
+    def extract_post_image
+      (extract_images_for_post -
+      @doc.css("img.thumbnail") -
+      @doc.css("img.site-icon")).first
+    end
+
     def update_post_image
-      img = extract_images_for_post.first
+      img = extract_post_image
 
       if @has_oneboxes
         cooked = PrettyText.cook(@post.raw)
@@ -207,6 +214,11 @@ after_initialize do
             html = Nokogiri::HTML::fragment(Oneboxer.cached_preview(url))
             prior_oneboxes.push(html.at_css('img'))
           end
+        end
+
+        prior_oneboxes = prior_oneboxes.reject do |html|
+          class_str = html.attribute('class').to_s
+          class_str.include?('thumbnail') || class_str.include?('site-icon')
         end
 
         img = prior_oneboxes.first if prior_oneboxes.any?
