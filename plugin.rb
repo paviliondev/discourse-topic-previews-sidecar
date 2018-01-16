@@ -218,7 +218,7 @@ after_initialize do
 
         prior_oneboxes = prior_oneboxes.reject do |html|
           class_str = html.attribute('class').to_s
-          class_str.include?('thumbnail') || class_str.include?('site-icon')
+          class_str.include?('thumbnail') || class_str.include?('site-icon') || class_str.include?('avatar')
         end
 
         img = prior_oneboxes.first if prior_oneboxes.any?
