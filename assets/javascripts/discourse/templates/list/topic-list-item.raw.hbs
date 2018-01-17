@@ -17,14 +17,7 @@
       {{#if showCategoryBadge}}
         {{raw "list/topic-category" category=topic.category}}
       {{/if}}
-      {{#if topic.tags}}
-        <div class='discourse-tags'>
-        {{#each topic.visibleListTags as |tag|}}
-          {{discourse-tag tag}}
-        {{/each}}
-        </div>
-      {{/if}}
-      {{raw-plugin-outlet name="topic-list-tags"}}
+      {{discourse-tags topic mode="list"}}
     {{/unless}}
 
     {{#if expandPinned}}

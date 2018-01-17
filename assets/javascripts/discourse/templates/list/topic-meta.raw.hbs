@@ -5,12 +5,9 @@
   <span class="middot inline sub"></span>
   {{#if topic.tags}}
     <div class='discourse-tags inline sub'>
-    {{#each topic.visibleListTags as |tag|}}
-      {{discourse-tag tag}}
-    {{/each}}
+      {{discourse-tags topic mode="list"}}
     </div>
   {{/if}}
-  {{raw-plugin-outlet name="topic-list-tags"}}
   <span class="middot inline sub"></span>
   <div class="topic-views {{topic.viewsHeat}} inline sub">
     {{number topic.views numberKey="views_long"}}
