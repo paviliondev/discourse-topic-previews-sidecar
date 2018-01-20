@@ -41,6 +41,7 @@
       {{#if showActions}}
         {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
       {{/if}}
+      {{raw-plugin-outlet name="topic-list-after-title"}}
     {{else}}
       {{#unless hideCategory}}
         {{raw "list/topic-category" category=topic.category}}
@@ -52,8 +53,6 @@
         {{/each}}
         </div>
       {{/if}}
-
-      {{raw-plugin-outlet name="topic-list-tags"}}
 
       {{#if showActions}}
         {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
