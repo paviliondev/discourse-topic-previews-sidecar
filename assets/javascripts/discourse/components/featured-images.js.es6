@@ -20,6 +20,7 @@ export default Ember.Component.extend({
         const topics = topicList.topics.filter((t) => t.thumbnails);
         const count = this.siteSettings.topic_list_featured_images_count;
         this.set('featuredImageList', topics.slice(0, count));
+        this.appEvents.trigger('topic:refresh-timeline-position');
       }
     });
   }

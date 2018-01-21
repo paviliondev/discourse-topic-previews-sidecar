@@ -374,6 +374,18 @@ export default {
           }
         }
       });
+
+      api.modifyClass('component:topic-timeline', {
+        @on('didInsertElement')
+        refreshTimelinePosition() {
+          this.appEvents.on('topic:refresh-timeline-position', this, () => this.queueDockCheck());
+        },
+
+        @on('willDestroyElement')
+        removeRefreshTimelinePosition() {
+          this.appEvents.off('topic:refresh-timeline-position', this, () => this.queueDockCheck());
+        }
+      });
     });
   }
 };
