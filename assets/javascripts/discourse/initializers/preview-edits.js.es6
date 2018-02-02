@@ -3,6 +3,7 @@ import { addLike, sendBookmark, removeLike } from '../lib/actions';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 import DiscourseURL from 'discourse/lib/url';
+import PostsCountColumn from 'discourse/raw-views/list/posts-count-column';
 
 export default {
   name: 'preview-edits',
@@ -156,6 +157,10 @@ export default {
           } else if (defaultThumbnail && Discourse.SiteSettings.topic_list_default_thumbnail_fallback) {
             this.set('thumbnails', defaultThumbnail);
           }
+
+          const obj = PostsCountColumn.create({topic});
+          obj.siteSettings = Discourse.SiteSettings;
+          this.set('likesHeat', obj.get('likesHeat'));
         },
 
         @on('didInsertElement')

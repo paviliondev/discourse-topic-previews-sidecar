@@ -29,7 +29,7 @@
         {{#if showActions}}
           {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
         {{/if}}
-        {{raw 'list/topic-meta' title=view.title likesHeat=view.likesHeat topic=topic}}
+        {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
         {{raw-plugin-outlet name="topic-list-after-title"}}
       </div>
     {{else}}
