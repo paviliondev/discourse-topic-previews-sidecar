@@ -122,10 +122,10 @@ after_initialize do
       end
 
       def save_thumbnails(id, thumbnails)
-        return if !thumbnails
+        return if !thumbnails || (thumbnails[:normal].blank? && thumbnails[:retina].blank?)
         topic = Topic.find(id)
         topic.custom_fields['thumbnails'] = thumbnails
-        topic.save_custom_fields
+        topic.save_custom_fields(true)
       end
 
       def remove_topic_thumbnails(topic)
