@@ -1,4 +1,4 @@
-const listChoices = ['latest', 'new', 'unread', 'top', 'suggested', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'suggested-mobile'];
+const listChoices = ['latest', 'new', 'unread', 'top', 'suggested', 'agenda', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'suggested-mobile', 'agenda-mobile'];
 const listSettings = ['social', 'thumbnail', 'excerpt', 'action', 'category_badge_move'];
 
 export default {
