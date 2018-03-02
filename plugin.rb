@@ -206,7 +206,13 @@ after_initialize do
 
       if @has_oneboxes
         cooked = PrettyText.cook(@post.raw)
-        img_id = (img.attribute("alt") || img.attribute("src")) if img
+
+        if img
+          ## We need something more specific to identify the image with
+          img_id = img
+          src = img.attribute("src").to_s
+          img_id = src.split('/').last.split('.').first if src
+        end
 
         prior_oneboxes = []
         Oneboxer.each_onebox_link(cooked) do |url, element|
