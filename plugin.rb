@@ -206,7 +206,7 @@ after_initialize do
 
       if @has_oneboxes
         cooked = PrettyText.cook(@post.raw)
-        img_id = img.attribute("alt") || img.attribute("src") if img
+        img_id = (img.attribute("alt") || img.attribute("src")) if img
 
         prior_oneboxes = []
         Oneboxer.each_onebox_link(cooked) do |url, element|
@@ -216,12 +216,14 @@ after_initialize do
           end
         end
 
-        prior_oneboxes = prior_oneboxes.reject do |html|
-          class_str = html.attribute('class').to_s
-          class_str.include?('thumbnail') || class_str.include?('site-icon') || class_str.include?('avatar')
-        end
+        if prior_oneboxes.any?
+          prior_oneboxes = prior_oneboxes.reject do |html|
+            class_str = html.attribute('class').to_s
+            class_str.include?('thumbnail') || class_str.include?('site-icon') || class_str.include?('avatar')
+          end
 
-        img = prior_oneboxes.first if prior_oneboxes.any?
+          img = prior_oneboxes.first if prior_oneboxes.any?
+        end
       end
 
       if img.blank?
