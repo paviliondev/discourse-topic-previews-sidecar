@@ -218,14 +218,14 @@ after_initialize do
         Oneboxer.each_onebox_link(cooked) do |url, element|
           if !img || (img && cooked.index(element).to_i < cooked.index(img_id).to_i)
             html = Nokogiri::HTML::fragment(Oneboxer.cached_preview(url))
-            prior_oneboxes.push(html.at_css('img'))
+            prior_oneboxes = html.css('img')
           end
         end
 
         if prior_oneboxes.any?
           prior_oneboxes = prior_oneboxes.reject do |html|
             class_str = html.attribute('class').to_s
-            class_str.include?('thumbnail') || class_str.include?('site-icon') || class_str.include?('avatar')
+            class_str.include?('site-icon') || class_str.include?('avatar')
           end
 
           img = prior_oneboxes.first if prior_oneboxes.any?
