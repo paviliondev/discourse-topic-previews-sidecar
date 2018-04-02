@@ -7,10 +7,12 @@ var isThumbnail = function(path) {
 };
 
 var previewUrl = function(thumbnails) {
-  if (thumbnails.retina && isThumbnail(thumbnails.retina)) {
-    return window.devicePixelRatio >= 2 ? thumbnails.retina : thumbnails.normal;
-  } else if (thumbnails.normal && isThumbnail(thumbnails.normal)) {
-    return thumbnails.normal;
+  if (thumbnails) {
+    if (thumbnails.retina && isThumbnail(thumbnails.retina)) {
+      return window.devicePixelRatio >= 2 ? thumbnails.retina : thumbnails.normal;
+    } else if (thumbnails.normal && isThumbnail(thumbnails.normal)) {
+      return thumbnails.normal;
+    }
   } else if (thumbnails && isThumbnail(thumbnails)) {
     return thumbnails;
   } else {
