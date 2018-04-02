@@ -78,4 +78,15 @@ var animateHeart = function($elem, start, end, complete) {
         }, 'linear');
 };
 
-export { renderUnboundPreview, testImageUrl, buttonHTML, animateHeart };
+const featuredImagesEnabled = function(category = null, isTopic = false) {
+  if (isTopic && !Discourse.SiteSettings.topic_list_featured_images_topic) {
+    return false;
+  }
+  if (!category || Discourse.SiteSettings.topic_list_featured_images_category) {
+    return Discourse.SiteSettings.topic_list_featured_images;
+  } else {
+    return category.topic_list_featured_images;
+  }
+};
+
+export { renderUnboundPreview, testImageUrl, buttonHTML, animateHeart, featuredImagesEnabled };

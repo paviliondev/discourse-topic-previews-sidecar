@@ -289,17 +289,17 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   float: right;
 }
 
-.featured-images.has-images {
+.featured-topics.has-topics {
   display: inline-block;
   width: 100%;
 
-  .images {
+  .topics {
     padding: 0 10px;
     display: flex;
     overflow-x: scroll;
     overflow-y: hidden;
 
-    .featured-image {
+    .featured-topic {
       margin-right: 10px;
       cursor: pointer;
       position: relative;
