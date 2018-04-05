@@ -3,7 +3,7 @@ import { ajax } from 'discourse/lib/ajax';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
 export default {
-  name: 'sidebar-discovery-routes',
+  name: 'preview-route-edits',
   initialize(container){
     const site = container.lookup('site:main');
 
