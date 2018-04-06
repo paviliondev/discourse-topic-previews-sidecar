@@ -61,7 +61,7 @@ export default {
         afterModel(model, transition) {
           return this._super(model, transition).then((result) => {
             if (result[1] && result[1].topic_list && result[1].topic_list.featured_topics) {
-              this.controllerFor('discovery/topics').set(
+              this.controllerFor('discovery').set(
                 'featuredTopics', result[1].topic_list.featured_topics
               );
             }
@@ -79,7 +79,7 @@ export default {
           const topicList = PreloadStore.get(`topic_list_${filter}`);
 
           if (topicList && topicList.topic_list && topicList.topic_list.featured_topics) {
-            this.controllerFor('discovery/categories').set(
+            this.controllerFor('discovery').set(
               'featuredTopics', topicList.topic_list.featured_topics
             );
           }
