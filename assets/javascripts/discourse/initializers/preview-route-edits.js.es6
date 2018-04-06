@@ -1,6 +1,7 @@
 import { featuredImagesEnabled } from '../lib/utilities';
 import { ajax } from 'discourse/lib/ajax';
 import { withPluginApi } from 'discourse/lib/plugin-api';
+import PreloadStore from "preload-store";
 
 export default {
   name: 'preview-route-edits',
@@ -66,6 +67,24 @@ export default {
             }
             return result;
           })
+        }
+      });
+    });
+
+    withPluginApi('0.8.12', api => {
+      api.modifyClass(`route:discovery-categories`, {
+        model() {
+          const style = !this.site.mobileView && this.siteSettings.desktop_category_page_style;
+          const filter = style.split('_')[2];
+          const topicList = PreloadStore.get(`topic_list_${filter}`);
+
+          if (topicList && topicList.topic_list && topicList.topic_list.featured_topics) {
+            this.controllerFor('discovery/categories').set(
+              'featuredTopics', topicList.topic_list.featured_topics
+            );
+          }
+
+          return this._super();
         }
       });
     });

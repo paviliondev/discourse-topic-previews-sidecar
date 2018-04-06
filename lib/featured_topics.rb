@@ -20,11 +20,16 @@ module PreviewsTopicQueryExtension
   end
 
   def featured_list_enabled(category_id)
-    if !category_id || SiteSetting.topic_list_featured_images_category
+    if !category_id
       SiteSetting.topic_list_featured_images
     else
       category = Category.find(category_id)
-      category.custom_fields['topic_list_featured_images']
+
+      if category.custom_fields['topic_list_featured_images'] != nil
+        category.custom_fields['topic_list_featured_images']
+      else
+        SiteSetting.topic_list_featured_images_category
+      end
     end
   end
 
