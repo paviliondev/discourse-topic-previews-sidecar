@@ -289,7 +289,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   float: right;
 }
 
-.featured-topics.has-topics {
+.tlp-featured-topics.has-topics {
   display: inline-block;
   width: 100%;
 
@@ -299,7 +299,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
     overflow-x: scroll;
     overflow-y: hidden;
 
-    .featured-topic {
+    .tlp-featured-topic {
       margin-right: 10px;
       cursor: pointer;
       position: relative;

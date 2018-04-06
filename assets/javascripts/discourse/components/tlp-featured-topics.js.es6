@@ -1,7 +1,7 @@
 import { on, observes } from 'ember-addons/ember-computed-decorators';
 
 export default Ember.Component.extend({
-  classNameBindings: [':featured-topics', 'hasTopics'],
+  classNameBindings: [':tlp-featured-topics', 'hasTopics'],
   hasTopics: Ember.computed.notEmpty('featuredTopics'),
   featuredTopics: null,
 

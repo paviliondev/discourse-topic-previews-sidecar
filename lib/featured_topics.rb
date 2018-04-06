@@ -3,6 +3,17 @@ class ::TopicList
   attr_accessor :featured_topics
 end
 
+class ::Category
+  def featured_topics_enabled
+    if self.custom_fields['topic_list_featured_images'] != nil
+      self.custom_fields['topic_list_featured_images']
+    else
+      SiteSetting.topic_list_featured_images &&
+      SiteSetting.topic_list_featured_images_category
+    end
+  end
+end
+
 module PreviewsTopicQueryExtension
   def list_featured(options = {})
     create_list(:featured, { unordered: true }, featured_topics)
@@ -20,17 +31,7 @@ module PreviewsTopicQueryExtension
   end
 
   def featured_list_enabled(category_id)
-    if !category_id
-      SiteSetting.topic_list_featured_images
-    else
-      category = Category.find(category_id)
-
-      if category.custom_fields['topic_list_featured_images'] != nil
-        category.custom_fields['topic_list_featured_images']
-      else
-        SiteSetting.topic_list_featured_images_category
-      end
-    end
+    ListHelper.featured_topics_enabled(category_id)
   end
 
   def featured_topics
@@ -97,11 +98,8 @@ class ::TopicViewSerializer
   include FeaturedTopicsMixin
 
   def featured_topics_enabled
-    if !object.topic.category || SiteSetting.topic_list_featured_images_category
-      SiteSetting.topic_list_featured_images
-    else
-      object.topic.category.custom_fields['topic_list_featured_images']
-    end
+    SiteSetting.topic_list_featured_images_topic &&
+    ListHelper.featured_topics_enabled(object.topic.category_id)
   end
 end
 

@@ -60,5 +60,14 @@ module ListHelper
       topic.custom_fields.delete('thumbnails')
       topic.save_custom_fields(true)
     end
+
+    def featured_topics_enabled(category_id = nil)
+      if category_id
+        category = Category.find(category_id)
+        category.featured_topics_enabled
+      else
+        SiteSetting.topic_list_featured_images
+      end
+    end
   end
 end
