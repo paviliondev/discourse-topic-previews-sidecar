@@ -39,12 +39,13 @@ module PreviewsTopicQueryExtension
     return [] if !tag
 
     tag_id = Tag.where(name: tag).pluck(:id).first
-    limit = SiteSetting.topic_list_featured_images_count
+    limit = SiteSetting.topic_list_featured_images_count.to_i
 
     result = Topic.visible
       .where('NOT topics.closed AND NOT topics.archived AND topics.deleted_at IS NULL')
       .joins(:tags)
       .where("tags.id = ?", tag_id)
+      .limit(limit)
 
     @guardian.filter_allowed_categories(result)
 
