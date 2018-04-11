@@ -36,10 +36,10 @@ module PreviewsTopicQueryExtension
 
   def featured_topics
     tag = SiteSetting.topic_list_featured_images_tag
-
-    return [] if !tag
-
     tag_id = Tag.where(name: tag).pluck(:id).first
+
+    return [] if !tag_id
+
     limit = SiteSetting.topic_list_featured_images_count.to_i
 
     result = Topic.visible
