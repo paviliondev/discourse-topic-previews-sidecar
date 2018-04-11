@@ -205,7 +205,7 @@ export default {
         },
 
         _sizeThumbnails() {
-          this.$('.topic-thumbnail img').load(function(){
+          this.$('.topic-thumbnail img').on('load', function(){
             $(this).css({
               'width': $(this)[0].naturalWidth
             });
