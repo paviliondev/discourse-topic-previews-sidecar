@@ -17,6 +17,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   }
 
   tbody {
+    width: 100%;
     max-width: 600px;
     display: table;
     margin: 0 auto;
@@ -168,8 +169,6 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
 
   &:before {
     float: left;
-    content: '';
-    min-height: 20px;
   }
 
   .discourse-tags {
@@ -238,6 +237,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   background: transparent;
   border: none;
   padding: 2px 4px;
+  margin-right: 5px;
   overflow: hidden;
 
   i {
