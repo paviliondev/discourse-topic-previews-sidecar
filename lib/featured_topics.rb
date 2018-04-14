@@ -56,6 +56,8 @@ module PreviewsTopicQueryExtension
       AND tag_id = #{tag_id})
       DESC
     ")
+
+    ListHelper.load_previewed_posts(result, @user)
   end
 end
 

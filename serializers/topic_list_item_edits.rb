@@ -51,6 +51,7 @@ class ::TopicListItemSerializer
 
   def thumbnails
     return unless object.archetype == Archetype.default
+
     if SiteSetting.topic_list_hotlink_thumbnails || @options[:featured_topics]
       { 'normal' => object.image_url, 'retina' => object.image_url }
     else
