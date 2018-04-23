@@ -47,15 +47,13 @@ module PreviewsTopicQueryExtension
       .joins(:tags)
       .where("tags.id = ?", tag_id)
       .limit(limit)
+      .order("(
+        SELECT created_at FROM topic_tags
+        WHERE topic_id = topics.id
+        AND tag_id = #{tag_id})
+        DESC")
 
     @guardian.filter_allowed_categories(result)
-
-    result.order("(
-      SELECT created_at FROM topic_tags
-      WHERE topic_id = topics.id
-      AND tag_id = #{tag_id})
-      DESC
-    ")
 
     ListHelper.load_previewed_posts(result, @user)
   end
