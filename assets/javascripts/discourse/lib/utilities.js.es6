@@ -7,10 +7,12 @@ var isThumbnail = function(path) {
 };
 
 var previewUrl = function(thumbnails) {
-  if (thumbnails.retina && isThumbnail(thumbnails.retina)) {
-    return window.devicePixelRatio >= 2 ? thumbnails.retina : thumbnails.normal;
-  } else if (thumbnails.normal && isThumbnail(thumbnails.normal)) {
-    return thumbnails.normal;
+  if (thumbnails) {
+    if (thumbnails.retina && isThumbnail(thumbnails.retina)) {
+      return window.devicePixelRatio >= 2 ? thumbnails.retina : thumbnails.normal;
+    } else if (thumbnails.normal && isThumbnail(thumbnails.normal)) {
+      return thumbnails.normal;
+    }
   } else if (thumbnails && isThumbnail(thumbnails)) {
     return thumbnails;
   } else {
@@ -78,4 +80,15 @@ var animateHeart = function($elem, start, end, complete) {
         }, 'linear');
 };
 
-export { renderUnboundPreview, testImageUrl, buttonHTML, animateHeart };
+const featuredImagesEnabled = function(category = null, isTopic = false) {
+  if (isTopic && !Discourse.SiteSettings.topic_list_featured_images_topic) {
+    return false;
+  }
+  if (!category || Discourse.SiteSettings.topic_list_featured_images_category) {
+    return Discourse.SiteSettings.topic_list_featured_images;
+  } else {
+    return category.topic_list_featured_images;
+  }
+};
+
+export { renderUnboundPreview, testImageUrl, buttonHTML, animateHeart, featuredImagesEnabled };

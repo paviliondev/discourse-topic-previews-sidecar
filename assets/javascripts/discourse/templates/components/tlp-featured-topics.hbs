@@ -1,0 +1,12 @@
+{{#if hasTopics}}
+  <div class="topics">
+    {{#each featuredTopics as |t|}}
+      {{tlp-featured-topic topic=t}}
+    {{/each}}
+  </div>
+  {{#if siteSettings.topic_list_featured_images_tag}}
+    <div class="featured-link">
+      {{discourse-tag siteSettings.topic_list_featured_images_tag}}
+    </div>
+  {{/if}}
+{{/if}}
