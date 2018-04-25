@@ -46,11 +46,14 @@ export default {
       route.reopen({
         model(data, transition) {
           return this._super(data, transition).then((result) => {
+            let featuredTopics = null;
+
             if (result && result.topic_list && result.topic_list.featured_topics) {
-              this.controllerFor('discovery/topics').set(
-                'featuredTopics', result.topic_list.featured_topics
-              );
+              featuredTopics = result.topic_list.featured_topics;
             }
+
+            this.controllerFor('discovery').set('featuredTopics', featuredTopics);
+
             return result;
           })
         }
@@ -62,11 +65,14 @@ export default {
       route.reopen({
         afterModel(model, transition) {
           return this._super(model, transition).then((result) => {
+            let featuredTopics = null;
+
             if (result[1] && result[1].topic_list && result[1].topic_list.featured_topics) {
-              this.controllerFor('discovery').set(
-                'featuredTopics', result[1].topic_list.featured_topics
-              );
+              featuredTopics = result[1].topic_list.featured_topics;
             }
+
+            this.controllerFor('discovery').set('featuredTopics', featuredTopics);
+
             return result;
           })
         }
@@ -77,11 +83,13 @@ export default {
       api.modifyClass(`route:discovery-categories`, {
 
         setFeaturedTopics(topicList) {
+          let featuredTopics = null;
+
           if (topicList && topicList.topic_list && topicList.topic_list.featured_topics) {
-            this.controllerFor('discovery').set(
-              'featuredTopics', topicList.topic_list.featured_topics
-            );
+            featuredTopics = topicList.topic_list.featured_topics;
           }
+
+          this.controllerFor('discovery').set('featuredTopics', featuredTopics);
         },
 
         // unfortunately we have to override this whole method to extract the featured topics
