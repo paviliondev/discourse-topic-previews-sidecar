@@ -16,13 +16,6 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
     top: 0;
   }
 
-  tbody {
-    width: 100%;
-    max-width: 600px;
-    display: table;
-    margin: 0 auto;
-  }
-
   .topic-statuses {
     float: right;
   }
@@ -31,11 +24,6 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
     border-radius: 3px;
     display: inline-block;
     width: 100%;
-
-    td.main-link {
-      border: none;
-      padding: 15px;
-    }
 
     td:not(.main-link) {
       display: none;
@@ -99,6 +87,10 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
 
   .badge-wrapper.box {
     margin: 0px;
+  }
+
+  .topic-list-item td {
+    padding: 15px;
   }
 
   .topic-title {

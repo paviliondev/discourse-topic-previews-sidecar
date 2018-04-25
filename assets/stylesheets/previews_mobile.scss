@@ -54,6 +54,10 @@
 }
 
 .mobile-view #list-area.social-style {
+  .contents {
+    border: none !important;
+  }
+
   td a.title {
     font-size: 18px;
   }
