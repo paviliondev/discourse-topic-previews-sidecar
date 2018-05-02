@@ -70,7 +70,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   content: '\00B7';
 }
 
-#list-area.social-style, #suggested-topics .social-style {
+#list-area.social-style .contents, #suggested-topics .social-style .contents {
   .main-link {
     display: block;
   }
