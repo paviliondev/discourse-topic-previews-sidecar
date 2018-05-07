@@ -3,7 +3,8 @@ CookedPostProcessor.class_eval do
   def extract_post_image
     (extract_images_for_post -
     @doc.css("img.thumbnail") -
-    @doc.css("img.site-icon")).first
+    @doc.css("img.site-icon") -
+    @doc.css("img.avatar")).first
   end
 
   def update_post_image
