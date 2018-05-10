@@ -1,6 +1,9 @@
 import DiscourseUrl from 'discourse/lib/url';
+import { default as computed } from 'ember-addons/ember-computed-decorators';
 
 export default Ember.Component.extend({
+  tagName: 'a',
+  attributeBindings: ['href'],
   classNameBindings: [':tlp-featured-topic', "showDetails"],
 
   mouseEnter() {
@@ -11,8 +14,13 @@ export default Ember.Component.extend({
     this.set('showDetails', false);
   },
 
-  click() {
-    const topicId = this.get('topic.id');
-    DiscourseUrl.routeTo(`t/${topicId}`);
+  @computed('topic.id')
+  href(topicId) {
+    return `/t/${topicId}`;
+  },
+
+  click(e) {
+    e.preventDefault();
+    DiscourseUrl.routeTo(this.get('href'));
   }
 });
