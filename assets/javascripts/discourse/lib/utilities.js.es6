@@ -12,9 +12,9 @@ var previewUrl = function(thumbnails) {
       return window.devicePixelRatio >= 2 ? thumbnails.retina : thumbnails.normal;
     } else if (thumbnails.normal && isThumbnail(thumbnails.normal)) {
       return thumbnails.normal;
+    } else if (isThumbnail(thumbnails)) {
+      return thumbnails;
     }
-  } else if (thumbnails && isThumbnail(thumbnails)) {
-    return thumbnails;
   } else {
     return false;
   }
