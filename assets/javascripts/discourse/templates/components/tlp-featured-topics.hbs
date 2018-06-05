@@ -1,4 +1,9 @@
 {{#if hasTopics}}
+  {{#if showFeaturedTitle}}
+    <div class="featured-title">
+      {{featuredTitle}}
+    </div>
+  {{/if}}
   <div class="topics">
     {{#each featuredTopics as |t|}}
       {{tlp-featured-topic topic=t}}

@@ -23,4 +23,5 @@ en:
     topic_list_featured_images_count: "Featured images count."
     topic_list_featured_width: "Featured image width."
     topic_list_featured_height: "Featured image height."
+    topic_list_featured_title: "Featured images title. Supports Markdown."
     topic_list_test_image_url_timeout: "Timeout for testing image url"

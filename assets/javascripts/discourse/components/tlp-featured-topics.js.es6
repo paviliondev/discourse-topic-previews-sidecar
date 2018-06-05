@@ -1,4 +1,5 @@
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
+import { cookAsync } from 'discourse/lib/text';
 
 export default Ember.Component.extend({
   classNameBindings: [':tlp-featured-topics', 'hasTopics'],
@@ -9,6 +10,22 @@ export default Ember.Component.extend({
   @observes('featuredTopics')
   setup() {
     this.appEvents.trigger('topic:refresh-timeline-position');
+  },
+
+  @on('init')
+  setupTitle() {
+    const showFeaturedTitle = this.get('showFeaturedTitle');
+    if (showFeaturedTitle) {
+      const raw = Discourse.SiteSettings.topic_list_featured_title;
+      cookAsync(raw).then((cooked) => {
+        this.set('featuredTitle', cooked);
+      })
+    }
+  },
+
+  @computed
+  showFeaturedTitle() {
+    return Discourse.SiteSettings.topic_list_featured_title;
   },
 
   @computed
