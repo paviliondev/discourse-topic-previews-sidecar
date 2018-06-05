@@ -288,7 +288,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   .topics {
     padding: 0 10px;
     display: flex;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
 
     .tlp-featured-topic {
