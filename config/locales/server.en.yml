@@ -19,6 +19,7 @@ en:
     topic_list_featured_images_category: "Apply featured images site setting to all categories."
     topic_list_featured_images_topic: "Show featured images above topics."
     topic_list_featured_images_tag: "Featured images tag."
+    topic_list_featured_images_tag_show: "Show featured images tag below featured images."
     topic_list_featured_images_count: "Featured images count."
     topic_list_featured_width: "Featured image width."
     topic_list_featured_height: "Featured image height."

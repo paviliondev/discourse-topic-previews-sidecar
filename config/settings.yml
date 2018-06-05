@@ -137,6 +137,9 @@ plugins:
     type: list
     default: ''
     client: true
+  topic_list_featured_images_tag_show:
+    default: true
+    client: true
   topic_list_featured_images_count:
     default: 4
     client: true
