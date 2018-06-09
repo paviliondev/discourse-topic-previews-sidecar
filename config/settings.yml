@@ -152,6 +152,9 @@ plugins:
   topic_list_featured_title:
     default: ''
     client: true
+  topic_list_featured_excerpt:
+    default: true
+    client: true
   topic_list_test_image_url_timeout:
     default: 5000
     client: true
