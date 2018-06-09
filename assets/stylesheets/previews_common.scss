@@ -166,7 +166,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   .discourse-tags {
     float: left;
     clear: right;
-    margin: 5px 0;
+    margin-top: 5px;
   }
 
   .topic-excerpt {
@@ -224,13 +224,17 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   margin-top: 0;
 }
 
-.list-button {
+button.list-button {
   font-size: 0.9em;
   background: transparent;
   border: none;
   padding: 2px 4px;
   margin-right: 5px;
   overflow: hidden;
+
+  &:first-of-type {
+    padding-left: 1px;
+  }
 
   i {
     vertical-align: bottom;
