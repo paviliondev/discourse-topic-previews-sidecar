@@ -307,6 +307,10 @@ button.list-button {
           color: $secondary;
         }
 
+        .content a.mention {
+          background-color: $primary-high;
+        }
+
         img {
           visibility: visible;
         }
@@ -340,6 +344,8 @@ button.list-button {
 
       .content, .content a {
         color: transparent;
+        background-color: transparent;
+        transition: background-color 200ms linear;
         transition: color 200ms linear;
       }
 
