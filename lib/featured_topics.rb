@@ -42,6 +42,19 @@ module PreviewsTopicQueryExtension
 
     limit = SiteSetting.topic_list_featured_images_count.to_i
 
+    order_type = SiteSetting.topic_list_featured_order
+    order = ""
+
+    if order_type == 'tag'
+      order = "(
+        SELECT created_at FROM topic_tags
+        WHERE topic_id = topics.id
+        AND tag_id = #{tag_id})
+        DESC"
+    elsif order_type = 'topic'
+      order = "created_at DESC"
+    end
+
     result = Topic.visible
       .where('NOT topics.closed AND NOT topics.archived AND topics.deleted_at IS NULL')
       .where("topics.id in (
@@ -51,11 +64,7 @@ module PreviewsTopicQueryExtension
       .joins(:tags)
       .where("tags.id = ?", tag_id)
       .limit(limit)
-      .order("(
-        SELECT created_at FROM topic_tags
-        WHERE topic_id = topics.id
-        AND tag_id = #{tag_id})
-        DESC")
+      .order(order)
 
     @guardian.filter_allowed_categories(result)
 
