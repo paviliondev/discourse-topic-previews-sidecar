@@ -55,6 +55,12 @@ var testImageUrl = function(thumbnails, callback) {
   img.src = url;
 };
 
+let getDefaultThumbnail = function(category) {
+  let catThumb = category ? category.topic_list_default_thumbnail : false;
+  let defaultThumbnail = catThumb || Discourse.SiteSettings.topic_list_default_thumbnail;
+  return defaultThumbnail ? defaultThumbnail : false;
+}
+
 var buttonHTML = function(action) {
   action = action || {};
 
@@ -91,4 +97,4 @@ const featuredImagesEnabled = function(category = null, isTopic = false) {
   }
 };
 
-export { renderUnboundPreview, testImageUrl, buttonHTML, animateHeart, featuredImagesEnabled };
+export { renderUnboundPreview, testImageUrl, buttonHTML, animateHeart, featuredImagesEnabled, getDefaultThumbnail };

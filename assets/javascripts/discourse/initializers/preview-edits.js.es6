@@ -1,4 +1,4 @@
-import { testImageUrl, animateHeart } from '../lib/utilities';
+import { testImageUrl, animateHeart, getDefaultThumbnail } from '../lib/utilities';
 import { addLike, sendBookmark, removeLike } from '../lib/actions';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
@@ -272,12 +272,9 @@ export default {
           return this.get('topic.thumbnails');
         },
 
-        @computed()
-        defaultThumbnail(){
-          let topicCat = this.get('topic.category'),
-              catThumb = topicCat ? topicCat.topic_list_default_thumbnail : false,
-              defaultThumbnail = catThumb || Discourse.SiteSettings.topic_list_default_thumbnail;
-          return defaultThumbnail ? defaultThumbnail : false;
+        @computed('topic.category')
+        defaultThumbnail(category){
+          return getDefaultThumbnail(category);
         },
 
         @computed('likeDifference')
