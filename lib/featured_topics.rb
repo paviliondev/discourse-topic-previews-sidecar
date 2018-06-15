@@ -66,7 +66,7 @@ module PreviewsTopicQueryExtension
       .limit(limit)
       .order(order)
 
-    @guardian.filter_allowed_categories(result)
+    result = @guardian.filter_allowed_categories(result)
 
     ListHelper.load_previewed_posts(result, @user)
   end
