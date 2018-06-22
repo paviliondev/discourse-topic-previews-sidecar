@@ -51,7 +51,7 @@ module PreviewsTopicQueryExtension
         WHERE topic_id = topics.id
         AND tag_id = #{tag_id})
         DESC"
-    elsif order_type = 'topic'
+    elsif order_type == 'topic'
       order = "created_at DESC"
     end
 
