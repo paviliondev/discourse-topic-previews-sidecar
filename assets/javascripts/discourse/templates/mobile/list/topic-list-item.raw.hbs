@@ -39,7 +39,7 @@
     {{#if socialStyle}}
       {{raw "list/topic-meta" title=view.title likesHeat=view.likesHeat topic=topic}}
       {{#if showActions}}
-        {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
+        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
       {{raw-plugin-outlet name="topic-list-after-title"}}
     {{else}}
@@ -55,7 +55,7 @@
       {{/if}}
 
       {{#if showActions}}
-        {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
+        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
 
       <div class='num activity last'>

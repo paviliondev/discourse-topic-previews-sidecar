@@ -27,14 +27,14 @@
     {{#if socialStyle}}
       <div class="social-footer">
         {{#if showActions}}
-          {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
+          {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
         {{/if}}
         {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
         {{raw-plugin-outlet name="topic-list-after-title"}}
       </div>
     {{else}}
       {{#if showActions}}
-        {{raw "list/topic-actions" likeCountDisplay=likeCountDisplay topicActions=topicActions}}
+        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
 
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}

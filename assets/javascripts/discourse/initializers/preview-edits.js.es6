@@ -277,10 +277,10 @@ export default {
           return getDefaultThumbnail(category);
         },
 
-        @computed('likeDifference')
-        topicActions() {
+        @computed('likeCount')
+        topicActions(likeCount) {
           let actions = [];
-          if (this.get('topic.topic_post_can_like') || !this.get('currentUser') ||
+          if (likeCount || this.get('topic.topic_post_can_like') || !this.get('currentUser') ||
               Discourse.SiteSettings.topic_list_show_like_on_current_users_posts) {
             actions.push(this._likeButton());
           }
@@ -296,17 +296,9 @@ export default {
           return actions;
         },
 
-        likeCount() {
-          let likeDifference = this.get('likeDifference'),
-              count = (likeDifference == null ? this.get('topic.topic_post_like_count') : likeDifference) || 0;
-          return count;
-        },
-
         @computed('likeDifference')
-        likeCountDisplay() {
-          let count = this.likeCount(),
-              message = count === 1 ? "post.has_likes.one" : "post.has_likes.other";
-          return count > 0 ? I18n.t(message, { count }) : false;
+        likeCount(likeDifference) {
+          return (likeDifference == null ? this.get('topic.topic_post_like_count') : likeDifference) || 0;
         },
 
         @computed('hasLiked')
@@ -316,7 +308,7 @@ export default {
         },
 
         changeLikeCount(change) {
-          let count = this.likeCount(),
+          let count = this.get('likeCount'),
               newCount = count + (change || 0);
           this.set('hasLiked', Boolean(change > 0));
           this.set('likeDifference', newCount);
@@ -325,12 +317,8 @@ export default {
         },
 
         _likeButton() {
-          var classes = "topic-like",
-              disabled = false;
-
-          if (Discourse.SiteSettings.topic_list_show_like_on_current_users_posts) {
-            disabled = this.get('topic.topic_post_is_current_users');
-          }
+          let classes = "topic-like";
+          let disabled = this.get('topic.topic_post_is_current_users');
 
           if (this.get('hasLikedDisplay')) {
             classes += ' has-like';
