@@ -53,8 +53,8 @@ module PreviewsTopicQueryExtension
       )")
       .joins(:tags)
       .where("tags.id = ?", tag_id)
-      .limit(limit)
       .order(featured_order)
+      .limit(limit)
 
     result = @guardian.filter_allowed_categories(result)
 
