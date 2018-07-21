@@ -34,26 +34,16 @@ module PreviewsTopicQueryExtension
     ListHelper.featured_topics_enabled(category_id)
   end
 
+  def featured_tag_id
+    @featured_tag_id ||= Tag.where(name: SiteSetting.topic_list_featured_images_tag).pluck(:id).first
+  end
+
   def featured_topics
-    tag = SiteSetting.topic_list_featured_images_tag
-    tag_id = Tag.where(name: tag).pluck(:id).first
+    tag_id = featured_tag_id
 
     return [] if !tag_id
 
     limit = SiteSetting.topic_list_featured_images_count.to_i
-
-    order_type = SiteSetting.topic_list_featured_order
-    order = ""
-
-    if order_type == 'tag'
-      order = "(
-        SELECT created_at FROM topic_tags
-        WHERE topic_id = topics.id
-        AND tag_id = #{tag_id})
-        DESC"
-    elsif order_type == 'topic'
-      order = "created_at DESC"
-    end
 
     result = Topic.visible
       .where('NOT topics.closed AND NOT topics.archived AND topics.deleted_at IS NULL')
@@ -64,11 +54,34 @@ module PreviewsTopicQueryExtension
       .joins(:tags)
       .where("tags.id = ?", tag_id)
       .limit(limit)
-      .order(order)
+      .order(featured_order)
 
     result = @guardian.filter_allowed_categories(result)
 
     ListHelper.load_previewed_posts(result, @user)
+  end
+
+  def featured_order
+    tag_id = featured_tag_id
+    order_type = SiteSetting.topic_list_featured_order
+    order = ""
+
+    if order_type == 'tag'
+      "(SELECT created_at FROM topic_tags
+        WHERE topic_id = topics.id
+        AND tag_id = #{tag_id})
+        DESC"
+    elsif order_type == 'topic'
+      "created_at DESC"
+    end
+  end
+
+  def apply_ordering(result, options)
+    if options[:tags] && options[:tags].first === SiteSetting.topic_list_featured_images_tag
+      result.order(featured_order)
+    else
+      super(result, options)
+    end
   end
 end
 
