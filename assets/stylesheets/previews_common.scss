@@ -96,7 +96,6 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   .topic-title {
     font-size: 1.143em;
     display: flex;
-    margin-bottom: 5px;
 
     .link-top-line {
       flex: 1 1 auto;
@@ -104,6 +103,12 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
 
     a.title {
       color: $primary;
+    }
+
+    a.topic-featured-link {
+      display: block;
+      padding-left: 0;
+      padding-top: 3px;
     }
 
     .badge-notification.new-topic {
