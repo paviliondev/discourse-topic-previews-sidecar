@@ -79,19 +79,27 @@ module ListHelper
       # TODO: better to keep track of previewed posts' id so they can be loaded at once
       posts_map = {}
       post_actions_map = {}
-      accepted_anwser_post_ids = []
+      accepted_answer_post_ids = []
+      qa_topic_ids = []
       normal_topic_ids = []
       previewed_post_ids = []
 
       topics.each do |topic|
         if post_id = topic.custom_fields["accepted_answer_post_id"]&.to_i
-          accepted_anwser_post_ids << post_id
+          accepted_answer_post_ids << post_id
+        elsif ::Topic.respond_to?(:qa_enabled) && ::Topic.qa_enabled(topic)
+          qa_topic_ids << topic.id
         else
           normal_topic_ids << topic.id
         end
       end
 
-      Post.where("id IN (?)", accepted_anwser_post_ids).each do |post|
+      Post.where("id IN (?)", accepted_answer_post_ids).each do |post|
+        posts_map[post.topic_id] = post
+        previewed_post_ids << post.id
+      end
+
+      Post.where("post_number <> 1 AND sort_order = 1 AND topic_id in (?)", qa_topic_ids).each do |post|
         posts_map[post.topic_id] = post
         previewed_post_ids << post.id
       end
