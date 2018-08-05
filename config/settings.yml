@@ -115,6 +115,10 @@ plugins:
   topic_list_thumbnail_height:
     default: 100
     client: true
+  topic_list_previewable_image_width_min:
+    default: 100
+  topic_list_previewable_image_height_min:
+    default: 100
   topic_list_hotlink_thumbnails:
     default: false
     client: true
