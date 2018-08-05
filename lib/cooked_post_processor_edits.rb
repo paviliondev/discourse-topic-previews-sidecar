@@ -4,7 +4,9 @@ CookedPostProcessor.class_eval do
     (extract_images_for_post -
     @doc.css("img.thumbnail") -
     @doc.css("img.site-icon") -
-    @doc.css("img.avatar")).first
+    @doc.css("img.avatar"))
+      .select { |img| validate_image_for_previews(img) }
+      .first
   end
 
   def determine_image_size(img)
@@ -13,15 +15,13 @@ CookedPostProcessor.class_eval do
     get_size(img["src"])
   end
 
-  def valiate_image_for_previews(img)
+  def validate_image_for_previews(img)
     w, h = determine_image_size(img)
     w >= 100 && h >= 100
   end
 
   def update_post_image
-    extracted = extract_post_image
-
-    img = extracted if valiate_image_for_previews(extracted)
+    img = extract_post_image
 
     if @has_oneboxes
       cooked = PrettyText.cook(@post.raw)
@@ -47,7 +47,7 @@ CookedPostProcessor.class_eval do
           class_str.include?('site-icon') || class_str.include?('avatar')
         end
 
-        if prior_oneboxes.any? && valiate_image_for_previews(prior_oneboxes.first)
+        if prior_oneboxes.any? && validate_image_for_previews(prior_oneboxes.first)
           img = prior_oneboxes.first
         end
       end
