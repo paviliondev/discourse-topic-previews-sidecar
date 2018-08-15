@@ -72,7 +72,7 @@ module PreviewsTopicQueryExtension
         AND tag_id = #{tag_id})
         DESC"
     elsif order_type == 'topic'
-      "created_at DESC"
+      "topics.created_at DESC"
     end
   end
 
