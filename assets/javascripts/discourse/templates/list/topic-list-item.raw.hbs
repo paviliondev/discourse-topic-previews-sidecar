@@ -24,22 +24,24 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#if socialStyle}}
-      <div class="social-footer">
-        {{#if showActions}}
-          {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
-        {{/if}}
-        {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
-        {{raw-plugin-outlet name="topic-list-after-title"}}
-      </div>
-    {{else}}
+    {{#unless socialStyle}}
       {{#if showActions}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
 
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
-    {{/if}}
+    {{/unless}}
   </div>
+
+  {{#if socialStyle}}
+    <div class="social-footer">
+      {{#if showActions}}
+        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
+      {{/if}}
+      {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
+      {{raw-plugin-outlet name="topic-list-after-title"}}
+    </div>
+  {{/if}}
 </td>
 
 {{#unless hideCategory}}
