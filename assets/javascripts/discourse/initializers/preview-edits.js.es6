@@ -10,9 +10,9 @@ export default {
   initialize(container){
 
     if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
-
     withPluginApi('0.8.12', (api) => {
       api.modifyClass('component:topic-list', {
+        tagName: 'div',
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
         classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle'],
@@ -26,7 +26,9 @@ export default {
           if (suggestedList) {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
-          }
+          };
+          Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+          console.log('I just ran init for topic-list')
         },
 
         @on('didInsertElement')
@@ -119,10 +121,24 @@ export default {
         @computed('listChanged')
         thumbnailFirstXRows() {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
+        },
+
+        scheduleMasonry: (function(){
+            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+        }).observes("topics.[]"),
+
+        applyMasonry: function(){
+           // initialize
+           this.$('.grid').masonry({
+                    itemSelector: '.grid-item'
+            });
+          console.log('re-rendered masonry!');
         }
       });
 
       api.modifyClass('component:topic-list-item', {
+        tagName: 'div',
+        classNames: ['grid-item'],
         canBookmark: Ember.computed.bool('currentUser'),
         rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
         socialStyle: Ember.computed.alias('parentView.socialStyle'),

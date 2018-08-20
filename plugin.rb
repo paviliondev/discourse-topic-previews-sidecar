@@ -6,6 +6,7 @@
 
 register_asset 'stylesheets/previews_common.scss'
 register_asset 'stylesheets/previews_mobile.scss'
+register_asset 'javascripts/discourse/lib/masonry/masonry.js'
 
 enabled_site_setting :topic_list_previews_enabled
 

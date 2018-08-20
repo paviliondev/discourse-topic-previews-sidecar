@@ -4,43 +4,55 @@
   </td>
 {{/if}}
 
-<td class='main-link clearfix' colspan="{{titleColSpan}}">
-  {{#if socialStyle}}
+{{#if socialStyle}}
+<div class='grid-inner-item'>
     {{raw "list/topic-list-title" topic=topic socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
-  {{/if}}
+    {{#if showThumbnail}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category}}
+      {{/if}}
+      <div class="topic-details">
+
+        {{#if expandPinned}}
+          {{raw "list/topic-excerpt" topic=topic}}
+          {{/if}}
+
+
+          <div class="social-footer">
+            {{#if showActions}}
+              {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
+            {{/if}}
+            {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
+            {{raw-plugin-outlet name="topic-list-after-title"}}
+          </div>
+          {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
+      </div>
+</div>
+{{else}}
+<td class='main-link clearfix' colspan="{{titleColSpan}}">
   {{#if showThumbnail}}
     {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category}}
   {{/if}}
   <div class="topic-details">
-    {{#unless socialStyle}}
       {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges}}
       {{#if showCategoryBadge}}
         {{raw "list/topic-category" category=topic.category}}
       {{/if}}
       {{discourse-tags topic mode="list"}}
-    {{/unless}}
+
 
     {{#if expandPinned}}
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#if socialStyle}}
-      <div class="social-footer">
-        {{#if showActions}}
-          {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
-        {{/if}}
-        {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
-        {{raw-plugin-outlet name="topic-list-after-title"}}
-      </div>
-    {{else}}
       {{#if showActions}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
-
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
-    {{/if}}
+
   </div>
 </td>
+{{/if}}
+
 
 {{#unless hideCategory}}
   {{#unless topic.isPinnedUncategorized}}
