@@ -370,3 +370,16 @@ button.list-button {
     float: right;
   }
 }
+
+
+.grid-item {
+    float:top;
+    max-width: 30%;
+    max-height: 450px;
+    min-height: 60px;
+    box-shadow: 2px 2px 2px 2px #888888;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    padding:8px;
+    gutter: 5px;
+}
