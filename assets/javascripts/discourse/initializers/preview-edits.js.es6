@@ -46,6 +46,17 @@ export default {
         setupListStyle() {
           if (!this.$()) {return;}
           this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
+          if (this.get('socialStyle') == false)
+          {
+            console.log ('tagName was '+ this.tagName);
+            this.tagName = 'tr';
+            console.log('changed to tr');
+                }
+                else {
+                  console.log ('tagName was '+ this.tagName);
+                  this.tagName = 'div';
+                  console.log('changed to div');
+                };
         },
 
         @on('willDestroyElement')
@@ -130,8 +141,10 @@ export default {
         applyMasonry: function(){
            // initialize
            this.$('.grid').masonry({
-                    itemSelector: '.grid-item'
-            });
+                    itemSelector: '.grid-item',
+                    percentPosition: true,
+                    columnWidth: 30
+                });
           console.log('re-rendered masonry!');
         }
       });
@@ -187,6 +200,28 @@ export default {
           }
 
           this._afterRender();
+        },
+
+        //@on("didInsertElement")
+        @observes("socialStyle")
+        setupListStyle() {
+
+          if (!this.$()) {return;}
+          this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
+          if (this.get('socialStyle') == false)
+          {
+            console.log ('tagName was '+ this.tagName + ' and classNames is ' + this.get('classNames'));
+            this.set('tagName','tr');
+            this.set('classNames', '');
+            //remove(this.Classnames, 'grid-item');
+            console.log('tagName is now '+ this.tagName + ' and classNames is ' + this.get('classNames'));;
+          }
+          else {
+            console.log ('tagName was '+ this.tagName + ' and classNames is ' + this.get('classNames'));
+            this.set('tagName','div');
+            this.set('classNames', 'grid-item');
+            ('tagName is now '+ this.tagName + ' and classNames is ' + this.get('classNames'));
+        };
         },
 
         @observes('thumbnails')

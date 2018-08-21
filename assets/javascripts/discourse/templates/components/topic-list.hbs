@@ -30,7 +30,7 @@
 
 {{#if socialStyle}}
 <div class='grid' >
-<div class="grid-sizer"></div>
+<div class='grid-sizer'></div>
   {{#each filteredTopics as |topic|}}
     {{topic-list-item topic=topic
                       bulkSelectEnabled=bulkSelectEnabled
@@ -45,8 +45,7 @@
                       lastVisitedTopic=lastVisitedTopic
                       selected=selected
                       tagsForUser=tagsForUser}}
-    {{raw "list/visited-line" lastVisitedTopic=lastVisitedTopic topic=topic}}
-  {{/each}}
+    {{/each}}
 </div>
 {{else}}
 <tbody>
