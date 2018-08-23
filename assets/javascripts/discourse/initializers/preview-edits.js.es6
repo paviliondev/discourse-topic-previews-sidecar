@@ -20,15 +20,24 @@ export default {
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
 
+       switchTagBasedOnStyle: function () {
+          if (this.get('socialStyle') == false){
+            this.tagName = 'tr';
+          }
+          else {
+            this.tagName = 'div';
+          };
+        },
+
         @on('init')
         setup() {
           const suggestedList = this.get('suggestedList');
+          this.switchTagBasedOnStyle();
           if (suggestedList) {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
           };
           Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-          console.log('I just ran init for topic-list')
         },
 
         @on('didInsertElement')
@@ -46,17 +55,6 @@ export default {
         setupListStyle() {
           if (!this.$()) {return;}
           this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
-          if (this.get('socialStyle') == false)
-          {
-            console.log ('tagName was '+ this.tagName);
-            this.tagName = 'tr';
-            console.log('changed to tr');
-                }
-                else {
-                  console.log ('tagName was '+ this.tagName);
-                  this.tagName = 'div';
-                  console.log('changed to div');
-                };
         },
 
         @on('willDestroyElement')
@@ -145,7 +143,6 @@ export default {
                     percentPosition: true,
                     columnWidth: 30
                 });
-          console.log('re-rendered masonry!');
         }
       });
 
@@ -164,11 +161,23 @@ export default {
 
         // Lifecyle logic
 
+        switchTagBasedOnStyle: function() {
+          if (this.get('socialStyle') == false) {
+            this.set('tagName','tr');
+            this.set('classNames', '');
+            }
+          else {
+            this.set('tagName','div');
+            this.classNames = ['grid-item'];
+          };
+        },
+
         @on('init')
         _setupProperties() {
           const topic = this.get('topic');
           const thumbnails = topic.get('thumbnails');
           const defaultThumbnail = this.get('defaultThumbnail');
+          this.switchTagBasedOnStyle();
           if (thumbnails) {
             testImageUrl(thumbnails, (imageLoaded) => {
               if (!imageLoaded) {
@@ -200,28 +209,6 @@ export default {
           }
 
           this._afterRender();
-        },
-
-        //@on("didInsertElement")
-        @observes("socialStyle")
-        setupListStyle() {
-
-          if (!this.$()) {return;}
-          this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
-          if (this.get('socialStyle') == false)
-          {
-            console.log ('tagName was '+ this.tagName + ' and classNames is ' + this.get('classNames'));
-            this.set('tagName','tr');
-            this.set('classNames', '');
-            //remove(this.Classnames, 'grid-item');
-            console.log('tagName is now '+ this.tagName + ' and classNames is ' + this.get('classNames'));;
-          }
-          else {
-            console.log ('tagName was '+ this.tagName + ' and classNames is ' + this.get('classNames'));
-            this.set('tagName','div');
-            this.set('classNames', 'grid-item');
-            ('tagName is now '+ this.tagName + ' and classNames is ' + this.get('classNames'));
-        };
         },
 
         @observes('thumbnails')
