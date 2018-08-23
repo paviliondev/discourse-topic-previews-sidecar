@@ -17,6 +17,9 @@ CookedPostProcessor.class_eval do
 
   def validate_image_for_previews(img)
     w, h = determine_image_size(img)
+
+    return false if w.blank? || h.blank?
+
     w >= SiteSetting.topic_list_previewable_image_width_min &&
     h >= SiteSetting.topic_list_previewable_image_height_min
   end
