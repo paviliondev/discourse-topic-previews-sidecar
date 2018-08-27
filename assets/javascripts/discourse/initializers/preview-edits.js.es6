@@ -10,19 +10,20 @@ export default {
   initialize(container){
 
     if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
+
     withPluginApi('0.8.12', (api) => {
       api.modifyClass('component:topic-list', {
         tagName: 'div',
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
-        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle'],
+        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle', 'tilesStyle'],
         suggestedList: Ember.computed.equal('parentView.parentView.parentView.elementId', 'suggested-topics'),
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
 
        switchTagBasedOnStyle: function () {
-          if (this.get('socialStyle') == false){
             this.tagName = 'tr';
+            if (this.get('tilesStyle') == false){
           }
           else {
             this.tagName = 'div';
@@ -37,7 +38,9 @@ export default {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
           };
-          Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+          if (this.get('tilesStyle')){
+            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+          };
         },
 
         @on('didInsertElement')
@@ -50,16 +53,18 @@ export default {
           this.toggleProperty('listChanged');
         },
 
-        @on("didInsertElement")
-        @observes("socialStyle")
+        @on('didInsertElement')
+        @observes('socialStyle','tilesStyle')
         setupListStyle() {
           if (!this.$()) {return;}
           this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
+          this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
         },
 
         @on('willDestroyElement')
         _tearDown() {
           this.$().parents('#list-area').removeClass('social-style');
+          this.$().parents('#list-area').removeClass('tiles-style');
         },
 
         filter() {
@@ -103,6 +108,17 @@ export default {
         },
 
         @computed('listChanged')
+        tilesStyle() {
+          return this.settingEnabled('topic_list_tiles');
+        },
+
+//        @computed ('listChanged')
+        @computed('listChanged')
+        tilesOrSocial() {
+          return (this.get('tilesStyle') || this.get('socialStyle'));
+        },
+
+        @computed('listChanged')
         showThumbnail() {
           return this.settingEnabled('topic_list_thumbnail');
         },
@@ -124,7 +140,7 @@ export default {
 
         @computed('listChanged')
         skipHeader() {
-          return this.get('socialStyle') || this.get('site.mobileView');
+          return this.get('tilesStyle') || this.get('socialStyle') || this.get('site.mobileView');
         },
 
         @computed('listChanged')
@@ -141,7 +157,8 @@ export default {
            this.$('.grid').masonry({
                     itemSelector: '.grid-item',
                     percentPosition: true,
-                    columnWidth: 30
+                    Width: '.grid-sizer',
+                    gutter: 6
                 });
         }
       });
@@ -152,6 +169,8 @@ export default {
         canBookmark: Ember.computed.bool('currentUser'),
         rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
         socialStyle: Ember.computed.alias('parentView.socialStyle'),
+        tilesStyle: Ember.computed.alias('parentView.tilesStyle'),
+        tilesOrSocial: Ember.computed.alias('parentView.tilesOrSocial'),
         showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
         showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
         showActions: Ember.computed.alias('parentView.showActions'),
@@ -162,7 +181,7 @@ export default {
         // Lifecyle logic
 
         switchTagBasedOnStyle: function() {
-          if (this.get('socialStyle') == false) {
+          if (this.get('tilesStyle') == false) {
             this.set('tagName','tr');
             this.set('classNames', '');
             }
@@ -215,7 +234,7 @@ export default {
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
             this._setupTitleCSS();
-            if (this.get('showThumbnail') && this.get('socialStyle')) {
+            if (this.get('showThumbnail') && (this.get('socialStyle') || this.get('tilesStyle'))) {
               this._sizeThumbnails();
             }
             if (this.get('showExcerpt')) {

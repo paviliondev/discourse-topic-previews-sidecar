@@ -1,6 +1,20 @@
+.grid-sizer,
+.grid-item {
+    width: 31%;
+}
+.grid-item {
+    float:top;
+    // max-height: 450px;
+    // min-height: 60px;
+    box-shadow: 2px 2px 2px 2px #888888;
+    margin-bottom: 6px;
+    border-radius: 3px;
+    padding:8px;
+}
+
 .topic-thumbnail {
-  float: left;
-  padding-right: 15px;
+  // float: left;
+  // padding-right: 15px;
 
   .no-thumbnail {
     display: none;
@@ -11,7 +25,50 @@
   padding: 0;
 }
 
-html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style {
+html:not(.mobile-view) #list-area.tiles-style, #suggested-topics .tiles-style {
+  .topic-statuses {
+    float: right;
+  }
+
+  .topic-list-item-separator {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+
+    td {
+      display: block;
+    }
+  }
+
+  img.thumbnail {
+    max-width:100%;
+    height: auto;
+  }
+
+  div.inline, span.inline {
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 5px 0 0;
+    margin: 0;
+    line-height: 20px;
+    .badge-wrapper {
+      margin: 0;
+    }
+  }
+
+  .topic-poster-names a {
+    font-size: 0.9em;
+  }
+
+  div.sub, span.sub {
+    padding: 0;
+    font-size: 12px;
+  }
+
+}
+
+html:not(.mobile-view) #list-area.social-style,  #suggested-topics .social-style {
   .show-more {
     top: 0;
   }
@@ -70,7 +127,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   content: '\00B7';
 }
 
-#list-area.social-style .contents, #suggested-topics .social-style .contents {
+#list-area.social-style .contents, #suggested-topics.social-style .contents, #list-area.tiles-style .contents, #suggested-topics.tiles-style .contents{
   .main-link {
     display: block;
   }
@@ -134,7 +191,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
     display: inline-block;
   }
 
-  .topic-meta-social {
+  .topic-meta-social, .topic-meta-tiles {
     float: right;
   }
 
@@ -369,17 +426,4 @@ button.list-button {
     padding-right: 10px;
     float: right;
   }
-}
-
-
-.grid-item {
-    float:top;
-    max-width: 30%;
-    max-height: 450px;
-    min-height: 60px;
-    box-shadow: 2px 2px 2px 2px #888888;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    padding:8px;
-    gutter: 5px;
 }
