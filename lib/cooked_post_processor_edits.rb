@@ -20,8 +20,8 @@ CookedPostProcessor.class_eval do
 
     return false if w.blank? || h.blank?
 
-    w >= SiteSetting.topic_list_previewable_image_width_min &&
-    h >= SiteSetting.topic_list_previewable_image_height_min
+    w.to_i >= SiteSetting.topic_list_previewable_image_width_min.to_i &&
+    h.to_i >= SiteSetting.topic_list_previewable_image_height_min.to_i
   end
 
   def update_post_image
