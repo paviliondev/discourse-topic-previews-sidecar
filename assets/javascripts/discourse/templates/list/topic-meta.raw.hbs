@@ -8,6 +8,7 @@
       {{discourse-tags topic mode="list"}}
     </div>
   {{/if}}
+  {{raw-plugin-outlet name="topic-list-social-meta"}}
   <span class="middot inline sub"></span>
   <div class="topic-views {{topic.viewsHeat}} inline sub">
     {{number topic.views numberKey="views_long"}}
