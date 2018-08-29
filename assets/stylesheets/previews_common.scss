@@ -46,13 +46,18 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
 
   div.inline, span.inline {
     float: none;
-    display: inline-block;
+    display: inline-flex;
     vertical-align: middle;
     padding: 0 5px 0 0;
     margin: 0;
     line-height: 20px;
+
     .badge-wrapper {
       margin: 0;
+    }
+
+    .number {
+      margin-right: 3px;
     }
   }
 
@@ -62,7 +67,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
 
   div.sub, span.sub {
     padding: 0;
-    font-size: 12px;
+    font-size: 0.8em;
   }
 }
 
@@ -127,6 +132,10 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
 
   .topic-replies {
     cursor: pointer;
+
+    a.badge-posts {
+      line-height: 20px;
+    }
   }
 
   .topic-excerpt {
@@ -198,6 +207,12 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
 .topic-list .topic-actions {
   float: left;
   clear: both;
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-right: 7px;
+  }
 }
 
 .main-link .topic-statuses {
@@ -285,10 +300,6 @@ button.list-button {
   }
 }
 
-.topic-meta {
-  float: right;
-}
-
 .tlp-featured-topics.has-topics {
   display: inline-block;
   width: 100%;
@@ -368,5 +379,19 @@ button.list-button {
     margin-top: 10px;
     padding-right: 10px;
     float: right;
+  }
+}
+
+.social-footer {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+
+  .topic-rating {
+    font-size: 0.8em;
+  }
+
+  .topic-meta {
+    margin-left: auto;
   }
 }
