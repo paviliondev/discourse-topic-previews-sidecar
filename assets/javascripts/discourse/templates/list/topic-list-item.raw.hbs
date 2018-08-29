@@ -7,7 +7,7 @@
       </div>
     {{/if}}
 
-    {{raw "list/topic-list-title" topic=topic tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
+    {{raw "list/topic-list-title" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
 
     {{#if showThumbnail}}
       {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category}}
@@ -19,6 +19,7 @@
         {{raw "list/topic-excerpt" topic=topic}}
       {{/if}}
     </div>
+
     <div class="tiles-footer">
 
       {{#if showActions}}
@@ -29,19 +30,26 @@
       {{raw-plugin-outlet name="topic-list-after-title"}}
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
 
-
     </div>
+
     {{#if showLikes}}
+
       <div class="num likes">
+
         {{#if hasLikes}}
           <a href='{{topic.summaryUrl}}'>
             {{number topic.like_count}} <i class='fa fa-heart'></i>
           </a>
         {{/if}}
+
       </div>
+
     {{/if}}
+
   </div>
+
 {{else}}
+
 {{#if bulkSelectEnabled}}
   <td class='star'>
     <input type="checkbox" class="bulk-select">
@@ -49,18 +57,24 @@
 {{/if}}
 
 <td class='main-link clearfix' colspan="{{titleColSpan}}">
+
   {{#if socialStyle}}
     {{raw "list/topic-list-title" topic=topic socialStyle=socialStyle tilesOrSocial=tilesOrSocial showTopicPostBadges=showTopicPostBadges}}
   {{/if}}
+
   {{#if showThumbnail}}
     {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category}}
   {{/if}}
+
   <div class="topic-details">
+
     {{#unless socialStyle}}
       {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges}}
+
       {{#if showCategoryBadge}}
         {{raw "list/topic-category" category=topic.category}}
       {{/if}}
+
       {{discourse-tags topic mode="list"}}
     {{/unless}}
 
@@ -69,23 +83,28 @@
     {{/if}}
 
     {{#unless socialStyle}}
+
       {{#if showActions}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
 
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
     {{/unless}}
+
   </div>
 
   {{#if socialStyle}}
     <div class="social-footer">
+
       {{#if showActions}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
+
       {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
       {{raw-plugin-outlet name="topic-list-after-title"}}
     </div>
   {{/if}}
+
 </td>
 
 {{#unless hideCategory}}

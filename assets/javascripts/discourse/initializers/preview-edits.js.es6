@@ -49,7 +49,7 @@ export default {
           const mobile = this.get('site.mobileView');
           if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
             this.set('hideCategory', true);
-          }
+          };
           this.toggleProperty('listChanged');
         },
 
@@ -112,10 +112,9 @@ export default {
           return this.settingEnabled('topic_list_tiles');
         },
 
-//        @computed ('listChanged')
         @computed('listChanged')
         tilesOrSocial() {
-          return (this.get('tilesStyle') || this.get('socialStyle'));
+            return (this.get('tilesStyle') || this.get('socialStyle'));
         },
 
         @computed('listChanged')

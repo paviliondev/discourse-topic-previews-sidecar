@@ -3,24 +3,33 @@
     {{raw-plugin-outlet name="topic-list-before-status"}}
     {{raw "topic-status" topic=topic}}
     {{topic-link topic}}
+
     {{#if topic.featured_link}}
       {{topic-featured-link topic}}
     {{/if}}
+
     {{#if mobileView}}
+
       {{#if topic.unseen}}
         <span class="badge-notification new-topic"></span>
       {{/if}}
+
     {{else}}
+
       {{#if showTopicPostBadges}}
         {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
       {{/if}}
+
     {{/if}}
+
     {{#unless tilesOrSocial}}
       {{raw-plugin-outlet name="topic-list-after-title"}}
     {{/unless}}
+
   </span>
+
   {{#if tilesOrSocial}}
-  asdfasdfasdfsdfasdfasdf
     {{raw "list/topic-users" topic=topic posterNames=posterNames}}
   {{/if}}
+
 </div>
