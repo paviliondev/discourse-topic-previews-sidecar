@@ -147,9 +147,18 @@ export default {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         },
 
-        scheduleMasonry: (function(){
-            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-        }).observes("topics.[]"),
+        masonryObserver: function() {
+  	    	$(".topic-list").imagesLoaded(function() {
+  		    	$(".topic-list")
+              .applyMasonry();
+  		//	    	.masonry("reloadItems")
+  		//	    	.masonry();
+  	    	});
+      	}.observes("topics.[]"),
+
+        // scheduleMasonry: (function(){
+        //     Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+        // }).observes("topics.[]"),
 
         applyMasonry: function(){
            // initialize
