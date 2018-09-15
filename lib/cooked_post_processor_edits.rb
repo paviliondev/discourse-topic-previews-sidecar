@@ -73,7 +73,13 @@ CookedPostProcessor.class_eval do
         return if SiteSetting.topic_list_hotlink_thumbnails ||
                   !SiteSetting.topic_list_previews_enabled
 
-        ListHelper.create_topic_thumbnails(@post, url)
+        if upload_id = ListHelper.create_topic_thumbnails(@post, url)
+
+          ## ensure there is a post_upload record so the upload is not removed in the cleanup
+          unless PostUpload.where(post_id: @post.id).exists?
+            PostUpload.create(post_id: @post.id, upload_id: upload_id)
+          end
+        end
       end
     end
   end
