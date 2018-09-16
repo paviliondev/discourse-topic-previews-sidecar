@@ -36,13 +36,7 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#if socialStyle}}
-      {{raw "list/topic-meta" title=view.title likesHeat=view.likesHeat topic=topic}}
-      {{#if showActions}}
-        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
-      {{/if}}
-      {{raw-plugin-outlet name="topic-list-after-title"}}
-    {{else}}
+    {{#unless socialStyle}}
       {{#unless hideCategory}}
         {{raw "list/topic-category" category=topic.category}}
       {{/unless}}
@@ -61,6 +55,16 @@
       <div class='num activity last'>
         <span class="age activity" title="{{topic.bumpedAtTitle}}"><a href="{{topic.lastPostUrl}}">{{format-date topic.bumpedAt format="tiny" noTitle="true"}}</a></span>
       </div>
-    {{/if}}
+    {{/unless}}
   </div>
+
+  {{#if socialStyle}}
+    <div class='social-footer'>
+      {{raw "list/topic-meta" title=view.title likesHeat=view.likesHeat topic=topic}}
+      {{#if showActions}}
+        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
+      {{/if}}
+      {{raw-plugin-outlet name="topic-list-after-title"}}
+    </div>
+  {{/if}}
 </td>

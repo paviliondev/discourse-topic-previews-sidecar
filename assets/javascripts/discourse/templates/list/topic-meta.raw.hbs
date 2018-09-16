@@ -4,19 +4,20 @@
   </div>
   {{#if topic.tags}}
     <span class="middot inline sub"></span>
-    <div class='discourse-tags inline sub'>
+    <div class='inline sub'>
       {{discourse-tags topic mode="list"}}
     </div>
   {{/if}}
+  {{raw-plugin-outlet name="topic-list-social-meta"}}
   <span class="middot inline sub"></span>
   <div class="topic-views {{topic.viewsHeat}} inline sub">
     {{number topic.views numberKey="views_long"}}
-    {{i18n 'views_lowercase' count=topic.views}}
+    <span>{{i18n 'views_lowercase' count=topic.views}}</span>
   </div>
   <span class="middot inline sub"></span>
   <div class='topic-replies posts-map {{likesHeat}} inline sub' title='{{title}}'>
     <a href class='posts-map badge-posts {{likesHeat}}'>{{number topic.replyCount}}</a>
-    {{i18n 'replies_lowercase' count=topic.replyCount}}
+    <span>{{i18n 'replies_lowercase' count=topic.replyCount}}</span>
   </div>
   <span class="middot inline sub"></span>
   <div class="{{class}} {{cold-age-class topic.createdAt startDate=topic.bumpedAt class=""}} activity inline sub" title="{{{topic.bumpedAtTitle}}}">
