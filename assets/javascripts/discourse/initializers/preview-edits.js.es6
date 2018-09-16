@@ -12,7 +12,51 @@ export default {
     if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
 
     withPluginApi('0.8.12', (api) => {
+
+      api.modifyClass('component:discovery-topics-list', {
+        actions: {
+          loadMore() {
+            Discourse.notifyTitle(0);
+            this.get("model")
+              .loadMore()
+              .then(hasMoreResults => {
+                Ember.run.schedule("afterRender", () => this.saveScrollPosition());
+                Ember.run.scheduleOnce("afterRender", this, this.applyMasonry);
+                if (!hasMoreResults) {
+                  this.get("eyeline").flushRest();
+                } else if ($(window).height() >= $(document).height()) {
+                  this.send("loadMore");
+                }
+              });
+          }
+        },
+
+        applyMasonry: function(){
+          // initialize
+          var msnry = this.$('.grid').data('masonry');
+          if (msnry) {
+            msnry.reloadItems();
+            // disable transition
+            var transitionDuration = msnry.options.transitionDuration;
+            msnry.options.transitionDuration = 0;
+            msnry.layout();
+            // reset transition
+            msnry.options.transitionDuration = transitionDuration;
+          } else {
+            // init masonry
+            this.$('.grid').masonry({
+              itemSelector: '.grid-item',
+              percentPosition: true,
+              Width: '.grid-sizer',
+              gutter: 6
+            });
+          }
+        }
+      });
+
+
       api.modifyClass('component:topic-list', {
+        // we need 'div's for masonry
         tagName: 'div',
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
@@ -147,31 +191,36 @@ export default {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         },
 
+        // don't forget to update masonry layout when required
         masonryObserver: function() {
-  	    	$(".topic-list").imagesLoaded(function() {
-  		    	$(".topic-list")
-              .applyMasonry();
-  		//	    	.masonry("reloadItems")
-  		//	    	.masonry();
-  	    	});
+             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
       	}.observes("topics.[]"),
 
-        // scheduleMasonry: (function(){
-        //     Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-        // }).observes("topics.[]"),
-
         applyMasonry: function(){
-           // initialize
-           this.$('.grid').masonry({
-                    itemSelector: '.grid-item',
-                    percentPosition: true,
-                    Width: '.grid-sizer',
-                    gutter: 6
-                });
+          // initialize
+          var msnry = this.$('.grid').data('masonry');
+          if (msnry) {
+            msnry.reloadItems();
+            // disable transition
+            var transitionDuration = msnry.options.transitionDuration;
+            msnry.options.transitionDuration = 0;
+            msnry.layout();
+            // reset transition
+            msnry.options.transitionDuration = transitionDuration;
+          } else {
+            // init masonry
+            this.$('.grid').masonry({
+              itemSelector: '.grid-item',
+              percentPosition: true,
+              Width: '.grid-sizer',
+              gutter: 6
+            });
+          }
         }
       });
 
       api.modifyClass('component:topic-list-item', {
+        // needs 'div's for masonry
         tagName: 'div',
         classNames: ['grid-item'],
         canBookmark: Ember.computed.bool('currentUser'),
@@ -186,8 +235,6 @@ export default {
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
         category: Ember.computed.alias('parentView.category'),
 
-        // Lifecyle logic
-
         switchTagBasedOnStyle: function() {
           if (this.get('tilesStyle') == false) {
             this.set('tagName','tr');
@@ -198,6 +245,8 @@ export default {
             this.classNames = ['grid-item'];
           };
         },
+
+        // Lifecyle logic
 
         @on('init')
         _setupProperties() {

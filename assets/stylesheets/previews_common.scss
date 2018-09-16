@@ -12,9 +12,21 @@
     padding:8px;
 }
 
+.grid-item:hover {
+    -webkit-transform: translateY(-2px);
+    -ms-transform: translateY(-2px);
+    transform: translateY(-2px);
+    -webkit-transform: translateX(-2px);
+    -ms-transform: translateX(-2px);
+    transform: translateX(-2px);
+    box-shadow: 4px 4px 4px 4px #777777;
+    background-color: darken($secondary,2%);
+   lighten: ($primary, 70%);
+}
+
 .topic-thumbnail {
-  // float: left;
-  // padding-right: 15px;
+   float: left;
+   padding-right: 15px;
 
   .no-thumbnail {
     display: none;
