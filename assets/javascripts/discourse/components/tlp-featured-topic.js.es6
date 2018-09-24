@@ -5,7 +5,7 @@ import { testImageUrl, getDefaultThumbnail } from '../lib/utilities';
 export default Ember.Component.extend({
   tagName: 'a',
   attributeBindings: ['href'],
-  classNameBindings: [':tlp-featured-topic', "showDetails"],
+  classNameBindings: [':tlp-featured-topic', "showDetails", 'featuredTag'],
 
   didInsertElement() {
     const topic = this.get('topic');
@@ -25,6 +25,16 @@ export default Ember.Component.extend({
         }
       });
     }
+  },
+
+  @computed
+  featuredTags() {
+    return Discourse.SiteSettings.topic_list_featured_images_tag.split('|');
+  },
+
+  @computed('topic.tags')
+  featuredTag(tags) {
+    return tags.filter(tag => this.get('featuredTags').indexOf(tag) > -1)[0];
   },
 
   mouseEnter() {

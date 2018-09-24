@@ -17,9 +17,7 @@ export default Ember.Component.extend({
     const showFeaturedTitle = this.get('showFeaturedTitle');
     if (showFeaturedTitle) {
       const raw = Discourse.SiteSettings.topic_list_featured_title;
-      cookAsync(raw).then((cooked) => {
-        this.set('featuredTitle', cooked);
-      })
+      cookAsync(raw).then((cooked) => this.set('featuredTitle', cooked));
     }
   },
 
@@ -29,8 +27,13 @@ export default Ember.Component.extend({
   },
 
   @computed
-  showFeaturedLink() {
-    return Discourse.SiteSettings.topic_list_featured_images_tag &&
+  featuredTags() {
+    return Discourse.SiteSettings.topic_list_featured_images_tag.split('|');
+  },
+
+  @computed
+  showFeaturedTags() {
+    return this.get('featuredTags') &&
            Discourse.SiteSettings.topic_list_featured_images_tag_show;
   }
 });
