@@ -70,7 +70,7 @@ module PreviewsTopicQueryExtension
     order_type = SiteSetting.topic_list_featured_order
     order = ""
 
-    if order_type == 'tag'
+    if order_type == 'tag' && tag_ids.any?
       "(SELECT created_at FROM topic_tags
         WHERE topic_id = topics.id
         AND tag_id IN (#{tag_ids.join(', ')}))
@@ -81,7 +81,7 @@ module PreviewsTopicQueryExtension
   end
 
   def apply_ordering(result, options)
-    if options[:tags] && (options[:tags] && featured_tags).length
+    if options[:tags] && (options[:tags] && featured_tags).any?
       result.order(featured_order)
     else
       super(result, options)
