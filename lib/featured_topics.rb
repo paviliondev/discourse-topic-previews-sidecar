@@ -16,7 +16,7 @@ end
 
 module PreviewsTopicQueryExtension
   def list_featured(options = {})
-    create_list(:featured, { unordered: true }, featured_topics)
+    create_list(:featured, { unordered: true, featured_list: true }, featured_topics)
   end
 
   def create_list(filter, options = {}, topics = nil)
@@ -81,7 +81,7 @@ module PreviewsTopicQueryExtension
   end
 
   def apply_ordering(result, options)
-    if options[:tags] && (options[:tags] && featured_tags).any?
+    if options[:featured_list] && options[:tags] && (options[:tags] && featured_tags).any?
       result.order(featured_order)
     else
       super(result, options)
