@@ -33,8 +33,17 @@ var renderUnboundPreview = function(thumbnails, params) {
   const featured_height = params.featured ? Discourse.SiteSettings.topic_list_featured_height : false;
   const height = featured_height || category_height || Discourse.SiteSettings.topic_list_thumbnail_height;
   const width = featured_width || category_width || Discourse.SiteSettings.topic_list_thumbnail_width;
-  const style = `object-fit:cover;${attrPrefix}height:${height}px;${attrPrefix}width:${width}px`;
-  return '<img class="thumbnail" src="' + url + '" style="' + style + '" />';
+  var style = ``;
+  var classtxt = ``;
+  if (!params.tilesStyle){
+    style = `object-fit:cover;${attrPrefix}height:${height}px;${attrPrefix}width:${width}px`;
+    classtxt = `thumbnail`;
+  }
+  else {
+    style = ``;
+    classtxt = `tiles-thumbnail`;
+  };
+  return '<img class="' + classtxt + '" src="' + url + '" style="' + style + '" />';
 };
 
 var testImageUrl = function(thumbnails, callback) {

@@ -1,11 +1,10 @@
+//Tiles masonry support
 .grid-sizer,
 .grid-item {
     width: 31%;
 }
 .grid-item {
     float:top;
-    // max-height: 450px;
-    // min-height: 60px;
     box-shadow: 2px 2px 2px 2px #888888;
     margin-bottom: 6px;
     border-radius: 3px;
@@ -24,37 +23,75 @@
    lighten: ($primary, 70%);
 }
 
-.topic-thumbnail {
-   float: left;
-   padding-right: 15px;
+.grid-inner-item
+{
+  width:99%;
+  padding: 2px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto auto auto auto;
+   grid-template-areas:
+   "title title title title title"
+   "photo photo photo photo photo"
+   "details details details details details"
+   "footer footer footer footer footer"
+}
 
-  .no-thumbnail {
-    display: none;
+//tiles styling  specific styling
+html:not(.mobile-view) #list-area.tiles-style {
+
+  .topic-title {
+    font-size: 1.143em;
+    grid-area: title;
+
+    .link-top-line {
+      flex: 1 1 auto;
+    }
+
+    a.title {
+      color: $primary;
+    }
+
+    a.topic-featured-link {
+      display: block;
+      padding-left: 0;
+      padding-top: 3px;
+    }
+
+    .badge-notification.new-topic {
+      vertical-align: top;
+      display: inline-block;
+    }
+
+    .topic-users {
+      float: right;
+
+      .inline {
+        padding: 0 0 0 5px;
+      }
+    }
   }
-}
 
-.topic-list .main-link a.title {
-  padding: 0;
-}
-
-html:not(.mobile-view) #list-area.tiles-style, #suggested-topics .tiles-style {
   .topic-statuses {
     float: right;
   }
 
-  .topic-list-item-separator {
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 10px;
+  .topic-thumbnail {
+     grid-area: photo;
+     padding: 2px;
+     padding-top:4px;
 
-    td {
-      display: block;
+    .no-thumbnail {
+      display: none;
     }
   }
 
-  img.thumbnail {
-    max-width:100%;
-    height: auto;
+  img.tiles-thumbnail {
+    width:100% !important;
+  }
+
+  .topic-details {
+    grid-area: details;
   }
 
   div.inline, span.inline {
@@ -78,9 +115,34 @@ html:not(.mobile-view) #list-area.tiles-style, #suggested-topics .tiles-style {
     font-size: 12px;
   }
 
+  .tiles-footer {
+    grid-area: footer;
+    justify-content: space-between;
+  }
+}
+//end of tiles specific styling
+
+.topic-list{
+    padding-top:5px;
 }
 
-html:not(.mobile-view) #list-area.social-style,  #suggested-topics .social-style {
+.topic-list .main-link a.title {
+    padding: 0;
+}
+
+.topic-thumbnail {
+  float: left;
+  padding-right: 15px;
+
+  .no-thumbnail {
+    display: none;
+  }
+}
+.topic-list .main-link a.title {
+  padding: 0;
+}
+
+html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style {
   .show-more {
     top: 0;
   }
@@ -144,7 +206,7 @@ html:not(.mobile-view) #list-area.social-style,  #suggested-topics .social-style
   content: '\00B7';
 }
 
-#list-area.social-style .contents, #suggested-topics.social-style .contents, #list-area.tiles-style .contents, #suggested-topics.tiles-style .contents{
+#list-area.social-style .contents, #suggested-topics .social-style .contents {
   .main-link {
     display: block;
   }
@@ -212,7 +274,7 @@ html:not(.mobile-view) #list-area.social-style,  #suggested-topics .social-style
     display: inline-block;
   }
 
-  .topic-meta-social, .topic-meta-tiles {
+  .topic-meta-social {
     float: right;
   }
 
@@ -369,6 +431,10 @@ button.list-button {
   }
 }
 
+//.topic-meta {
+//  float: right;
+//}
+
 .tlp-featured-topics.has-topics {
   display: inline-block;
   width: 100%;
@@ -444,7 +510,7 @@ button.list-button {
     }
   }
 
-  .featured-link {
+  .featured-tags {
     margin-top: 10px;
     padding-right: 10px;
     float: right;

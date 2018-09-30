@@ -96,11 +96,9 @@ export default {
           const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
           const filterArr = filter ? filter.split('/') : [];
           const filterType = filterArr[filterArr.length - 1];
-
           const catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1;
           const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
           const siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
-
           return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled;
         },
 
@@ -155,26 +153,30 @@ export default {
       	}.observes("topics.[]"),
 
         applyMasonry: function(){
+
           // initialize
           var msnry = this.$('.grid').data('masonry');
           if (msnry) {
             msnry.reloadItems();
-            // disable transition
+            //disable transition
             var transitionDuration = msnry.options.transitionDuration;
             msnry.options.transitionDuration = 0;
-            msnry.layout();
-            // reset transition
+            $('.grid').imagesLoaded(function() {msnry.layout()});
+            //reset transition
             msnry.options.transitionDuration = transitionDuration;
           } else {
             // init masonry
             this.$('.grid').masonry({
               itemSelector: '.grid-item',
+              transitionDuration: '0.7s',
               percentPosition: true,
               Width: '.grid-sizer',
               gutter: 6
             });
+            msnry = this.$('.grid').data('masonry')
+            $('.grid').imagesLoaded(function() {msnry.layout()});
+          };
           }
-        }
       });
 
       api.modifyClass('component:topic-list-item', {
