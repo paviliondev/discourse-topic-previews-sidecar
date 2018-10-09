@@ -33,13 +33,9 @@ var renderUnboundPreview = function(thumbnails, params) {
   const featured_height = params.featured ? Discourse.SiteSettings.topic_list_featured_height : false;
   const height = featured_height || category_height || Discourse.SiteSettings.topic_list_thumbnail_height;
   const width = featured_width || category_width || Discourse.SiteSettings.topic_list_thumbnail_width;
-  var style = ``;
-  var classtxt = ``;
-  if (!params.tilesStyle){
-    style = `object-fit:cover;${attrPrefix}height:${height}px;${attrPrefix}width:${width}px`;
-    classtxt = `thumbnail`;
-  }
-  else {
+  var style = `object-fit:cover;${attrPrefix}height:${height}px;${attrPrefix}width:${width}px`;
+  var classtxt = `thumbnail`;
+  if (params.tilesStyle){
     style = ``;
     classtxt = `tiles-thumbnail`;
   };

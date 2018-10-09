@@ -1,136 +1,127 @@
 {{#if tilesStyle}}
-  <div class='grid-inner-item'>
-    {{#if bulkSelectEnabled}}
-      <div class='star'>
-        <input type="checkbox" class="bulk-select">
-      </div>
-    {{/if}}
-      {{raw "list/topic-list-title" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
-    {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category tilesStyle=tilesStyle}}
-    {{/if}}
+<div class='grid-inner-item'>
+{{/if}}
 
-      <div class="topic-details">
-
-        {{#if expandPinned}}
-          {{raw "list/topic-excerpt" topic=topic}}
-        {{/if}}
-
-      </div>
-
-      <div class="tiles-footer">
-
-      {{#if showActions}}
-        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
-      {{/if}}
-
-      {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
-      {{raw-plugin-outlet name="topic-list-after-title"}}
-      {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
-
-
-      </div-->
-
-    {{#if showLikes}}
-
-      <div class="num likes">
-
-        {{#if hasLikes}}
-          <a href='{{topic.summaryUrl}}'>
-            {{number topic.like_count}} <i class='fa fa-heart'></i>
-          </a>
-        {{/if}}
-
-      </div>
-
-    {{/if}}
-
-  </div>
-
-{{else}}
-
-{{#if bulkSelectEnabled}}
+  {{#if bulkSelectEnabled}}
+    {{#unless tilesStyle}}
   <td class='star'>
     <input type="checkbox" class="bulk-select">
   </td>
-{{/if}}
+    {{else}}
+  <div class='star'>
+    <input type="checkbox" class="bulk-select">
+  </div>
+    {{/unless}}
+  {{/if}}
 
-<td class='main-link clearfix' colspan="{{titleColSpan}}">
-  {{#if socialStyle}}
-    {{raw "list/topic-list-title" topic=topic socialStyle=socialStyle tilesOrSocial=tilesOrSocial showTopicPostBadges=showTopicPostBadges}}
+  {{#unless tilesStyle}}
+  <td class='main-link clearfix' colspan="{{titleColSpan}}">
+  {{/unless}}
+
+  {{#if tilesOrSocial}}
+  {{raw "list/topic-list-title" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
   {{/if}}
   {{#if showThumbnail}}
-    {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category}}
+  {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category tilesStyle=tilesStyle}}
   {{/if}}
+
   <div class="topic-details">
-    {{#unless socialStyle}}
-      {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges}}
+    {{#unless tilesOrSocial}}
+    {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges}}
       {{#if showCategoryBadge}}
-        {{raw "list/topic-category" category=topic.category}}
+    {{raw "list/topic-category" category=topic.category}}
       {{/if}}
-      {{discourse-tags topic mode="list"}}
+    {{discourse-tags topic mode="list"}}
     {{/unless}}
 
     {{#if expandPinned}}
-      {{raw "list/topic-excerpt" topic=topic}}
+    {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#unless socialStyle}}
+    {{#unless tilesOrSocial}}
       {{#if showActions}}
-        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
+    {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
-
-      {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
+    {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
     {{/unless}}
   </div>
 
+  {{#if tilesOrSocial}}
   {{#if socialStyle}}
-    <div class="social-footer">
-      {{#if showActions}}
-        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
-      {{/if}}
-      {{raw-plugin-outlet name="topic-list-social-footer"}}
-      {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
-    </div>
+  <div class="social-footer">
   {{/if}}
-</td>
+  {{#if tilesStyle}}
+  <div class="tiles-footer">
+  {{/if}}
+    {{#if showActions}}
+    {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
+    {{/if}}
+    {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
+    {{raw-plugin-outlet name="topic-list-social-footer"}}
+    {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
+  </div>
+  {{/if}}
 
-{{#unless hideCategory}}
-  {{#unless topic.isPinnedUncategorized}}
-    {{raw "list/category-column" category=topic.category}}
+  {{#unless tilesStyle}}
+  </td>
+
+
+  {{#unless hideCategory}}
+    {{#unless topic.isPinnedUncategorized}}
+  {{raw "list/category-column" category=topic.category}}
+    {{/unless}}
   {{/unless}}
-{{/unless}}
+    {{#if showPosters}}
+    {{raw "list/posters-column" posters=topic.posters}}
+    {{/if}}
 
-{{#if showPosters}}
-  {{raw "list/posters-column" posters=topic.posters}}
-{{/if}}
+    {{raw "list/posts-count-column" topic=topic}}
 
-{{raw "list/posts-count-column" topic=topic}}
+    {{#if showParticipants}}
+    {{raw "list/posters-column" posters=topic.participants}}
+    {{/if}}
+  {{/unless}}
 
-{{#if showParticipants}}
-  {{raw "list/posters-column" posters=topic.participants}}
-{{/if}}
-
-{{#if showLikes}}
-<td class="num likes">
-  {{#if hasLikes}}
+  {{#if showLikes}}
+    {{#unless tilesStyle}}
+  <td class="num likes">
+    {{else}}
+  <div class="num likes">
+    {{/unless}}
+    {{#if hasLikes}}
     <a href='{{topic.summaryUrl}}'>
-      {{number topic.like_count}} <i class='fa fa-heart'></i></td>
+      {{number topic.like_count}} <i class='fa fa-heart'></i>
     </a>
+    {{/if}}
+    {{#unless tilesStyle}}
+  </td>
+    {{else}}
+  </div>
+    {{/unless}}
   {{/if}}
-{{/if}}
 
-{{#if showOpLikes}}
-<td class="num likes">
-  {{#if hasOpLikes}}
+  {{#if showOpLikes}}
+    {{#unless tilesStyle}}
+  <td class="num likes">
+    {{else}}
+  <div class="num likes">
+    {{/unless}}
+
+    {{#if hasOpLikes}}
     <a href='{{topic.summaryUrl}}'>
-      {{number topic.op_like_count}} <i class='fa fa-heart'></i></td>
+      {{number topic.op_like_count}} <i class='fa fa-heart'></i>
     </a>
+    {{/if}}
+    {{#unless tilesStyle}}
+  </td>
+    {{else}}
+  </div>
+    {{/unless}}
   {{/if}}
-{{/if}}
 
-<td class="num views {{topic.viewsHeat}}">{{number topic.views numberKey="views_long"}}</td>
-
-{{raw "list/activity-column" topic=topic class="num" tagName="td"}}
-
-{{/if}}
+  {{#unless tilesStyle}}
+  <td class="num views {{topic.viewsHeat}}">{{number topic.views numberKey="views_long"}}</td>
+    {{raw "list/activity-column" topic=topic class="num" tagName="td"}}
+  {{else}}
+  </div>
+  {{/unless}}

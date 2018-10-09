@@ -14,8 +14,6 @@ export default {
     withPluginApi('0.8.12', (api) => {
 
       api.modifyClass('component:topic-list',  {
-        // we need 'div's for masonry
-        tagName: 'div',
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
         classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle', 'tilesStyle'],
@@ -23,19 +21,9 @@ export default {
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
 
-       switchTagBasedOnStyle: function () {
-            this.tagName = 'tr';
-            if (this.get('tilesStyle') == false){
-          }
-          else {
-            this.tagName = 'div';
-          };
-        },
-
         @on('init')
         setup() {
           const suggestedList = this.get('suggestedList');
-          this.switchTagBasedOnStyle();
           if (suggestedList) {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
@@ -114,7 +102,7 @@ export default {
 
         @computed('listChanged')
         tilesOrSocial() {
-            return (this.get('tilesStyle') || this.get('socialStyle'));
+          return (this.get('tilesStyle') || this.get('socialStyle'));
         },
 
         @computed('listChanged')
@@ -148,9 +136,10 @@ export default {
         },
 
         // don't forget to update masonry layout when required
-        masonryObserver: function() {
+        @observes('topics.[]')
+        masonryObserver() {
              Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-      	}.observes("topics.[]"),
+      	},
 
         applyMasonry: function(){
 
@@ -180,9 +169,6 @@ export default {
       });
 
       api.modifyClass('component:topic-list-item', {
-        // needs 'div's for masonry
-        tagName: 'div',
-        classNames: ['grid-item'],
         canBookmark: Ember.computed.bool('currentUser'),
         rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
         socialStyle: Ember.computed.alias('parentView.socialStyle'),
@@ -195,17 +181,6 @@ export default {
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
         category: Ember.computed.alias('parentView.category'),
 
-        switchTagBasedOnStyle: function() {
-          if (this.get('tilesStyle') == false) {
-            this.set('tagName','tr');
-            this.set('classNames', '');
-            }
-          else {
-            this.set('tagName','div');
-            this.classNames = ['grid-item'];
-          };
-        },
-
         // Lifecyle logic
 
         @on('init')
@@ -213,7 +188,11 @@ export default {
           const topic = this.get('topic');
           const thumbnails = topic.get('thumbnails');
           const defaultThumbnail = this.get('defaultThumbnail');
-          this.switchTagBasedOnStyle();
+          if (this.get('tilesStyle') == true) {
+            // needs 'div's for masonry
+            this.set('tagName','div');
+            this.classNames = ['grid-item'];
+          };
           if (thumbnails) {
             testImageUrl(thumbnails, (imageLoaded) => {
               if (!imageLoaded) {
