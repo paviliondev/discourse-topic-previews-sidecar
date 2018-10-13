@@ -29,6 +29,8 @@ export default {
             this.set('category', category);
           };
           if (this.get('tilesStyle')){
+
+            // <div class='grid-sizer'></div>");
             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           };
         },
@@ -49,6 +51,7 @@ export default {
           if (!this.$()) {return;}
           this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
           this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
+          this.$("tbody").toggleClass('grid', this.get('tilesStyle'));
         },
 
         @on('willDestroyElement')
@@ -142,7 +145,7 @@ export default {
       	},
 
         applyMasonry: function(){
-
+          //  $('tbody').replaceWith("<div class='grid' >");
           // initialize
           var msnry = this.$('.grid').data('masonry');
           if (msnry) {
