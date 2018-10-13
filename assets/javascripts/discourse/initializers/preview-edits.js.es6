@@ -52,12 +52,16 @@ export default {
           this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
           this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
           this.$("tbody").toggleClass('grid', this.get('tilesStyle'));
+          if ( !this.$( ".grid-sizer" ).length && this.get('tilesStyle')){
+            this.$(".grid").prepend("<div class='grid-sizer'></div>");
+          };
         },
 
         @on('willDestroyElement')
         _tearDown() {
           this.$().parents('#list-area').removeClass('social-style');
           this.$().parents('#list-area').removeClass('tiles-style');
+          this.$("tbody").removeClass('grid');
         },
 
         filter() {
