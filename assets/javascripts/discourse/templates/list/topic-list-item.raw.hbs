@@ -12,7 +12,10 @@
 
 {{#unless tilesStyle}}
   <td class='main-link clearfix' colspan="{{titleColSpan}}">
+{{else}}
+  <a href='{{topic.url}}'>
 {{/unless}}
+
 
 {{#if tilesOrSocial}}
   {{raw "list/topic-list-title" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
@@ -106,4 +109,6 @@
 {{#unless tilesStyle}}
   <td class="num views {{topic.viewsHeat}}">{{number topic.views numberKey="views_long"}}</td>
   {{raw "list/activity-column" topic=topic class="num" tagName="td"}}
+{{else}}
+  </a>
 {{/unless}}

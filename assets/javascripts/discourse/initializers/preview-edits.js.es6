@@ -233,13 +233,14 @@ export default {
           this._afterRender();
         },
 
-        @on('didInsertElement')
+        @on('didRender')
         @observes('socialStyle','tilesStyle')
         setupItemStyle() {
           if (!this.$()) {return;}
           if (this.get('tilesStyle')){
+                      console.log('fired');
             this.$(".social-footer").addClass("tiles-footer").removeClass("social-footer");
-          }
+          };
         },
 
 
@@ -256,6 +257,9 @@ export default {
             if (this.get('showActions')) {
               this._setupActions();
             }
+            // if (this.get('tilesStyle')){
+            //   this._setupTileClick();
+            // }
           });
         },
 
@@ -273,6 +277,31 @@ export default {
             DiscourseURL.routeTo(url);
           });
         },
+
+        // _setupTileClick() {
+        //   this.$('.grid-item').on('click.grid-item', () => {
+        //     let topic = this.get('topic'),
+        //         url = '/t/' + topic.slug + '/' + topic.id;
+        //     if (topic.topic_post_number) {
+        //       url += '/' + topic.topic_post_number;
+        //     }
+        //     DiscourseURL.routeTo(url);
+        //   });
+        // },
+
+        click() {
+          if (this.get('tilesStyle')){
+            if (!($('.topic-actions:hover').length > 0 )) {
+              let topic = this.get('topic'),
+                url = '/t/' + topic.slug + '/' + topic.id;
+              if (topic.topic_post_number) {
+                  url += '/' + topic.topic_post_number;
+            }
+            DiscourseURL.routeTo(url);
+          }
+        }
+        },
+
 
         _sizeThumbnails() {
           this.$('.topic-thumbnail img').on('load', function(){
