@@ -195,7 +195,7 @@ export default {
           const topic = this.get('topic');
           const thumbnails = topic.get('thumbnails');
           const defaultThumbnail = this.get('defaultThumbnail');
-          if (this.get('tilesStyle') == true) {
+          if (this.get('tilesStyle')) {
             // needs 'div's for masonry
             this.set('tagName','div');
             this.classNames = ['grid-item'];
@@ -232,6 +232,16 @@ export default {
 
           this._afterRender();
         },
+
+        @on('didInsertElement')
+        @observes('socialStyle','tilesStyle')
+        setupItemStyle() {
+          if (!this.$()) {return;}
+          if (this.get('tilesStyle')){
+            this.$(".social-footer").addClass("tiles-footer").removeClass("social-footer");
+          }
+        },
+
 
         @observes('thumbnails')
         _afterRender() {

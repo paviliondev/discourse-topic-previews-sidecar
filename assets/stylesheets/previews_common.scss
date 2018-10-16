@@ -13,6 +13,14 @@
     margin-bottom: 6px;
     border-radius: 3px;
     padding:8px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto auto auto;
+     grid-template-areas:
+     "title title title"
+     "photo photo photo"
+     "details details details"
+     "footer footer footer"
 }
 
 .grid-item:hover {
@@ -23,22 +31,8 @@
     -ms-transform: translateX(-2px);
     transform: translateX(-2px);
     box-shadow: 4px 4px 4px 4px #777777;
-    background-color: darken($secondary,2%);
-   lighten: ($primary, 70%);
-}
-
-.grid-inner-item
-{
-  width:99%;
-  padding: 2px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: auto auto auto auto;
-   grid-template-areas:
-   "title title title title title"
-   "photo photo photo photo photo"
-   "details details details details details"
-   "footer footer footer footer footer"
+    background-color: darken($secondary, 2%);
+    lighten: ($primary, 70%);
 }
 
 //tiles styling  specific styling
