@@ -8,9 +8,9 @@
     width: 31%;
 }
 .grid-item {
-    cursor: pointer; 
+    cursor: pointer;
     float:top;
-    box-shadow: 2px 2px 2px 2px #888888;
+    box-shadow: 3px 3px 3px 3px #888888;
     margin-bottom: 6px;
     border-radius: 3px;
     padding:8px;
@@ -25,15 +25,18 @@
 }
 
 .grid-item:hover {
-    -webkit-transform: translateY(-2px);
-    -ms-transform: translateY(-2px);
-    transform: translateY(-2px);
-    -webkit-transform: translateX(-2px);
-    -ms-transform: translateX(-2px);
-    transform: translateX(-2px);
-    box-shadow: 4px 4px 4px 4px #777777;
     background-color: darken($secondary, 2%);
     lighten: ($primary, 70%);
+}
+
+.grid-item:active {
+  -webkit-transform: translateY(+2px);
+  -ms-transform: translateY(+2px);
+  transform: translateY(+2px);
+  -webkit-transform: translateX(+2px);
+  -ms-transform: translateX(+2px);
+  transform: translateX(+2px);
+  box-shadow: 1px 1px 1px 1px #888888;
 }
 
 //tiles styling  specific styling
