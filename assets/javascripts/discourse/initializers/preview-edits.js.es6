@@ -29,8 +29,6 @@ export default {
             this.set('category', category);
           };
           if (this.get('tilesStyle')){
-
-            // <div class='grid-sizer'></div>");
             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           };
         },
@@ -149,7 +147,6 @@ export default {
       	},
 
         applyMasonry: function(){
-          //  $('tbody').replaceWith("<div class='grid' >");
           // initialize
           var msnry = this.$('.grid').data('masonry');
           if (msnry) {
@@ -233,16 +230,15 @@ export default {
           this._afterRender();
         },
 
+        //TO DO: This presently doesn't work reliably (e.g. after 'infinite scroll' added topics)
         @on('didRender')
         @observes('socialStyle','tilesStyle')
         setupItemStyle() {
           if (!this.$()) {return;}
           if (this.get('tilesStyle')){
-                      console.log('fired');
             this.$(".social-footer").addClass("tiles-footer").removeClass("social-footer");
           };
         },
-
 
         @observes('thumbnails')
         _afterRender() {
@@ -257,9 +253,6 @@ export default {
             if (this.get('showActions')) {
               this._setupActions();
             }
-            // if (this.get('tilesStyle')){
-            //   this._setupTileClick();
-            // }
           });
         },
 
@@ -277,17 +270,6 @@ export default {
             DiscourseURL.routeTo(url);
           });
         },
-
-        // _setupTileClick() {
-        //   this.$('.grid-item').on('click.grid-item', () => {
-        //     let topic = this.get('topic'),
-        //         url = '/t/' + topic.slug + '/' + topic.id;
-        //     if (topic.topic_post_number) {
-        //       url += '/' + topic.topic_post_number;
-        //     }
-        //     DiscourseURL.routeTo(url);
-        //   });
-        // },
 
         click() {
           if (this.get('tilesStyle')){
