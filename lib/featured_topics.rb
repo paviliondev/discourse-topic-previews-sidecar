@@ -73,7 +73,8 @@ module PreviewsTopicQueryExtension
     if order_type == 'tag' && tag_ids.any?
       "(SELECT created_at FROM topic_tags
         WHERE topic_id = topics.id
-        AND tag_id IN (#{tag_ids.join(', ')}))
+        AND tag_id IN (#{tag_ids.join(', ')})
+        LIMIT 1)
         DESC"
     elsif order_type == 'topic'
       "topics.created_at DESC"
