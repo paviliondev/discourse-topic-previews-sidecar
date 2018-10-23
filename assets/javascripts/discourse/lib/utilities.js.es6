@@ -27,18 +27,20 @@ var renderUnboundPreview = function(thumbnails, params) {
     return '<img class="thumbnail" src="' + url + '"/>';
   };
   const attrPrefix = params.isSocial ? 'max-' : '';
+  const attrWidthSuffix = params.tilesStyle ? '%' : 'px';
+  const attrHeightSuffix = params.tilesStyle ? '' : 'px';
+  const attrObjectfit = params.tilesStyle? '' : 'object-fit:cover;';
   const category_width = params.category ? params.category.topic_list_thumbnail_width : false;
   const category_height = params.category ? params.category.topic_list_thumbnail_height : false;
   const featured_width = params.featured ? Discourse.SiteSettings.topic_list_featured_width : false;
   const featured_height = params.featured ? Discourse.SiteSettings.topic_list_featured_height : false;
-  const height = featured_height || category_height || Discourse.SiteSettings.topic_list_thumbnail_height;
-  const width = featured_width || category_width || Discourse.SiteSettings.topic_list_thumbnail_width;
-  var style = `object-fit:cover;${attrPrefix}height:${height}px;${attrPrefix}width:${width}px`;
-  var classtxt = `thumbnail`;
-  if (params.tilesStyle){
-    style = ``;
-    classtxt = `tiles-thumbnail`;
-  };
+  const tiles_width = params.tilesStyle ? '100' : false;
+  const tiles_height = params.tilesStyle ? 'auto' : false;
+  const attrHeightParameter = 'height:';
+  const height = params.tilesStyle ? tiles_height : featured_height || category_height || Discourse.SiteSettings.topic_list_thumbnail_height;
+  const width = featured_width || category_width || tiles_width || Discourse.SiteSettings.topic_list_thumbnail_width;
+  const style = `${attrObjectfit}${attrPrefix}${attrHeightParameter}${height}${attrHeightSuffix};${attrPrefix}width:${width}${attrWidthSuffix}`;
+  const classtxt = `thumbnail`;
   return '<img class="' + classtxt + '" src="' + url + '" style="' + style + '" />';
 };
 

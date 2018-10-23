@@ -79,18 +79,17 @@ html:not(.mobile-view) #list-area.tiles-style {
     float: right;
   }
 
-  .topic-thumbnail {
-     grid-area: photo;
-     padding: 1px;
-     padding-bottom:4px;
+.topic-thumbnail{
+  padding: 1px;
+  padding-bottom:4px;
+  grid-area: photo;
+  padding: 0;
+}
 
+  .thumbnail {
     .no-thumbnail {
       display: none;
     }
-  }
-
-  img.tiles-thumbnail {
-    width:100% !important;
   }
 
   .topic-details {
@@ -130,17 +129,26 @@ html:not(.mobile-view) #list-area.tiles-style {
     font-size: 12px;
   }
 
-  .tiles-footer {
+  .social-footer {
     grid-area: footer;
     justify-content: space-between;
     padding: 1px;
   }
+
+  .topic-list{
+      padding-top:10px;
+  }
+
+  a.topic-featured-link {
+    display: block;
+    padding-left: 0;
+    padding-top: 3px;
+  }
+
 }
 //end of tiles specific styling
 
-.topic-list{
-    padding-top:5px;
-}
+
 
 .topic-list .main-link a.title {
     padding: 0;
@@ -313,6 +321,20 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   .topic-footer {
     display: flex;
     justify-content: space-between;
+  }
+
+  .social-footer {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+
+    .topic-rating {
+      font-size: 0.8em;
+    }
+
+    .topic-meta {
+      margin-left: auto;
+    }
   }
 }
 
@@ -527,19 +549,5 @@ button.list-button {
     margin-top: 10px;
     padding-right: 10px;
     float: right;
-  }
-}
-
-.social-footer {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-
-  .topic-rating {
-    font-size: 0.8em;
-  }
-
-  .topic-meta {
-    margin-left: auto;
   }
 }

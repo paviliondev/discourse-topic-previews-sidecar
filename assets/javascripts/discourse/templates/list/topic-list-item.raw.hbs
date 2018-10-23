@@ -1,21 +1,13 @@
-{{#if bulkSelectEnabled}}
-  {{#unless tilesStyle}}
+{{#unless tilesStyle}}
+  {{#if bulkSelectEnabled}}
     <td class='star'>
       <input type="checkbox" class="bulk-select">
     </td>
-    {{else}}
-    <div class='star'>
-      <input type="checkbox" class="bulk-select">
-    </div>
-    {{/unless}}
-{{/if}}
-
-{{#unless tilesStyle}}
-  <td class='main-link clearfix' colspan="{{titleColSpan}}">
-{{else}}
-  <a href='{{topic.url}}'>
+    {{/if}}
+    <td class='main-link clearfix' colspan="{{titleColSpan}}">
+  {{else}}
+    <a href='{{topic.url}}'>
 {{/unless}}
-
 
 {{#if tilesOrSocial}}
   {{raw "list/topic-list-title" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
@@ -49,11 +41,11 @@
     {{#if showActions}}
       {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
     {{/if}}
-    {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
     {{raw-plugin-outlet name="topic-list-social-footer"}}
-    {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
+    {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
   </div>
 {{/if}}
+</td>
 
 {{#unless tilesStyle}}
   {{#unless hideCategory}}

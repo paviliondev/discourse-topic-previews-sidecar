@@ -230,21 +230,11 @@ export default {
           this._afterRender();
         },
 
-        //TO DO: This presently doesn't work reliably (e.g. after 'infinite scroll' added topics)
-        @on('didRender')
-        @observes('socialStyle','tilesStyle')
-        setupItemStyle() {
-          if (!this.$()) {return;}
-          if (this.get('tilesStyle')){
-            this.$(".social-footer").addClass("tiles-footer").removeClass("social-footer");
-          };
-        },
-
         @observes('thumbnails')
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
             this._setupTitleCSS();
-            if (this.get('showThumbnail') && (this.get('socialStyle') || this.get('tilesStyle'))) {
+            if (this.get('showThumbnail') && (this.get('socialStyle') )) {
               this._sizeThumbnails();
             }
             if (this.get('showExcerpt')) {
@@ -271,19 +261,15 @@ export default {
           });
         },
 
-        click() {
+        click(event) {
           if (this.get('tilesStyle')){
-            if (!($('.topic-actions:hover').length > 0 )) {
-              let topic = this.get('topic'),
-                url = '/t/' + topic.slug + '/' + topic.id;
-              if (topic.topic_post_number) {
-                  url += '/' + topic.topic_post_number;
+            if (!$(event.target).hasClass('list-button')) {
+              let topic = this.get('topic');
+              let url = Discourse.getURL("/t/") + topic.id;
+              DiscourseURL.routeTo(url);
             }
-            DiscourseURL.routeTo(url);
           }
-        }
         },
-
 
         _sizeThumbnails() {
           this.$('.topic-thumbnail img').on('load', function(){
