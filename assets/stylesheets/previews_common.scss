@@ -7,6 +7,7 @@
 .grid-item {
     width: 31%;
 }
+
 .grid-item {
     cursor: pointer;
     float:top;
@@ -79,12 +80,12 @@ html:not(.mobile-view) #list-area.tiles-style {
     float: right;
   }
 
-.topic-thumbnail{
-  padding: 1px;
-  padding-bottom:4px;
-  grid-area: photo;
-  padding: 0;
-}
+  .topic-thumbnail{
+    padding: 1px;
+    padding-bottom:4px;
+    grid-area: photo;
+    padding: 0;
+  }
 
   .thumbnail {
     .no-thumbnail {
@@ -147,8 +148,6 @@ html:not(.mobile-view) #list-area.tiles-style {
 
 }
 //end of tiles specific styling
-
-
 
 .topic-list .main-link a.title {
     padding: 0;
@@ -363,7 +362,6 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
     cursor: pointer;
   }
 }
-
 
 .main-link .topic-category {
   float: left;

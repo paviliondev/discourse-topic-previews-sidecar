@@ -45,9 +45,9 @@
     {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
   </div>
 {{/if}}
-</td>
 
 {{#unless tilesStyle}}
+  </td>
   {{#unless hideCategory}}
     {{#unless topic.isPinnedUncategorized}}
       {{raw "list/category-column" category=topic.category}}
