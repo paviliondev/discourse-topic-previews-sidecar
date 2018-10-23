@@ -41,7 +41,7 @@ var renderUnboundPreview = function(thumbnails, params) {
   const width = featured_width || category_width || tiles_width || Discourse.SiteSettings.topic_list_thumbnail_width;
   const style = `${attrObjectfit}${attrPrefix}${attrHeightParameter}${height}${attrHeightSuffix};${attrPrefix}width:${width}${attrWidthSuffix}`;
   const classtxt = `thumbnail`;
-  return '<img class="' + classtxt + '" src="' + url + '" style="' + style + '" />';
+  return `<img class="${classtxt}" src="${url}" style="${style}" />`;
 };
 
 var testImageUrl = function(thumbnails, callback) {
