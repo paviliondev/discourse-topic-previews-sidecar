@@ -92,6 +92,7 @@ export default {
           const catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1;
           const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
           const siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
+
           return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled;
         },
 
@@ -143,12 +144,13 @@ export default {
         // don't forget to update masonry layout when required
         @observes('topics.[]')
         masonryObserver() {
-             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+          Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
       	},
 
-        applyMasonry: function(){
+        applyMasonry(){
           // initialize
-          var msnry = this.$('.grid').data('masonry');
+          let msnry = this.$('.grid').data('masonry');
+
           if (msnry) {
             msnry.reloadItems();
             //disable transition
@@ -166,10 +168,12 @@ export default {
               Width: '.grid-sizer',
               gutter: 6
             });
-            msnry = this.$('.grid').data('masonry')
+
+            msnry = this.$('.grid').data('masonry');
+
             $('.grid').imagesLoaded(function() {msnry.layout()});
           };
-          }
+        }
       });
 
       api.modifyClass('component:topic-list-item', {
