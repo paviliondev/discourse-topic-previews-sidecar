@@ -16,7 +16,7 @@ end
 
 module PreviewsTopicQueryExtension
   def list_featured(options = {})
-    create_list(:featured, { unordered: true }, featured_topics)
+    create_list(:featured, { unordered: true, featured_list: true }, featured_topics)
   end
 
   def create_list(filter, options = {}, topics = nil)
@@ -34,14 +34,18 @@ module PreviewsTopicQueryExtension
     ListHelper.featured_topics_enabled(category_id)
   end
 
-  def featured_tag_id
-    @featured_tag_id ||= Tag.where(name: SiteSetting.topic_list_featured_images_tag).pluck(:id).first
+  def featured_tags
+    SiteSetting.topic_list_featured_images_tag.split('|')
+  end
+
+  def featured_tag_ids
+    Tag.where(name: featured_tags).pluck(:id)
   end
 
   def featured_topics
-    tag_id = featured_tag_id
+    tag_ids = featured_tag_ids
 
-    return [] if !tag_id
+    return [] if tag_ids.blank?
 
     limit = SiteSetting.topic_list_featured_images_count.to_i
 
@@ -52,7 +56,7 @@ module PreviewsTopicQueryExtension
         WHERE name = 'thumbnails' AND 'value' IS NOT NULL
       )")
       .joins(:tags)
-      .where("tags.id = ?", tag_id)
+      .where("tags.id IN (?)", tag_ids)
       .order(featured_order)
       .limit(limit)
 
@@ -62,14 +66,15 @@ module PreviewsTopicQueryExtension
   end
 
   def featured_order
-    tag_id = featured_tag_id
+    tag_ids = featured_tag_ids
     order_type = SiteSetting.topic_list_featured_order
     order = ""
 
-    if order_type == 'tag'
+    if order_type == 'tag' && tag_ids.any?
       "(SELECT created_at FROM topic_tags
         WHERE topic_id = topics.id
-        AND tag_id = #{tag_id})
+        AND tag_id IN (#{tag_ids.join(', ')})
+        LIMIT 1)
         DESC"
     elsif order_type == 'topic'
       "topics.created_at DESC"
@@ -77,7 +82,7 @@ module PreviewsTopicQueryExtension
   end
 
   def apply_ordering(result, options)
-    if options[:tags] && options[:tags].first === SiteSetting.topic_list_featured_images_tag
+    if options[:featured_list] && options[:tags] && (options[:tags] && featured_tags).any?
       result.order(featured_order)
     else
       super(result, options)

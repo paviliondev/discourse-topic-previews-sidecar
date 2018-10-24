@@ -9,9 +9,11 @@
       {{tlp-featured-topic topic=t}}
     {{/each}}
   </div>
-  {{#if showFeaturedLink}}
-    <div class="featured-link">
-      {{discourse-tag siteSettings.topic_list_featured_images_tag}}
+  {{#if showFeaturedTags}}
+    <div class="featured-tags">
+      {{#each featuredTags as |tag|}}
+        {{discourse-tag tag}}
+      {{/each}}
     </div>
   {{/if}}
 {{/if}}
