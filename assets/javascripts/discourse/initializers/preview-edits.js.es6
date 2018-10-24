@@ -192,11 +192,13 @@ export default {
           const topic = this.get('topic');
           const thumbnails = topic.get('thumbnails');
           const defaultThumbnail = this.get('defaultThumbnail');
+
           if (this.get('tilesStyle')) {
             // needs 'div's for masonry
-            this.set('tagName','div');
+            this.set('tagName', 'div');
             this.classNames = ['grid-item'];
           };
+
           if (thumbnails) {
             testImageUrl(thumbnails, (imageLoaded) => {
               if (!imageLoaded) {
@@ -252,7 +254,7 @@ export default {
 
         _setupExcerptClick() {
           this.$('.topic-excerpt').on('click.topic-excerpt', () => {
-            let topic = this.get('topic'),
+            let topic = this.get('topic.urlForPostNumber'),
                 url = '/t/' + topic.slug + '/' + topic.id;
             if (topic.topic_post_number) {
               url += '/' + topic.topic_post_number;

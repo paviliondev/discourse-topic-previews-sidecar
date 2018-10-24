@@ -5,29 +5,29 @@
 
 .grid-sizer,
 .grid-item {
-    width: 31%;
+  width: 31%;
 }
 
 .grid-item {
-    cursor: pointer;
-    float:top;
-    box-shadow: 3px 3px 3px 3px #888888;
-    margin-bottom: 6px;
-    border-radius: 3px;
-    padding:11px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto auto auto auto;
-     grid-template-areas:
-     "title title title"
-     "photo photo photo"
-     "details details details"
-     "footer footer footer"
+  cursor: pointer;
+  float:top;
+  box-shadow: 3px 3px 3px 3px #888888;
+  margin-bottom: 6px;
+  border-radius: 3px;
+  padding:11px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas:
+   "title title title"
+   "photo photo photo"
+   "details details details"
+   "footer footer footer"
 }
 
 .grid-item:hover {
-    background-color: darken($secondary, 2%);
-    lighten: ($primary, 70%);
+  background-color: darken($secondary, 2%);
+  lighten: ($primary, 70%);
 }
 
 .grid-item:active {
@@ -42,7 +42,6 @@
 
 //tiles styling  specific styling
 html:not(.mobile-view) #list-area.tiles-style {
-
   .topic-title {
     font-size: 1.143em;
     grid-area: title;
@@ -70,6 +69,7 @@ html:not(.mobile-view) #list-area.tiles-style {
 
     .topic-users {
       float: right;
+
       .inline {
         padding: 0 0 0 5px;
       }
@@ -130,7 +130,7 @@ html:not(.mobile-view) #list-area.tiles-style {
     font-size: 12px;
   }
 
-  .social-footer {
+  .main-link-footer {
     grid-area: footer;
     justify-content: space-between;
     padding: 1px;
@@ -147,6 +147,7 @@ html:not(.mobile-view) #list-area.tiles-style {
   }
 
 }
+
 //end of tiles specific styling
 
 .topic-list .main-link a.title {
@@ -322,7 +323,7 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
     justify-content: space-between;
   }
 
-  .social-footer {
+  .main-link-footer {
     width: 100%;
     display: inline-flex;
     align-items: center;
