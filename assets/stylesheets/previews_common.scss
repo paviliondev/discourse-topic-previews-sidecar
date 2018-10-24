@@ -158,10 +158,15 @@ html:not(.mobile-view) #list-area.tiles-style {
   float: left;
   padding-right: 15px;
 
+  img.thumbnail {
+    object-fit:cover;
+  }
+
   .no-thumbnail {
     display: none;
   }
 }
+
 .topic-list .main-link a.title {
   padding: 0;
 }
