@@ -239,7 +239,7 @@ export default {
             if (this.get('showThumbnail') && (this.get('socialStyle') )) {
               this._sizeThumbnails();
             }
-            if (this.get('showExcerpt')) {
+            if (this.get('showExcerpt') && !this.get('tilesStyle')) {
               this._setupExcerptClick();
             }
             if (this.get('showActions')) {
@@ -254,21 +254,14 @@ export default {
 
         _setupExcerptClick() {
           this.$('.topic-excerpt').on('click.topic-excerpt', () => {
-            let topic = this.get('topic.urlForPostNumber'),
-                url = '/t/' + topic.slug + '/' + topic.id;
-            if (topic.topic_post_number) {
-              url += '/' + topic.topic_post_number;
-            }
-            DiscourseURL.routeTo(url);
+            DiscourseURL.routeTo(this.get('topic.lastReadUrl'));
           });
         },
 
         click(event) {
           if (this.get('tilesStyle')){
-            if (!$(event.target).hasClass('list-button')) {
-              let topic = this.get('topic');
-              let url = Discourse.getURL("/t/") + topic.id;
-              DiscourseURL.routeTo(url);
+            if ($(event.target).parents('.list-button').length == 0) {
+              DiscourseURL.routeTo(this.get('topic.lastReadUrl'));
             }
           }
         },
