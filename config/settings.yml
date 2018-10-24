@@ -28,15 +28,6 @@ plugins:
      - unread
      - top
      - tags
-     - suggested
-     - agenda
-     - latest-mobile
-     - new-mobile
-     - unread-mobile
-     - top-mobile
-     - tags-mobile
-     - suggested-mobile
-     - agenda-mobile
   topic_list_thumbnail:
     client: true
     type: list
