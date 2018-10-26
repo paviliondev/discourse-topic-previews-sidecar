@@ -12,10 +12,11 @@ export default {
     if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
 
     withPluginApi('0.8.12', (api) => {
-      api.modifyClass('component:topic-list', {
+
+      api.modifyClass('component:topic-list',  {
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
-        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle'],
+        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle', 'tilesStyle'],
         suggestedList: Ember.computed.equal('parentView.parentView.parentView.elementId', 'suggested-topics'),
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
@@ -26,7 +27,10 @@ export default {
           if (suggestedList) {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
-          }
+          };
+          if (this.get('tilesStyle')){
+            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+          };
         },
 
         @on('didInsertElement')
@@ -35,20 +39,27 @@ export default {
           const mobile = this.get('site.mobileView');
           if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
             this.set('hideCategory', true);
-          }
+          };
           this.toggleProperty('listChanged');
         },
 
-        @on("didInsertElement")
-        @observes("socialStyle")
+        @on('didInsertElement')
+        @observes('socialStyle','tilesStyle')
         setupListStyle() {
           if (!this.$()) {return;}
           this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
+          this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
+          this.$("tbody").toggleClass('grid', this.get('tilesStyle'));
+          if ( !this.$( ".grid-sizer" ).length && this.get('tilesStyle')){
+            this.$(".grid").prepend("<div class='grid-sizer'></div>");
+          };
         },
 
         @on('willDestroyElement')
         _tearDown() {
           this.$().parents('#list-area').removeClass('social-style');
+          this.$().parents('#list-area').removeClass('tiles-style');
+          this.$("tbody").removeClass('grid');
         },
 
         filter() {
@@ -78,7 +89,6 @@ export default {
           const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
           const filterArr = filter ? filter.split('/') : [];
           const filterType = filterArr[filterArr.length - 1];
-
           const catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1;
           const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
           const siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
@@ -89,6 +99,16 @@ export default {
         @computed('listChanged')
         socialStyle() {
           return this.settingEnabled('topic_list_social');
+        },
+
+        @computed('listChanged')
+        tilesStyle() {
+          return this.settingEnabled('topic_list_tiles');
+        },
+
+        @computed('listChanged')
+        tilesOrSocial() {
+          return (this.get('tilesStyle') || this.get('socialStyle'));
         },
 
         @computed('listChanged')
@@ -113,12 +133,46 @@ export default {
 
         @computed('listChanged')
         skipHeader() {
-          return this.get('socialStyle') || this.get('site.mobileView');
+          return this.get('tilesStyle') || this.get('socialStyle') || this.get('site.mobileView');
         },
 
         @computed('listChanged')
         thumbnailFirstXRows() {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
+        },
+
+        // don't forget to update masonry layout when required
+        @observes('topics.[]')
+        masonryObserver() {
+          Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+      	},
+
+        applyMasonry(){
+          // initialize
+          let msnry = this.$('.grid').data('masonry');
+
+          if (msnry) {
+            msnry.reloadItems();
+            //disable transition
+            var transitionDuration = msnry.options.transitionDuration;
+            msnry.options.transitionDuration = 0;
+            $('.grid').imagesLoaded(function() {msnry.layout()});
+            //reset transition
+            msnry.options.transitionDuration = transitionDuration;
+          } else {
+            // init masonry
+            this.$('.grid').masonry({
+              itemSelector: '.grid-item',
+              transitionDuration: '0.7s',
+              percentPosition: true,
+              Width: '.grid-sizer',
+              gutter: 6
+            });
+
+            msnry = this.$('.grid').data('masonry');
+
+            $('.grid').imagesLoaded(function() {msnry.layout()});
+          };
         }
       });
 
@@ -126,6 +180,8 @@ export default {
         canBookmark: Ember.computed.bool('currentUser'),
         rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
         socialStyle: Ember.computed.alias('parentView.socialStyle'),
+        tilesStyle: Ember.computed.alias('parentView.tilesStyle'),
+        tilesOrSocial: Ember.computed.alias('parentView.tilesOrSocial'),
         showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
         showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
         showActions: Ember.computed.alias('parentView.showActions'),
@@ -140,6 +196,13 @@ export default {
           const topic = this.get('topic');
           const thumbnails = topic.get('thumbnails');
           const defaultThumbnail = this.get('defaultThumbnail');
+
+          if (this.get('tilesStyle')) {
+            // needs 'div's for masonry
+            this.set('tagName', 'div');
+            this.classNames = ['grid-item'];
+          };
+
           if (thumbnails) {
             testImageUrl(thumbnails, (imageLoaded) => {
               if (!imageLoaded) {
@@ -177,10 +240,10 @@ export default {
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
             this._setupTitleCSS();
-            if (this.get('showThumbnail') && this.get('socialStyle')) {
+            if (this.get('showThumbnail') && (this.get('socialStyle') )) {
               this._sizeThumbnails();
             }
-            if (this.get('showExcerpt')) {
+            if (this.get('showExcerpt') && !this.get('tilesStyle')) {
               this._setupExcerptClick();
             }
             if (this.get('showActions')) {
@@ -195,13 +258,16 @@ export default {
 
         _setupExcerptClick() {
           this.$('.topic-excerpt').on('click.topic-excerpt', () => {
-            let topic = this.get('topic'),
-                url = '/t/' + topic.slug + '/' + topic.id;
-            if (topic.topic_post_number) {
-              url += '/' + topic.topic_post_number;
-            }
-            DiscourseURL.routeTo(url);
+            DiscourseURL.routeTo(this.get('topic.lastReadUrl'));
           });
+        },
+
+        click(event) {
+          if (this.get('tilesStyle')){
+            if ($(event.target).parents('.list-button').length == 0) {
+              DiscourseURL.routeTo(this.get('topic.lastReadUrl'));
+            }
+          }
         },
 
         _sizeThumbnails() {

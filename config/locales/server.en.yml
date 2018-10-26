@@ -1,6 +1,7 @@
 en:
   site_settings:
     topic_list_social: "Apply social feed arrangement to selected lists."
+    topic_list_tiles: "Apply tiles arrangement to selected lists in this category."
     topic_list_thumbnail: "Show topic preview thumbnails in selected lists."
     topic_list_excerpt: "Show topic excerpts in selected lists."
     topic_list_action: "Show the like and bookmark buttons in selected lists."

@@ -22,19 +22,28 @@ var previewUrl = function(thumbnails) {
 
 var renderUnboundPreview = function(thumbnails, params) {
   const url = previewUrl(thumbnails);
+
   if (!url) return '';
+
   if (Discourse.Site.currentProp('mobileView')) {
-    return '<img class="thumbnail" src="' + url + '"/>';
+    return `<img class="thumbnail" src="${url}"/>`;
   };
+
+  const settings = Discourse.SiteSettings;
   const attrPrefix = params.isSocial ? 'max-' : '';
+  const attrWidthSuffix = params.tilesStyle ? '%' : 'px';
+  const attrHeightSuffix = params.tilesStyle ? '' : 'px';
   const category_width = params.category ? params.category.topic_list_thumbnail_width : false;
   const category_height = params.category ? params.category.topic_list_thumbnail_height : false;
-  const featured_width = params.featured ? Discourse.SiteSettings.topic_list_featured_width : false;
-  const featured_height = params.featured ? Discourse.SiteSettings.topic_list_featured_height : false;
-  const height = featured_height || category_height || Discourse.SiteSettings.topic_list_thumbnail_height;
-  const width = featured_width || category_width || Discourse.SiteSettings.topic_list_thumbnail_width;
-  const style = `object-fit:cover;${attrPrefix}height:${height}px;${attrPrefix}width:${width}px`;
-  return '<img class="thumbnail" src="' + url + '" style="' + style + '" />';
+  const featured_width = params.featured ? settings.topic_list_featured_width : false;
+  const featured_height = params.featured ? settings.topic_list_featured_height : false;
+  const tiles_width = params.tilesStyle ? '100' : false;
+  const tiles_height = params.tilesStyle ? 'auto' : false;
+  const height = tiles_height || featured_height || category_height || settings.topic_list_thumbnail_height;
+  const width = tiles_width || featured_width || category_width || settings.topic_list_thumbnail_width;
+  const style = `${attrPrefix}height:${height}${attrHeightSuffix};${attrPrefix}width:${width}${attrWidthSuffix}`;
+
+  return `<img class="thumbnail" src="${url}" style="${style}" />`;
 };
 
 var testImageUrl = function(thumbnails, callback) {

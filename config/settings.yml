@@ -18,6 +18,16 @@ plugins:
      - tags-mobile
      - suggested-mobile
      - agenda-mobile
+  topic_list_tiles:
+    client: true
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - tags
   topic_list_thumbnail:
     client: true
     type: list
