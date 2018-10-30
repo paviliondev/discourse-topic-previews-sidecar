@@ -212,6 +212,10 @@ html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style 
   }
 }
 
+img.thumbnail {
+  object-fit: cover;
+}
+
 .middot:after {
   content: '\00B7';
 }
