@@ -15,18 +15,10 @@
   {{/if}}
 
   <div class='topic-details'>
-    {{#if socialStyle}}
-      {{raw "topic-status" topic=topic}}
-      {{#if topic.unseen}}
-        <span class="badge-notification new-topic"></span>
-      {{/if}}
-    {{else}}
+    {{#unless socialStyle}}
       <div class='main-link'>
         {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges mobileView=site.mobileView}}
       </div>
-    {{/if}}
-
-    {{#unless socialStyle}}
       <div class='pull-right'>
         {{raw "list/post-count-or-badges" topic=topic postBadgesEnabled=showTopicPostBadges}}
       </div>
