@@ -306,15 +306,6 @@ export default {
 
         // Overrides
 
-        // @computed()
-        // expandPinned() {
-        //   const pinned = this.get('topic.pinned');
-        //   if (this.get('showExcerpt')) {return true;}
-        //   if (this.get('controller.expandGloballyPinned') && this.get('topic.pinned_globally')) {return true;}
-        //   if (this.get('controller.expandAllPinned') && pinned) {return true;}
-        //   return false;
-        // },
-
         @computed()
         expandPinned() {
           if (this.get('showExcerpt')) {return true;}
