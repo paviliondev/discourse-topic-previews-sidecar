@@ -308,11 +308,8 @@ export default {
 
         @computed()
         expandPinned() {
-          const pinned = this.get('topic.pinned');
-          if (!pinned) {return this.get('showExcerpt');}
-          if (this.get('controller.expandGloballyPinned') && this.get('topic.pinned_globally')) {return true;}
-          if (this.get('controller.expandAllPinned')) {return true;}
-          return false;
+          if (this.get('showExcerpt')) {return true;}
+          return this._super();
         },
 
         // Display objects
