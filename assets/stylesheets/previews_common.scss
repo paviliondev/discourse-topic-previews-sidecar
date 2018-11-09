@@ -420,19 +420,19 @@ button.list-button {
   }
 
   &.bookmarked, &.topic-bookmark:hover {
-    i.fa-bookmark {
+    i.fa-bookmark, .d-icon-bookmark {
       color: $tertiary;
     }
   }
 }
 
 .user-main .list-button {
-  .fa-heart {
+  .fa-heart, .d-icon-heart {
     color: inherit !important;
   }
 
   &.has-like {
-    .fa-heart {
+    .fa-heart, .d-icon-heart {
       color: $love !important;
     }
   }

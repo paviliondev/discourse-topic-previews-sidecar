@@ -1,3 +1,5 @@
+import { iconHTML } from "discourse-common/lib/icon-library";
+
 var isThumbnail = function(path) {
   return typeof path === 'string' &&
          path !== 'false' &&
@@ -76,7 +78,7 @@ var buttonHTML = function(action) {
   var html = "<button class='list-button " + action.class + "'";
   if (action.title) { html += 'title="' + I18n.t(action.title) + '"'; }
   if (action.disabled) {html += ' disabled';}
-  html += "><i class='fa fa-" + action.icon + "' aria-hidden='true'></i>";
+  html += `>${iconHTML(action.icon)}`;
   html += "</button>";
   return html;
 };
