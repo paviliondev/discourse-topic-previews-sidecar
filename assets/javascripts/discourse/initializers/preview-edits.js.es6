@@ -152,6 +152,7 @@ export default {
         applyMasonry(){
           // initialize
           let msnry = this.$('.grid').data('masonry');
+
           if (msnry) {
             msnry.reloadItems();
             //disable transition
