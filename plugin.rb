@@ -30,6 +30,13 @@ after_initialize do
     end
   end
 
+  module ::TopicPreviews
+    class Engine < ::Rails::Engine
+      engine_name "topic_previews"
+      isolate_namespace TopicPreviews
+    end
+  end
+
   load File.expand_path('../lib/topic_list_previews_helper.rb', __FILE__)
   load File.expand_path('../lib/guardian_edits.rb', __FILE__)
   load File.expand_path('../lib/featured_topics.rb', __FILE__)
@@ -56,4 +63,6 @@ after_initialize do
   add_to_serializer(:basic_category, :topic_list_thumbnail_width) { object.custom_fields['topic_list_thumbnail_width'] }
   add_to_serializer(:basic_category, :topic_list_thumbnail_height) { object.custom_fields['topic_list_thumbnail_height'] }
   add_to_serializer(:basic_category, :topic_list_featured_images) { object.custom_fields['topic_list_featured_images'] }
+
+  DiscourseEvent.trigger(:topic_previews_ready)
 end
