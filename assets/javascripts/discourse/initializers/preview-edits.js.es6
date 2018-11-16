@@ -78,6 +78,11 @@ export default {
         },
 
         settingEnabled(setting) {
+          const routeEnabled = this.get('routeEnabled');
+          if (routeEnabled) {
+            return routeEnabled.indexOf(setting) > -1;
+          }
+
           const filter = this.filter();
           const discoveryList = this.get('discoveryList');
           const suggestedList = this.get('suggestedList');
@@ -188,6 +193,7 @@ export default {
         showCategoryBadge: Ember.computed.alias('parentView.showCategoryBadge'),
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
         category: Ember.computed.alias('parentView.category'),
+        currentRoute: Ember.computed.alias('parentView.currentRoute'),
 
         // Lifecyle logic
 
