@@ -39,8 +39,14 @@ module ListHelper
     end
 
     def create_thumbnails(topic, image, original_url)
-      category_height = topic.category ? topic.category.custom_fields['topic_list_thumbnail_height'] : nil
-      category_width = topic.category ? topic.category.custom_fields['topic_list_thumbnail_width'] : nil
+      category_height = nil
+      category_width = nil
+
+      if category = topic.category
+        category_height = category.custom_thumbnail_height || category.custom_fields['topic_list_thumbnail_height']
+        category_width = category.custom_thumbnail_width || category.custom_fields['topic_list_thumbnail_width']
+      end
+
       width = category_width.present? ? category_width.to_i : SiteSetting.topic_list_thumbnail_width.to_i
       height = category_height.present? ? category_height.to_i : SiteSetting.topic_list_thumbnail_height.to_i
       normal = image ? thumbnail_url(image, width, height, original_url) : original_url
