@@ -43,8 +43,8 @@ module ListHelper
       category_width = nil
 
       if category = topic.category
-        category_height = category.custom_thumbnail_height || category.custom_fields['topic_list_thumbnail_height']
-        category_width = category.custom_thumbnail_width || category.custom_fields['topic_list_thumbnail_width']
+        category_height = category.try(:custom_thumbnail_height) || category.custom_fields['topic_list_thumbnail_height']
+        category_width = category.try(:custom_thumbnail_width) || category.custom_fields['topic_list_thumbnail_width']
       end
 
       width = category_width.present? ? category_width.to_i : SiteSetting.topic_list_thumbnail_width.to_i
