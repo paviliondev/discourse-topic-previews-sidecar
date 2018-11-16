@@ -149,7 +149,9 @@ export default {
         // don't forget to update masonry layout when required
         @observes('topics.[]')
         masonryObserver() {
-          Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+          if (this.get('tilesStyle')){
+            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+          }
       	},
 
         applyMasonry(){
