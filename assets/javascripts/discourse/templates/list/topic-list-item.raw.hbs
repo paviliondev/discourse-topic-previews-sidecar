@@ -15,11 +15,25 @@
 
   <div class="topic-details">
     {{#unless tilesOrSocial}}
-      {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges}}
-      {{#if showCategoryBadge}}
-        {{raw "list/topic-category" category=topic.category}}
-      {{/if}}
-      {{discourse-tags topic mode="list"}}
+    <span class='link-top-line'>
+      {{~raw-plugin-outlet name="topic-list-before-status"}}
+      {{~raw "topic-status" topic=topic}}
+      {{~topic-link topic class="raw-link raw-topic-link"}}
+      {{~#if topic.featured_link}}
+        {{~topic-featured-link topic}}
+      {{~/if}}
+      {{~raw-plugin-outlet name="topic-list-after-title"}}
+      {{~#if showTopicPostBadges}}
+        {{~raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl newDotText=newDotText}}
+      {{~/if}}
+    </span>
+      <div class="link-bottom-line">
+        {{#unless topic.isPinnedUncategorized}}
+          {{#if showCategoryBadge}}
+            {{category-link topic.category}}
+          {{/if}}
+        {{/unless}}
+      {{discourse-tags topic mode="list" tagsForUser=tagsForUser}}
     {{/unless}}
 
     {{#if expandPinned}}
@@ -27,10 +41,13 @@
     {{/if}}
 
     {{#unless tilesOrSocial}}
+    </div>
+    <div class="actions-and-meta-data"
       {{#if showActions}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
+      </div>
     {{/unless}}
   </div>
 
@@ -45,12 +62,12 @@
   {{/if}}
 </td>
 
-<!-- extra columns -->
-
 {{#unless tilesOrSocial}}
-  {{#unless hideCategory}}
-    {{#unless topic.isPinnedUncategorized}}
-      {{raw "list/category-column" category=topic.category}}
+  {{#unless showCategoryBadge}}
+    {{#unless hideCategory}}
+      {{#unless topic.isPinnedUncategorized}}
+        {{raw "list/category-column" category=topic.category}}
+      {{/unless}}
     {{/unless}}
   {{/unless}}
 

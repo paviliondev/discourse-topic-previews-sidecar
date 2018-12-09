@@ -36,10 +36,7 @@ export default {
         @on('didInsertElement')
         @observes('currentRoute')
         setupListChanged() {
-          const mobile = this.get('site.mobileView');
-          if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
-            this.set('hideCategory', true);
-          };
+          this.updateHideCategory();
           this.toggleProperty('listChanged');
         },
 
@@ -154,7 +151,14 @@ export default {
           }
       	},
 
-        applyMasonry(){
+        updateHideCategory() {
+          const mobile = this.get('site.mobileView');
+          if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
+            this.set('hideCategory', true);
+          };
+        },
+
+        applyMasonry() {
           // initialize
           let msnry = this.$('.grid').data('masonry');
 
