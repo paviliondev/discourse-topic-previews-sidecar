@@ -16,9 +16,7 @@
   <div class="topic-details">
     {{#unless tilesOrSocial}}
       {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges}}
-      {{#if showCategoryBadge}}
-        {{raw "list/topic-category" category=topic.category}}
-      {{/if}}
+      {{raw "list/topic-category" category=topic.category}}
       {{discourse-tags topic mode="list"}}
     {{/unless}}
 
@@ -48,12 +46,6 @@
 <!-- extra columns -->
 
 {{#unless tilesOrSocial}}
-  {{#unless hideCategory}}
-    {{#unless topic.isPinnedUncategorized}}
-      {{raw "list/category-column" category=topic.category}}
-    {{/unless}}
-  {{/unless}}
-
   {{#if showPosters}}
     {{raw "list/posters-column" posters=topic.posters}}
   {{/if}}

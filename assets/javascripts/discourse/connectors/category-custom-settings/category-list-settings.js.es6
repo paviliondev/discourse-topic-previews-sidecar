@@ -1,5 +1,5 @@
 const listChoices = ['latest', 'new', 'unread', 'top', 'suggested', 'agenda', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'suggested-mobile', 'agenda-mobile'];
-const listSettings = ['tiles', 'social', 'thumbnail', 'excerpt', 'action', 'category_badge_move'];
+const listSettings = ['tiles', 'social', 'thumbnail', 'excerpt', 'action'];
 const filterChoices = ['suggested', 'agenda', 'latest-mobile', 'new-mobile', 'unread-mobile','top-mobile', 'suggested-mobile', 'agenda-mobile'];
 
 export default {

@@ -37,9 +37,6 @@ export default {
         @observes('currentRoute')
         setupListChanged() {
           const mobile = this.get('site.mobileView');
-          if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
-            this.set('hideCategory', true);
-          };
           this.toggleProperty('listChanged');
         },
 
@@ -132,11 +129,6 @@ export default {
         },
 
         @computed('listChanged')
-        showCategoryBadge() {
-          return this.settingEnabled('topic_list_category_badge_move');
-        },
-
-        @computed('listChanged')
         skipHeader() {
           return this.get('tilesStyle') || this.get('socialStyle') || this.get('site.mobileView');
         },
@@ -192,7 +184,6 @@ export default {
         showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
         showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
         showActions: Ember.computed.alias('parentView.showActions'),
-        showCategoryBadge: Ember.computed.alias('parentView.showCategoryBadge'),
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
         category: Ember.computed.alias('parentView.category'),
         currentRoute: Ember.computed.alias('parentView.currentRoute'),
