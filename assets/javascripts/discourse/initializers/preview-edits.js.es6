@@ -21,6 +21,8 @@ export default {
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
 
+        // Lifecyle logic
+
         @on('init')
         setup() {
           const suggestedList = this.get('suggestedList');
@@ -31,6 +33,17 @@ export default {
           if (this.get('tilesStyle')){
             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           };
+        },
+
+        @on('didRender')
+        setupReRender() {
+          this.updateHideCategory();
+        },
+
+        @on('didInsertElement')
+        setupListChanged() {
+          this.updateHideCategory();
+          this.toggleProperty('listChanged');
         },
 
         @on('didInsertElement')
@@ -155,6 +168,9 @@ export default {
           const mobile = this.get('site.mobileView');
           if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
             this.set('hideCategory', true);
+          }
+          else {
+            this.set('hideCategory', false);
           };
         },
 
