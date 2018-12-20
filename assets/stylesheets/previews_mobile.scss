@@ -61,12 +61,12 @@
     font-size: 18px;
   }
 
-  .inline{
-    float: right;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row-reverse;
-  }
+  .topic-users .inline{
+     float: right;
+     display: flex;
+     flex-wrap: wrap;
+     flex-direction: row-reverse;
+   }
 
   .topic-details {
     padding: 0;
