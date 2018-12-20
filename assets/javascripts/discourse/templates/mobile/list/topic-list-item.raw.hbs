@@ -1,6 +1,6 @@
 <td>
   {{#if socialStyle}}
-    {{raw "list/topic-list-title" topic=topic socialStyle=socialStyle mobileView=site.mobileView}}
+    {{raw "list/topic-list-title" topic=topic  tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle mobileView=site.mobileView}}
     {{#if showThumbnail}}
       {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
     {{/if}}
