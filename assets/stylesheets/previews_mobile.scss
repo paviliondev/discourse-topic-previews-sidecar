@@ -1,4 +1,4 @@
-.mobile-view .topic-list {
+.mobile-view html:not(.tile-style) .topic-list {
   .topic-thumbnail {
     padding: 0;
   }
