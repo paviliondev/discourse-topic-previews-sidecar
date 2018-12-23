@@ -19,6 +19,10 @@
   }
 }
 
+.gutter-sizer {
+   width: 6px;
+ }
+
 .grid-item {
   box-sizing: border-box;
   cursor: pointer;
@@ -45,7 +49,7 @@
 }
 
 //tiles styling  specific styling
-html:not(.mobile-view) #list-area.tiles-style {
+#list-area.tiles-style {
   .topic-title {
     font-size: 1.143em;
     grid-area: title;

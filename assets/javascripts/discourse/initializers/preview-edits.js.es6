@@ -61,7 +61,7 @@ export default {
           this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
           this.$("tbody").toggleClass('grid', this.get('tilesStyle'));
           if ( !this.$( ".grid-sizer" ).length && this.get('tilesStyle')){
-            this.$(".grid").prepend("<div class='grid-sizer'></div>");
+            this.$(".grid").prepend("<div class='grid-sizer'></div><div class='gutter-sizer'></div>");
           };
         },
 
@@ -193,7 +193,7 @@ export default {
               transitionDuration: '0.7s',
               percentPosition: true,
               Width: '.grid-sizer',
-              gutter: 6
+              gutter: '.gutter-sizer'
             });
 
             msnry = this.$('.grid').data('masonry');
