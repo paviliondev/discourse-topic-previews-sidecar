@@ -357,10 +357,6 @@ img.thumbnail {
   clear: both;
   display: flex;
   align-items: center;
-
-  button {
-    margin-right: 7px;
-  }
 }
 
 .like-count, .list-vote-count {
@@ -368,7 +364,7 @@ img.thumbnail {
   font-size: 13px;
   display: inline-block;
   vertical-align: bottom;
-  margin-right: 2px;
+  margin-right: 7px;
 
   .vote-count {
     height: initial;
@@ -396,7 +392,7 @@ button.list-button {
   overflow: hidden;
 
   &:first-of-type {
-    padding-left: 1px;
+    padding-left: 0;
   }
 
   i {
