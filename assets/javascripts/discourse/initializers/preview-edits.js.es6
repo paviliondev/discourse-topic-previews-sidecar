@@ -261,12 +261,13 @@ export default {
           });
         },
 
-        click(event) {
+        click(e) {
           if (this.get('tilesStyle')){
-            if ($(event.target).parents('.list-button').length == 0) {
+            if ($(e.target).parents('.list-button').length == 0) {
               DiscourseURL.routeTo(this.get('topic.lastReadUrl'));
             }
           }
+          this._super(e);
         },
 
         _sizeThumbnails() {
