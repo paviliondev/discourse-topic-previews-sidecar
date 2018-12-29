@@ -363,10 +363,6 @@ img.thumbnail {
   }
 }
 
-.main-link .topic-statuses {
-  line-height: 19px;
-}
-
 .like-count, .list-vote-count {
   color: dark-light-choose(scale-color($primary, $lightness: 60%), scale-color($secondary, $lightness: 40%));
   font-size: 13px;
