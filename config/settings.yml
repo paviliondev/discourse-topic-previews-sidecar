@@ -85,7 +85,7 @@ plugins:
      - tags-mobile
      - suggested-mobile
      - agenda-mobile
-  topic_list_category_badge_move:
+  topic_list_category_column:
     client: true
     type: list
     default: ''

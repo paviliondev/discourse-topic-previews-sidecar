@@ -29,9 +29,9 @@
     </span>
       <div class="link-bottom-line">
         {{#unless topic.isPinnedUncategorized}}
-          {{#if showCategoryBadge}}
+          {{#unless showCategoryColumn}}
             {{category-link topic.category}}
-          {{/if}}
+          {{/unless}}
         {{/unless}}
       {{discourse-tags topic mode="list" tagsForUser=tagsForUser}}
     {{/unless}}
@@ -63,13 +63,13 @@
 </td>
 
 {{#unless tilesOrSocial}}
-  {{#unless showCategoryBadge}}
+  {{#if showCategoryColumn}}
     {{#unless hideCategory}}
       {{#unless topic.isPinnedUncategorized}}
         {{raw "list/category-column" category=topic.category}}
       {{/unless}}
     {{/unless}}
-  {{/unless}}
+  {{/if}}
 
   {{#if showPosters}}
     {{raw "list/posters-column" posters=topic.posters}}

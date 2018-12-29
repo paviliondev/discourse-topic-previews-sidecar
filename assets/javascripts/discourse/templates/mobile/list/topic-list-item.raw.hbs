@@ -29,9 +29,7 @@
     {{/if}}
 
     {{#unless socialStyle}}
-      {{#unless hideCategory}}
-        {{raw "list/topic-category" category=topic.category}}
-      {{/unless}}
+      {{raw "list/topic-category" category=topic.category}}
       {{#if topic.tags}}
         <div class='discourse-tags'>
         {{#each topic.visibleListTags as |tag|}}

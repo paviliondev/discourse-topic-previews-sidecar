@@ -142,8 +142,8 @@ export default {
         },
 
         @computed('listChanged')
-        showCategoryBadge() {
-          return this.settingEnabled('topic_list_category_badge_move');
+        showCategoryColumn() {
+          return this.settingEnabled('topic_list_category_column');
         },
 
         @computed('listChanged')
@@ -166,12 +166,7 @@ export default {
 
         updateHideCategory() {
           const mobile = this.get('site.mobileView');
-          if (!mobile && this.settingEnabled('topic_list_category_badge_move')) {
-            this.set('hideCategory', true);
-          }
-          else {
-            this.set('hideCategory', false);
-          };
+          this.set('hideCategory', !mobile && !this.settingEnabled('topic_list_category_column'));
         },
 
         applyMasonry() {
@@ -212,7 +207,6 @@ export default {
         showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
         showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
         showActions: Ember.computed.alias('parentView.showActions'),
-        showCategoryBadge: Ember.computed.alias('parentView.showCategoryBadge'),
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
         category: Ember.computed.alias('parentView.category'),
         currentRoute: Ember.computed.alias('parentView.currentRoute'),
@@ -290,12 +284,13 @@ export default {
           });
         },
 
-        click(event) {
+        click(e) {
           if (this.get('tilesStyle')){
-            if ($(event.target).parents('.list-button').length == 0) {
+            if ($(e.target).parents('.list-button').length == 0) {
               DiscourseURL.routeTo(this.get('topic.lastReadUrl'));
             }
           }
+          this._super(e);
         },
 
         _sizeThumbnails() {
