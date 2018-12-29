@@ -1,8 +1,8 @@
 <td>
-  {{#if tilesOrSocial}}
+  {{#if socialStyle}}
     {{raw "list/topic-list-title" topic=topic  tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle mobileView=site.mobileView}}
     {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle thumbnails=thumbnails}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
     {{/if}}
   {{else}}
     {{#if showThumbnail}}
@@ -15,7 +15,7 @@
   {{/if}}
 
   <div class='topic-details'>
-    {{#unless tilesOrSocial}}
+    {{#unless socialStyle}}
       <div class='main-link'>
         {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges mobileView=site.mobileView}}
       </div>
@@ -28,7 +28,7 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#unless tilesOrSocial}}
+    {{#unless socialStyle}}
       {{#unless hideCategory}}
         {{raw "list/topic-category" category=topic.category}}
       {{/unless}}
@@ -50,7 +50,7 @@
     {{/unless}}
   </div>
 
-  {{#if tilesOrSocial}}
+  {{#if socialStyle}}
     <div class='main-link-footer'>
       {{raw "list/topic-meta" title=view.title likesHeat=view.likesHeat topic=topic}}
       {{#if showActions}}

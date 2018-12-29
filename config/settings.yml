@@ -28,11 +28,6 @@ plugins:
      - unread
      - top
      - tags
-     - latest-mobile
-     - new-mobile
-     - unread-mobile
-     - top-mobile
-     - tags-mobile
   topic_list_thumbnail:
     client: true
     type: list

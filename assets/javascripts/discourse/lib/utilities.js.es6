@@ -27,7 +27,7 @@ var renderUnboundPreview = function(thumbnails, params) {
 
   if (!url) return '';
 
-  if (!params.tilesStyle && Discourse.Site.currentProp('mobileView')) {
+  if (Discourse.Site.currentProp('mobileView')) {
     return `<img class="thumbnail" src="${url}"/>`;
   };
 
