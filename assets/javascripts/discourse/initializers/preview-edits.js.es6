@@ -41,12 +41,6 @@ export default {
         },
 
         @on('didInsertElement')
-        setupListChanged() {
-          this.updateHideCategory();
-          this.toggleProperty('listChanged');
-        },
-
-        @on('didInsertElement')
         @observes('currentRoute')
         setupListChanged() {
           this.updateHideCategory();
@@ -156,6 +150,11 @@ export default {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         },
 
+        updateHideCategory() {
+          const mobile = this.get('site.mobileView');
+          this.set('hideCategory', (!mobile && !this.settingEnabled('topic_list_category_column')));
+        },
+
         // don't forget to update masonry layout when required
         @observes('topics.[]')
         masonryObserver() {
@@ -163,11 +162,6 @@ export default {
             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           }
       	},
-
-        updateHideCategory() {
-          const mobile = this.get('site.mobileView');
-          this.set('hideCategory', !mobile && !this.settingEnabled('topic_list_category_column'));
-        },
 
         applyMasonry() {
           // initialize
@@ -207,6 +201,7 @@ export default {
         showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
         showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
         showActions: Ember.computed.alias('parentView.showActions'),
+        showCategoryColumn: Ember.computed.alias('parentView.showCategoryColumn'),
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
         category: Ember.computed.alias('parentView.category'),
         currentRoute: Ember.computed.alias('parentView.currentRoute'),

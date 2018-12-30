@@ -28,8 +28,8 @@
       {{~/if}}
     </span>
       <div class="link-bottom-line">
-        {{#unless topic.isPinnedUncategorized}}
-          {{#unless showCategoryColumn}}
+        {{#unless showCategoryColumn}}
+          {{#unless topic.isPinnedUncategorized}}
             {{category-link topic.category}}
           {{/unless}}
         {{/unless}}
@@ -63,13 +63,11 @@
 </td>
 
 {{#unless tilesOrSocial}}
-  {{#if showCategoryColumn}}
-    {{#unless hideCategory}}
+    {{#if showCategoryColumn}}
       {{#unless topic.isPinnedUncategorized}}
-        {{raw "list/category-column" category=topic.category}}
+          {{raw "list/category-column" category=topic.category}}
       {{/unless}}
-    {{/unless}}
-  {{/if}}
+    {{/if}}
 
   {{#if showPosters}}
     {{raw "list/posters-column" posters=topic.posters}}
