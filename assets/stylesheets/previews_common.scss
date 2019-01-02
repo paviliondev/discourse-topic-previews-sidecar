@@ -24,11 +24,12 @@
  }
 
 .grid-item {
+  box-sizing: border-box;
   cursor: pointer;
   float:top;
   margin-bottom: 6px;
   border-radius: 3px;
-  padding:11px;
+  padding:10px;
   display: grid;
   grid-template-columns: 1 1 1 1 auto;
   grid-template-rows: auto auto auto auto auto auto;
