@@ -1,6 +1,11 @@
 <td>
   {{#if tilesOrSocial}}
     {{raw "list/topic-list-title" topic=topic  tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle mobileView=site.mobileView}}
+    {{#if tilesStyle}}
+      <div class="topic-category">
+        {{category-link topic.category}}
+      </div>
+    {{/if}}
     {{#if showThumbnail}}
       {{raw "list/topic-thumbnail" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle thumbnails=thumbnails}}
     {{/if}}
@@ -49,12 +54,19 @@
   </div>
 
   {{#if tilesOrSocial}}
-    <div class='main-link-footer'>
-      {{raw "list/topic-meta" title=view.title likesHeat=view.likesHeat topic=topic}}
+    {{#unless tilesStyle}}
+    <div class="main-link-footer">
+      {{raw-plugin-outlet name="topic-list-main-link-footer"}}
+    {{/unless}}
+      {{raw 'list/topic-meta' tilesStyle=tilesStyle likesHeat=likesHeat title=view.title topic=topic}}
       {{#if showActions}}
+        {{#if tilesStyle}}
+          </div>
+        {{/if}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
-      {{raw-plugin-outlet name="topic-list-after-title"}}
+    {{#unless tilesStyle}}
     </div>
+    {{/unless}}
   {{/if}}
 </td>
