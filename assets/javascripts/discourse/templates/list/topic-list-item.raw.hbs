@@ -15,7 +15,7 @@
 
   <div class="topic-details">
     {{#unless tilesOrSocial}}
-      {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges}}
+      {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges homepage=parentView.homepage}}
       {{raw "list/topic-category" category=topic.category}}
       {{discourse-tags topic mode="list"}}
     {{/unless}}
