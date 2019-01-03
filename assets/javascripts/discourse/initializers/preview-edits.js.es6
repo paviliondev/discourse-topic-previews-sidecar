@@ -162,7 +162,7 @@ export default {
             // init masonry
             this.$('.grid').masonry({
               itemSelector: '.grid-item',
-              transitionDuration: '0.7s',
+              transitionDuration: `${Discourse.SiteSettings.topic_list_tiles_transition_time}s`,
               percentPosition: true,
               Width: '.grid-sizer',
               gutter: '.gutter-sizer'

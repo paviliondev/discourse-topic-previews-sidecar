@@ -90,6 +90,9 @@ plugins:
      - tags-mobile
      - suggested-mobile
      - agenda-mobile
+  topic_list_tiles_transition_time:
+    default: 0.5
+    client: true
   topic_list_set_category_defaults:
     default: false
     client: true
