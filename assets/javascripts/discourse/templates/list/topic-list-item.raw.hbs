@@ -6,11 +6,15 @@
 
 <td class='main-link clearfix' colspan="{{titleColSpan}}">
   {{#if tilesOrSocial}}
+    {{#if tilesStyle}}
+    <div class="topic-header-grid">
+    {{/if}}
     {{raw "list/topic-list-title" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
     {{#if tilesStyle}}
       <div class="topic-category">
         {{category-link topic.category}}
       </div>
+    </div>
     {{/if}}
   {{/if}}
 
