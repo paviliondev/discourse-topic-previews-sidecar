@@ -35,9 +35,8 @@
     padding:10px;
     display: grid;
     grid-template-columns: 1 1 1 1 auto;
-    grid-template-rows: auto auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
     grid-template-areas:
-     "theader theader theader theader theader"
      "theader theader theader theader theader"
      "photo photo photo photo photo"
      "details details details details details"
