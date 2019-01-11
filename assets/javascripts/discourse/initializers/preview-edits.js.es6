@@ -141,6 +141,12 @@ export default {
         },
 
         @computed('listChanged')
+        hideCategoryBadge() {
+          const category = this.get('category');
+          return (this.settingEnabled('topic_list_category_column') || (category !== null));
+        },
+
+        @computed('listChanged')
         skipHeader() {
           return this.get('tilesStyle') || this.get('socialStyle') || this.get('site.mobileView');
         },
@@ -152,6 +158,8 @@ export default {
 
         updateHideCategory() {
           const mobile = this.get('site.mobileView');
+          const category = this.get('category');
+          this.set('hideCategoryBadge', (this.settingEnabled('topic_list_category_column') || (category !== null)));
           this.set('hideCategory', (!mobile && !this.settingEnabled('topic_list_category_column')));
         },
 
@@ -205,6 +213,7 @@ export default {
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
         category: Ember.computed.alias('parentView.category'),
         currentRoute: Ember.computed.alias('parentView.currentRoute'),
+        hideCategoryBadge: Ember.computed.alias('parentView.hideCategoryBadge'),
 
         // Lifecyle logic
 

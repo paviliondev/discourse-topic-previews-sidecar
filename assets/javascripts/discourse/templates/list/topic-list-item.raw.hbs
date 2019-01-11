@@ -16,7 +16,7 @@
   <div class="topic-details">
     {{#unless tilesOrSocial}}
       {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges homepage=parentView.homepage}}
-        {{#unless showCategoryColumn}}
+        {{#unless hideCategoryBadge}}
           {{#unless topic.isPinnedUncategorized}}
             {{category-link topic.category}}
           {{/unless}}
