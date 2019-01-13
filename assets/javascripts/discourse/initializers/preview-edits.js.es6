@@ -21,6 +21,8 @@ export default {
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
 
+        // Lifecyle logic
+
         @on('init')
         setup() {
           const suggestedList = this.get('suggestedList');
@@ -36,7 +38,6 @@ export default {
         @on('didInsertElement')
         @observes('currentRoute')
         setupListChanged() {
-          const mobile = this.get('site.mobileView');
           this.toggleProperty('listChanged');
         },
 
@@ -129,6 +130,19 @@ export default {
         },
 
         @computed('listChanged')
+        showCategoryBadge() {
+          return !this.settingEnabled('topic_list_category_column') &&
+          (!this.get('category') || this.get('category.has_children'));
+        },
+
+        @observes('showCategoryBadge', 'hideCategory')
+        toggleHideCategory() {
+          if (this.get('showCategoryBadge') && !this.get('hideCategory')) {
+            this.set('hideCategory', true);
+          }
+        },
+
+        @computed('listChanged')
         skipHeader() {
           return this.get('tilesStyle') || this.get('socialStyle') || this.get('site.mobileView');
         },
@@ -146,7 +160,7 @@ export default {
           }
       	},
 
-        applyMasonry(){
+        applyMasonry() {
           // initialize
           let msnry = this.$('.grid').data('masonry');
 
@@ -368,6 +382,16 @@ export default {
         hasLikedDisplay() {
           let hasLiked = this.get('hasLiked');
           return hasLiked == null ? this.get('topic.topic_post_liked') : hasLiked;
+        },
+
+        @computed('parentView.showCategoryBadge', 'topic.isPinnedUncategorized')
+        showCategoryBadge(show, isPinnedUncategorized) {
+          return show && !isPinnedUncategorized;
+        },
+
+        @computed('hideCategory', 'topic.isPinnedUncategorized')
+        showCategoryColumn(hide, isPinnedUncategorized) {
+          return !hide && !isPinnedUncategorized;
         },
 
         changeLikeCount(change) {

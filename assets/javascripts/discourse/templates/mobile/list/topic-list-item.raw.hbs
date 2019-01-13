@@ -5,10 +5,10 @@
   {{/if}}
     {{raw "list/topic-list-title" topic=topic  tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle mobileView=site.mobileView}}
     {{#if tilesStyle}}
-      <div class="topic-category">
-        {{category-link topic.category}}
-      </div>
+    <div class="topic-category">
+      {{category-link topic.category}}
     </div>
+  </div>
     {{/if}}
     {{#if showThumbnail}}
       {{raw "list/topic-thumbnail" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle thumbnails=thumbnails}}
