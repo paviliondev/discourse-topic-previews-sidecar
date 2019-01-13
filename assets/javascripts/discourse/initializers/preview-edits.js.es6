@@ -131,7 +131,7 @@ export default {
 
         @computed('listChanged')
         showCategoryBadge() {
-          return this.settingEnabled('topic_list_category_column');
+          return !this.settingEnabled('topic_list_category_column');
         },
 
         @observes('showCategoryBadge', 'hideCategory')
