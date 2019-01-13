@@ -16,8 +16,10 @@
   <div class="topic-details">
     {{#unless tilesOrSocial}}
       {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges homepage=parentView.homepage}}
-      {{raw "list/topic-category" category=topic.category}}
-      {{discourse-tags topic mode="list"}}
+        {{#if showCategoryBadge}}
+          {{category-link topic.category}}
+        {{/if}}
+      {{discourse-tags topic mode="list" tagsForUser=tagsForUser}}
     {{/unless}}
 
     {{#if expandPinned}}
@@ -25,10 +27,13 @@
     {{/if}}
 
     {{#unless tilesOrSocial}}
+    </div>
+    <div class="actions-and-meta-data"
       {{#if showActions}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
+      </div>
     {{/unless}}
   </div>
 
@@ -43,9 +48,11 @@
   {{/if}}
 </td>
 
-<!-- extra columns -->
-
 {{#unless tilesOrSocial}}
+  {{#if showCategoryColumn}}
+    {{raw "list/category-column" category=topic.category}}
+  {{/if}}
+
   {{#if showPosters}}
     {{raw "list/posters-column" posters=topic.posters}}
   {{/if}}
