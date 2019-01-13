@@ -16,11 +16,9 @@
   <div class="topic-details">
     {{#unless tilesOrSocial}}
       {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges homepage=parentView.homepage}}
-        {{#unless hideCategoryBadge}}
-          {{#unless topic.isPinnedUncategorized}}
-            {{category-link topic.category}}
-          {{/unless}}
-        {{/unless}}
+        {{#if showCategoryBadge}}
+          {{category-link topic.category}}
+        {{/if}}
       {{discourse-tags topic mode="list" tagsForUser=tagsForUser}}
     {{/unless}}
 
@@ -51,11 +49,11 @@
 </td>
 
 {{#unless tilesOrSocial}}
-    {{#if showCategoryColumn}}
-      {{#unless topic.isPinnedUncategorized}}
-          {{raw "list/category-column" category=topic.category}}
-      {{/unless}}
-    {{/if}}
+  {{#unless hideCategory}}
+    {{#unless topic.isPinnedUncategorized}}
+        {{raw "list/category-column" category=topic.category}}
+    {{/unless}}
+  {{/unless}}
 
   {{#if showPosters}}
     {{raw "list/posters-column" posters=topic.posters}}

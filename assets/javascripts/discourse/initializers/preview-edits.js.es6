@@ -35,15 +35,9 @@ export default {
           };
         },
 
-        @on('didRender')
-        setupReRender() {
-          this.updateHideCategory();
-        },
-
         @on('didInsertElement')
         @observes('currentRoute')
         setupListChanged() {
-          this.updateHideCategory();
           this.toggleProperty('listChanged');
         },
 
@@ -136,14 +130,15 @@ export default {
         },
 
         @computed('listChanged')
-        showCategoryColumn() {
+        showCategoryBadge() {
           return this.settingEnabled('topic_list_category_column');
         },
 
-        @computed('listChanged')
-        hideCategoryBadge() {
-          const category = this.get('category');
-          return (this.settingEnabled('topic_list_category_column') || (category !== null));
+        @observes('showCategoryBadge', 'hideCategory')
+        toggleHideCategory() {
+          if (this.get('showCategoryBadge') && !this.get('hideCategory')) {
+            this.set('hideCategory', true);
+          }
         },
 
         @computed('listChanged')
@@ -154,13 +149,6 @@ export default {
         @computed('listChanged')
         thumbnailFirstXRows() {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
-        },
-
-        updateHideCategory() {
-          const mobile = this.get('site.mobileView');
-          const category = this.get('category');
-          this.set('hideCategoryBadge', (this.settingEnabled('topic_list_category_column') || (category !== null)));
-          this.set('hideCategory', (!mobile && !this.settingEnabled('topic_list_category_column')));
         },
 
         // don't forget to update masonry layout when required
@@ -209,11 +197,9 @@ export default {
         showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
         showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
         showActions: Ember.computed.alias('parentView.showActions'),
-        showCategoryColumn: Ember.computed.alias('parentView.showCategoryColumn'),
         thumbnailFirstXRows: Ember.computed.alias('parentView.thumbnailFirstXRows'),
         category: Ember.computed.alias('parentView.category'),
         currentRoute: Ember.computed.alias('parentView.currentRoute'),
-        hideCategoryBadge: Ember.computed.alias('parentView.hideCategoryBadge'),
 
         // Lifecyle logic
 
@@ -395,6 +381,11 @@ export default {
         hasLikedDisplay() {
           let hasLiked = this.get('hasLiked');
           return hasLiked == null ? this.get('topic.topic_post_liked') : hasLiked;
+        },
+
+        @computed('parentView.showCategoryBadge', 'topic.isPinnedUncategorized')
+        showCategoryBadge(show, isPinnedUncategorized) {
+          return show && !isPinnedUncategorized;
         },
 
         changeLikeCount(change) {
