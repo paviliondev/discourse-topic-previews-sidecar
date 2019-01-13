@@ -389,6 +389,11 @@ export default {
           return show && !isPinnedUncategorized;
         },
 
+        @computed('hideCategory', 'topic.isPinnedUncategorized')
+        showCategoryColumn(hide, isPinnedUncategorized) {
+          return !hide && !isPinnedUncategorized;
+        },
+
         changeLikeCount(change) {
           let count = this.get('likeCount'),
               newCount = count + (change || 0);
