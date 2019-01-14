@@ -35,14 +35,6 @@ export default {
           };
         },
 
-        // current workaround to prevent tiles stacking on mobile when hitting site home when someway down the topic list.
-        @on('didRender')
-        setupReRender() {
-          if (this.get('tilesStyle') && this.get('site.mobileView')){
-            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-          };
-        },
-
         @on('didInsertElement')
         @observes('currentRoute')
         setupListChanged() {
