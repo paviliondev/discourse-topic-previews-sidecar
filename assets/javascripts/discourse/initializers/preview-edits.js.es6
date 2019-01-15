@@ -30,6 +30,10 @@ export default {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
           };
+        },
+
+        @on('didRender')
+        completeRender(){
           if (this.get('tilesStyle')){
             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           };
