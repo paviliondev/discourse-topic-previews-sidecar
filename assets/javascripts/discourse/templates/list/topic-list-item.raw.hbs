@@ -15,10 +15,18 @@
 
   <div class="topic-details">
     {{#unless tilesOrSocial}}
-      {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges homepage=parentView.homepage}}
-        {{#if showCategoryBadge}}
-          {{category-link topic.category}}
-        {{/if}}
+      {{raw "list/topic-list-title"
+        topic=topic
+        showTopicPostBadges=showTopicPostBadges
+        homepage=parentView.homepage
+        suggested=parentView.suggested}}
+
+      {{#if showCategoryBadge}}
+        <div class='topic-category'>
+          {{category-link category}}
+        </div>
+      {{/if}}
+
       {{discourse-tags topic mode="list" tagsForUser=tagsForUser}}
     {{/unless}}
 
