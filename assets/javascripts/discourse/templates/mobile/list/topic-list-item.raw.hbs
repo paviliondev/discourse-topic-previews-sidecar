@@ -17,7 +17,12 @@
   <div class='topic-details'>
     {{#unless socialStyle}}
       <div class='main-link'>
-        {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges mobileView=site.mobileView}}
+        {{raw "list/topic-list-title"
+          topic=topic
+          showTopicPostBadges=showTopicPostBadges
+          homepage=parentView.homepage
+          suggested=parentView.suggestedList
+          mobileView=site.mobileView}}
       </div>
       <div class='pull-right'>
         {{raw "list/post-count-or-badges" topic=topic postBadgesEnabled=showTopicPostBadges}}

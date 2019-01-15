@@ -36,12 +36,12 @@
 
     {{#unless tilesOrSocial}}
     </div>
-    <div class="actions-and-meta-data"
+    <div class="actions-and-meta-data">
       {{#if showActions}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
-      </div>
+    </div>
     {{/unless}}
   </div>
 
