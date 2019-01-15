@@ -178,9 +178,11 @@ export default {
             msnry.options.transitionDuration = transitionDuration;
           } else {
             // init masonry
+            // transition set to zero on mobile due to undesirable behaviour on mobile safari if > 0
+            const transDuration = this.get('site.mobileView') ? 0 : Discourse.SiteSettings.topic_list_tiles_transition_time;
             this.$('.grid').masonry({
               itemSelector: '.grid-item',
-              transitionDuration: `${Discourse.SiteSettings.topic_list_tiles_transition_time}s`,
+              transitionDuration: `${transDuration}s`,
               percentPosition: true,
               Width: '.grid-sizer',
               gutter: '.gutter-sizer'
