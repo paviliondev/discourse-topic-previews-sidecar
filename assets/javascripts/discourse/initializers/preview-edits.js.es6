@@ -266,7 +266,10 @@ export default {
         },
 
         _setupTitleCSS() {
-          this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
+          let $el = this.$('.topic-title a.visited');
+          if ($el) {
+            $el.closest('.topic-details').addClass('visited');
+          }
         },
 
         _setupExcerptClick() {
