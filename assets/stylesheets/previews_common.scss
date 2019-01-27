@@ -10,15 +10,7 @@
 
   .grid-sizer,
   .grid-item {
-    // 1 column on very thin views
-    width: 100%;
-    // 2 columns on medium widths
-    @media screen and (min-width: 401px) and (max-width: 800px) {
-      width: calc((100% - 6px)/2);
-    }
-    // 3 columns when there is room
-    @media screen and (min-width: 801px) {
-      width: calc((100% - 12px)/3);
+
     }
   }
 
