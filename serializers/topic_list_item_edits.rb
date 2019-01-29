@@ -53,7 +53,7 @@ class ::TopicListItemSerializer
     return unless object.archetype == Archetype.default
 
     if SiteSetting.topic_list_hotlink_thumbnails || @options[:featured_topics]
-      { 'normal' => object.image_url, 'retina' => object.image_url }
+      original_images
     else
       get_thumbnails || get_thumbnails_from_image_url
     end
@@ -85,6 +85,10 @@ class ::TopicListItemSerializer
   def get_thumbnails_from_image_url
     image = Upload.get_from_url(object.image_url) rescue false
     return ListHelper.create_thumbnails(object, image, object.image_url)
+  end
+
+  def original_images
+    { 'normal' => object.image_url, 'retina' => object.image_url }
   end
 
   def topic_post_actions

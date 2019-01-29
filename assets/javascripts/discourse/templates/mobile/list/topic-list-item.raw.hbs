@@ -11,11 +11,11 @@
   </div>
     {{/if}}
     {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle thumbnails=thumbnails}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
     {{/if}}
   {{else}}
     {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
     {{else}}
       <div class='pull-left'>
         <a href="{{topic.lastPostUrl}}">{{avatar topic.lastPoster imageSize="large"}}</a>

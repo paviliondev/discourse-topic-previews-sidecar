@@ -363,6 +363,24 @@ export default {
           return getDefaultThumbnail(category);
         },
 
+        @computed('tilesStyle', 'socialStyle', 'thumbnailWidth', 'thumbnailHeight')
+        thumbnailOpts(tilesStyle, socialStyle, thumbnailWidth, thumbnailHeight) {
+          let opts = {
+            tilesStyle,
+            socialStyle,
+          }
+
+          if (thumbnailWidth) {
+            opts['thumbnailWidth'] = thumbnailWidth;
+          }
+
+          if (thumbnailHeight) {
+            opts['thumbnailHeight'] = thumbnailHeight;
+          }
+
+          return opts;
+        },
+
         @computed('likeCount')
         topicActions(likeCount) {
           let actions = [];
