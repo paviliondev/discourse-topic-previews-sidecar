@@ -2,11 +2,11 @@
   {{#if socialStyle}}
     {{raw "list/topic-list-title" topic=topic  tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle mobileView=site.mobileView}}
     {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
     {{/if}}
   {{else}}
     {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
     {{else}}
       <div class='pull-left'>
         <a href="{{topic.lastPostUrl}}">{{avatar topic.lastPoster imageSize="large"}}</a>

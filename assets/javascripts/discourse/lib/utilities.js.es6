@@ -31,18 +31,23 @@ var renderUnboundPreview = function(thumbnails, params) {
     return `<img class="thumbnail" src="${url}"/>`;
   };
 
+  const opts = params.opts || {};
   const settings = Discourse.SiteSettings;
-  const attrPrefix = params.isSocial ? 'max-' : '';
-  const attrWidthSuffix = params.tilesStyle ? '%' : 'px';
-  const attrHeightSuffix = params.tilesStyle ? '' : 'px';
+  const attrPrefix = opts.socialStyle ? 'max-' : '';
+  const attrWidthSuffix = opts.tilesStyle ? '%' : 'px';
+  const attrHeightSuffix = opts.tilesStyle ? '' : 'px';
+
   const category_width = params.category ? params.category.topic_list_thumbnail_width : false;
   const category_height = params.category ? params.category.topic_list_thumbnail_height : false;
-  const featured_width = params.featured ? settings.topic_list_featured_width : false;
-  const featured_height = params.featured ? settings.topic_list_featured_height : false;
-  const tiles_width = params.tilesStyle ? '100' : false;
-  const tiles_height = params.tilesStyle ? 'auto' : false;
-  const height = tiles_height || featured_height || category_height || settings.topic_list_thumbnail_height;
-  const width = tiles_width || featured_width || category_width || settings.topic_list_thumbnail_width;
+  const featured_width = opts.featured ? settings.topic_list_featured_width : false;
+  const featured_height = opts.featured ? settings.topic_list_featured_height : false;
+  const tiles_width = opts.tilesStyle ? '100' : false;
+  const tiles_height = opts.tilesStyle ? 'auto' : false;
+  const custom_width = opts.thumbnailWidth ? opts.thumbnailWidth : false;
+  const custom_height = opts.thumbnailHeight ? opts.thumbnailHeight : false;
+
+  const height = custom_height || tiles_height || featured_height || category_height || settings.topic_list_thumbnail_height;
+  const width = custom_width || tiles_width || featured_width || category_width || settings.topic_list_thumbnail_width;
   const style = `${attrPrefix}height:${height}${attrHeightSuffix};${attrPrefix}width:${width}${attrWidthSuffix}`;
 
   return `<img class="thumbnail" src="${url}" style="${style}" />`;
