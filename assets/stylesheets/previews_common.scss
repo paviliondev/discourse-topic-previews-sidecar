@@ -162,6 +162,11 @@ html:not(.mobile-view) #list-area.tiles-style {
   padding: 0;
 }
 
+.actions-and-meta-data {
+  float: left;
+  clear: both;
+}
+
 html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style {
   .show-more {
     top: 0;
