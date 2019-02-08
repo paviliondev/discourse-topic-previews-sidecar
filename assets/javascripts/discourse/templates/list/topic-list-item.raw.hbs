@@ -7,14 +7,16 @@
 <td class='main-link clearfix' colspan="{{titleColSpan}}">
   {{#if tilesOrSocial}}
     {{#if tilesStyle}}
-    <div class="topic-header-grid">
+      <div class="topic-header-grid">
     {{/if}}
+
     {{raw "list/topic-list-title" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
+
     {{#if tilesStyle}}
-      <div class="topic-category">
-        {{category-link topic.category}}
+        <div class="topic-category">
+          {{category-link topic.category}}
+        </div>
       </div>
-    </div>
     {{/if}}
   {{/if}}
 
@@ -44,32 +46,33 @@
     {{/if}}
 
     {{#unless tilesOrSocial}}
-    </div>
-    <div class="actions-and-meta-data">
-      {{#if showActions}}
-        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
-      {{/if}}
+      <div class="actions-and-meta-data">
+        {{#if showActions}}
+          {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
+        {{/if}}
       {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
-    </div>
+      </div>
     {{/unless}}
-  </div>
 
-  {{#if tilesOrSocial}}
-    {{#unless tilesStyle}}
-    <div class="main-link-footer">
-      {{raw-plugin-outlet name="topic-list-main-link-footer"}}
-    {{/unless}}
+    {{#if tilesOrSocial}}
+      {{#unless tilesStyle}}
+        <div class="main-link-footer">
+          {{raw-plugin-outlet name="topic-list-main-link-footer"}}
+      {{/unless}}
+
       {{raw 'list/topic-meta' tilesStyle=tilesStyle likesHeat=likesHeat title=view.title topic=topic}}
+
       {{#if showActions}}
         {{#if tilesStyle}}
           </div>
         {{/if}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
-    {{#unless tilesStyle}}
-    </div>
-    {{/unless}}
-  {{/if}}
+
+      {{#unless tilesStyle}}
+        </div>
+      {{/unless}}
+    {{/if}}
 </td>
 
 {{#unless tilesOrSocial}}
