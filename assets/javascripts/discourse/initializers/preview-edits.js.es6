@@ -272,7 +272,7 @@ export default {
             if (this.get('tilesStyle')) {
               var myid = this.$().attr('id');
               $(`#${myid} > .topic-title`).wrap("<div class='topic-header-grid'></div>");
-              $(`#${myid} > .topic-users`).appendTo(`#${myid} .topic-header-grid`);
+              $(`#${myid} .topic-users`).appendTo(`#${myid} .topic-header-grid`);
               $(`#${myid} .topic-category`).appendTo(`#${myid} .topic-header-grid`);
               $(`#${myid} .topic-category`).removeClass('inline').removeClass('sub');
               $(`#${myid} .topic-actions`).unwrap(`#${myid} .main-link-footer`);

@@ -24,11 +24,6 @@
   </span>
 
   {{#if tilesOrSocial}}
-    {{#if tilesStyle}}
-      </div>
-    {{/if}}
-    {{raw "list/topic-users" tilesStyle=tilesStyle topic=topic posterNames=posterNames}}
+    {{raw "list/topic-users" topic=topic posterNames=posterNames}}
   {{/if}}
-{{#unless tilesStyle}}
-  </div>
-{{/unless}}
+</div>
