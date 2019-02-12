@@ -1,28 +1,16 @@
-{{#unless tilesStyle}}
 <div class="topic-meta">
   <div class='topic-category inline sub'>
     {{raw-plugin-outlet name="topic-list-social-meta-category"}}
     {{category-link topic.category}}
-    <span class="middot crazy inline sub"></span>
   </div>
-{{/unless}}
   {{#if topic.tags}}
-    {{#if tilesStyle}}
-    <div class="topic-tags">
-    {{else}}
-    <div class='inline sub'>
-    {{/if}}
-      {{discourse-tags topic mode="list"}}
-    {{#if tilesStyle}}
-    </div>
-    {{else}}
     <span class="middot inline sub"></span>
-    {{/if}}
-  {{/if}}
-  {{#if tilesStyle}}
-  <div class="topic-meta">
+    <div class='inline sub'>
+      {{discourse-tags topic mode="list"}}
+    </div>
   {{/if}}
   {{raw-plugin-outlet name="topic-list-social-meta"}}
+  <span class="middot inline sub"></span>
   <div class="topic-views {{topic.viewsHeat}} inline sub">
     {{number topic.views numberKey="views_long"}}
     <span>{{i18n 'views_lowercase' count=topic.views}}</span>
