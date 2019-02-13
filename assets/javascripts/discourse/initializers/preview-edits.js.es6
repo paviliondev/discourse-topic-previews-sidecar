@@ -256,6 +256,7 @@ export default {
           this._afterRender();
         },
 
+        @on('didRender')
         @observes('thumbnails')
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
