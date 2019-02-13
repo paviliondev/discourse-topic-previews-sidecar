@@ -18,12 +18,14 @@
       {{/if}}
     {{/if}}
 
-    {{#unless tilesOrSocial}}
+    {{#unless tilesStyle}}
       {{raw-plugin-outlet name="topic-list-after-title"}}
     {{/unless}}
   </span>
 
-  {{#if tilesOrSocial}}
-    {{raw "list/topic-users" topic=topic posterNames=posterNames}}
+  {{#if tilesStyle}}
+    </div>
+    {{raw "list/topic-users" tilesStyle=tilesStyle topic=topic posterNames=posterNames}}
+  {{else}}
+    </div>
   {{/if}}
-</div>
