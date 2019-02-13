@@ -17,15 +17,9 @@
         {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
       {{/if}}
     {{/if}}
-
-    {{#unless tilesStyle}}
-      {{raw-plugin-outlet name="topic-list-after-title"}}
-    {{/unless}}
+    {{raw-plugin-outlet name="topic-list-after-title"}}
   </span>
-
-  {{#if tilesStyle}}
-    </div>
-    {{raw "list/topic-users" tilesStyle=tilesStyle topic=topic posterNames=posterNames}}
-  {{else}}
-    </div>
-  {{/if}}
+</div>
+{{#if tilesStyle}}
+  {{raw "list/topic-users" tilesStyle=tilesStyle topic=topic posterNames=posterNames}}
+{{/if}}

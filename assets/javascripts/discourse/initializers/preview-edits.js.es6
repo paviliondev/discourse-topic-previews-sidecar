@@ -30,11 +30,11 @@ export default {
           };
         },
 
-        @on('didRender')
-        completeRender(){
-          if (this.get('tilesStyle')){
-            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-          };
+	      @on('didRender')
+	      completeRender(){
+         if (this.get('tilesStyle')){
+             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+         };
         },
 
         @on('didInsertElement')
@@ -47,11 +47,13 @@ export default {
         @observes('tilesStyle')
         setupListStyle() {
           if (!this.$()) {return;}
-          this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
-          this.$("tbody").toggleClass('grid', this.get('tilesStyle'));
-          if ( !this.$( ".grid-sizer" ).length && this.get('tilesStyle')){
-            this.$(".grid").prepend("<div class='grid-sizer'></div>");
-          };
+          if (this.get('tilesStyle')){
+            this.$().parents('#list-area').toggleClass('tiles-style', true);
+            this.$("tbody").toggleClass('grid', true);
+            if ( !this.$( ".grid-sizer" ).length) {
+              this.$(".grid").prepend("<div class='grid-sizer'></div><div class='gutter-sizer'></div>");
+            };
+          }
         },
 
         @on('willDestroyElement')
@@ -120,10 +122,10 @@ export default {
         },
 
         @computed('listChanged')
-        showCategoryBadge() {
-          return !this.settingEnabled('topic_list_category_column') &&
-          (!this.get('category') || this.get('category.has_children'));
-        },
+	        showCategoryBadge() {
+	          return !this.settingEnabled('topic_list_category_column') &&
+	          (!this.get('category') || this.get('category.has_children'));
+	        },
 
         @observes('showCategoryBadge', 'hideCategory')
         toggleHideCategory() {
@@ -146,11 +148,11 @@ export default {
         @observes('topics.[]')
         masonryObserver() {
           if (this.get('tilesStyle')){
-            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+        //    Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           }
       	},
 
-        applyMasonry(){
+        applyMasonry() {
           // initialize
           let msnry = this.$('.grid').data('masonry');
 
@@ -167,12 +169,12 @@ export default {
             // transition set to zero on mobile due to undesirable behaviour on mobile safari if > 0
             const transDuration = this.get('site.mobileView') ? 0 : Discourse.SiteSettings.topic_list_tiles_transition_time;
             this.$('.grid').masonry({
-	              itemSelector: '.grid-item',
-	              transitionDuration: `${transDuration}s`,
-	              percentPosition: true,
-	              Width: '.grid-sizer',
-	              gutter: '.gutter-sizer'
-	            });
+              itemSelector: '.grid-item',
+              transitionDuration: `${transDuration}s`,
+              percentPosition: true,
+              Width: '.grid-sizer',
+              gutter: '.gutter-sizer'
+            });
 
             msnry = this.$('.grid').data('masonry');
 
@@ -239,7 +241,6 @@ export default {
           this._afterRender();
         },
 
-        @on('didRender')
         @observes('thumbnails')
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
@@ -254,10 +255,7 @@ export default {
         },
 
         _setupTitleCSS() {
-          let $el = this.$('.topic-title a.visited');
-          if ($el) {
-	           $el.closest('.topic-details').addClass('visited');
-          }
+          this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
         },
 
         _setupExcerptClick() {
@@ -401,7 +399,6 @@ export default {
         showCategoryColumn(hide, isPinnedUncategorized) {
           return !hide && !isPinnedUncategorized;
         },
-
 
         changeLikeCount(change) {
           let count = this.get('likeCount'),
