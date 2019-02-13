@@ -144,14 +144,6 @@ export default {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         },
 
-        // don't forget to update masonry layout when required
-        @observes('topics.[]')
-        masonryObserver() {
-          if (this.get('tilesStyle')){
-        //    Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-          }
-      	},
-
         applyMasonry() {
           // initialize
           let msnry = this.$('.grid').data('masonry');
