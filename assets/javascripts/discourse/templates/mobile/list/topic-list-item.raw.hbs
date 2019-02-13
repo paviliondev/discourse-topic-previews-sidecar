@@ -1,6 +1,15 @@
 <td>
-  {{#if socialStyle}}
+  {{#if tilesOrSocial}}
+  {{#if tilesStyle}}
+  <div class="topic-header-grid">
+  {{/if}}
     {{raw "list/topic-list-title" topic=topic  tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle mobileView=site.mobileView}}
+    {{#if tilesStyle}}
+    <div class="topic-category">
+      {{category-link topic.category}}
+    </div>
+  </div>
+    {{/if}}
     {{#if showThumbnail}}
       {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
     {{/if}}
@@ -15,7 +24,7 @@
   {{/if}}
 
   <div class='topic-details'>
-    {{#unless socialStyle}}
+    {{#unless tilesOrSocial}}
       <div class='main-link'>
         {{raw "list/topic-list-title"
           topic=topic
@@ -33,12 +42,13 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#unless socialStyle}}
+    {{#unless tilesOrSocial}}
       {{#if showCategoryBadge}}
         <div class='topic-category'>
           {{category-link topic.category}}
         </div>
       {{/if}}
+
       {{#if topic.tags}}
         <div class='discourse-tags'>
         {{#each topic.visibleListTags as |tag|}}
@@ -57,13 +67,20 @@
     {{/unless}}
   </div>
 
-  {{#if socialStyle}}
-    <div class='main-link-footer'>
-      {{raw "list/topic-meta" title=view.title likesHeat=view.likesHeat topic=topic}}
+  {{#if tilesOrSocial}}
+    {{#unless tilesStyle}}
+    <div class="main-link-footer">
+      {{raw-plugin-outlet name="topic-list-main-link-footer"}}
+    {{/unless}}
+      {{raw 'list/topic-meta' tilesStyle=tilesStyle likesHeat=likesHeat title=view.title topic=topic}}
       {{#if showActions}}
+        {{#if tilesStyle}}
+          </div>
+        {{/if}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
-      {{raw-plugin-outlet name="topic-list-after-title"}}
+    {{#unless tilesStyle}}
     </div>
+    {{/unless}}
   {{/if}}
 </td>

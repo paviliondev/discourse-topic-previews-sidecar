@@ -30,6 +30,10 @@ export default {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
           };
+        },
+
+        @on('didRender')
+        completeRender(){
           if (this.get('tilesStyle')){
             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           };
@@ -46,11 +50,13 @@ export default {
         setupListStyle() {
           if (!this.$()) {return;}
           this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
-          this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
-          this.$("tbody").toggleClass('grid', this.get('tilesStyle'));
-          if ( !this.$( ".grid-sizer" ).length && this.get('tilesStyle')){
-            this.$(".grid").prepend("<div class='grid-sizer'></div>");
-          };
+          if (this.get('tilesStyle')){
+            this.$().parents('#list-area').toggleClass('tiles-style', true);
+            this.$("tbody").toggleClass('grid', true);
+            if ( !this.$( ".grid-sizer" ).length) {
+              this.$(".grid").prepend("<div class='grid-sizer'></div><div class='gutter-sizer'></div>");
+            };
+          }
         },
 
         @on('willDestroyElement')
@@ -174,12 +180,14 @@ export default {
             msnry.options.transitionDuration = transitionDuration;
           } else {
             // init masonry
+            // transition set to zero on mobile due to undesirable behaviour on mobile safari if > 0
+            const transDuration = this.get('site.mobileView') ? 0 : Discourse.SiteSettings.topic_list_tiles_transition_time;
             this.$('.grid').masonry({
               itemSelector: '.grid-item',
-              transitionDuration: '0.7s',
+              transitionDuration: `${transDuration}s`,
               percentPosition: true,
               Width: '.grid-sizer',
-              gutter: 6
+              gutter: '.gutter-sizer'
             });
 
             msnry = this.$('.grid').data('masonry');
@@ -245,10 +253,10 @@ export default {
           if (topic.get('thumbnails') && this.get('thumbnailFirstXRows') && (this.$().index() > this.get('thumbnailFirstXRows'))) {
             this.set('showThumbnail', false);
           }
-
           this._afterRender();
         },
 
+        @on('didRender')
         @observes('thumbnails')
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
@@ -261,6 +269,19 @@ export default {
             }
             if (this.get('showActions')) {
               this._setupActions();
+            }
+            if (this.get('tilesStyle')) {
+              var myid = this.$().attr('id');
+              $(`#${myid} > .topic-title`).wrap("<div class='topic-header-grid'></div>");
+              $(`#${myid} .topic-users`).appendTo(`#${myid} .topic-header-grid`);
+              $(`#${myid} .topic-category`).appendTo(`#${myid} .topic-header-grid`);
+              $(`#${myid} .topic-category`).removeClass('inline').removeClass('sub');
+              $(`#${myid} .topic-actions`).unwrap(`#${myid} .main-link-footer`);
+              $(`#${myid} .discourse-tags`).insertAfter(`#${myid} .topic-details`);
+              $(`#${myid} .discourse-tags`).wrap("<div class='topic-tags'></div>");
+              $(`#${myid} .topic-meta`).insertAfter(`#${myid} .topic-tags`);
+              $(`#${myid} .topic-views`).prevAll().remove();
+              $(`#${myid} .topic-actions`).appendTo(`#${myid}`);
             }
           });
         },

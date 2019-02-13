@@ -27,15 +27,17 @@ var renderUnboundPreview = function(thumbnails, params) {
 
   if (!url) return '';
 
-  if (Discourse.Site.currentProp('mobileView')) {
+  const opts = params.opts || {};
+
+  if (!opts.tilesStyle && Discourse.Site.currentProp('mobileView')) {
     return `<img class="thumbnail" src="${url}"/>`;
   };
 
-  const opts = params.opts || {};
   const settings = Discourse.SiteSettings;
   const attrPrefix = opts.socialStyle ? 'max-' : '';
   const attrWidthSuffix = opts.tilesStyle ? '%' : 'px';
   const attrHeightSuffix = opts.tilesStyle ? '' : 'px';
+  const css_classes = opts.tilesStyle? 'thumbnail tiles-thumbnail' : 'thumbnail';
 
   const category_width = params.category ? params.category.topic_list_thumbnail_width : false;
   const category_height = params.category ? params.category.topic_list_thumbnail_height : false;
@@ -50,7 +52,7 @@ var renderUnboundPreview = function(thumbnails, params) {
   const width = custom_width || tiles_width || featured_width || category_width || settings.topic_list_thumbnail_width;
   const style = `${attrPrefix}height:${height}${attrHeightSuffix};${attrPrefix}width:${width}${attrWidthSuffix}`;
 
-  return `<img class="thumbnail" src="${url}" style="${style}" />`;
+  return `<img class="${css_classes}" src="${url}" style="${style}" />`;
 };
 
 var testImageUrl = function(thumbnails, callback) {

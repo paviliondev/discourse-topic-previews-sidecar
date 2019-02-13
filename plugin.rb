@@ -58,6 +58,7 @@ after_initialize do
   add_to_serializer(:basic_category, :topic_list_excerpt) { object.custom_fields["topic_list_excerpt"] }
   add_to_serializer(:basic_category, :topic_list_thumbnail) { object.custom_fields["topic_list_thumbnail"] }
   add_to_serializer(:basic_category, :topic_list_action) { object.custom_fields["topic_list_action"] }
+  add_to_serializer(:basic_category, :topic_list_tiles_transition_time) { object.custom_fields["topic_list_tiles_transition_time"] }
   add_to_serializer(:basic_category, :topic_list_category_column) { object.custom_fields["topic_list_category_column"] }
   add_to_serializer(:basic_category, :topic_list_default_thumbnail) { object.custom_fields["topic_list_default_thumbnail"] }
   add_to_serializer(:basic_category, :topic_list_thumbnail_width) { object.custom_fields['topic_list_thumbnail_width'] }

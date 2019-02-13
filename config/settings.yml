@@ -28,6 +28,11 @@ plugins:
      - unread
      - top
      - tags
+     - latest-mobile
+     - new-mobile
+     - unread-mobile
+     - top-mobile
+     - tags-mobile
   topic_list_thumbnail:
     client: true
     type: list
@@ -85,6 +90,9 @@ plugins:
      - tags-mobile
      - suggested-mobile
      - agenda-mobile
+  topic_list_tiles_transition_time:
+    default: 0.5
+    client: true
   topic_list_category_column:
     client: true
     type: list
