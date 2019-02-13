@@ -13,7 +13,7 @@
     // 1 column on very thin views
     width: 100%;
     // 2 columns on medium widths
-    @media screen and (min-width: 401px) and (max-width: 800px) {
+    @media screen and (min-width: 501px) and (max-width: 800px) {
       width: calc((100% - 6px)/2);
     }
     // 3 columns when there is room
@@ -161,7 +161,7 @@
 
   .list-tags {
     padding-right: 10px;
-  } 
+  }
 
   a.topic-featured-link {
     display: inline-block;
