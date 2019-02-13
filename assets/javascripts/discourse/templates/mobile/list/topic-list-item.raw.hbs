@@ -1,12 +1,21 @@
 <td>
-  {{#if socialStyle}}
-    {{raw "list/topic-list-title" topic=topic socialStyle=socialStyle mobileView=site.mobileView}}
+  {{#if tilesOrSocial}}
+  {{#if tilesStyle}}
+  <div class="topic-header-grid">
+  {{/if}}
+    {{raw "list/topic-list-title" topic=topic  tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle mobileView=site.mobileView}}
+    {{#if tilesStyle}}
+    <div class="topic-category">
+      {{category-link topic.category}}
+    </div>
+  </div>
+    {{/if}}
     {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
     {{/if}}
   {{else}}
     {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
     {{else}}
       <div class='pull-left'>
         <a href="{{topic.lastPostUrl}}">{{avatar topic.lastPoster imageSize="large"}}</a>
@@ -15,9 +24,14 @@
   {{/if}}
 
   <div class='topic-details'>
-    {{#unless socialStyle}}
+    {{#unless tilesOrSocial}}
       <div class='main-link'>
-        {{raw "list/topic-list-title" topic=topic showTopicPostBadges=showTopicPostBadges mobileView=site.mobileView}}
+        {{raw "list/topic-list-title"
+          topic=topic
+          showTopicPostBadges=showTopicPostBadges
+          homepage=parentView.homepage
+          suggested=parentView.suggestedList
+          mobileView=site.mobileView}}
       </div>
       <div class='pull-right'>
         {{raw "list/post-count-or-badges" topic=topic postBadgesEnabled=showTopicPostBadges}}
@@ -28,8 +42,13 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#unless socialStyle}}
-      {{raw "list/topic-category" category=topic.category}}
+    {{#unless tilesOrSocial}}
+      {{#if showCategoryBadge}}
+        <div class='topic-category'>
+          {{category-link topic.category}}
+        </div>
+      {{/if}}
+
       {{#if topic.tags}}
         <div class='discourse-tags'>
         {{#each topic.visibleListTags as |tag|}}
@@ -48,13 +67,20 @@
     {{/unless}}
   </div>
 
-  {{#if socialStyle}}
-    <div class='main-link-footer'>
-      {{raw "list/topic-meta" title=view.title likesHeat=view.likesHeat topic=topic}}
+  {{#if tilesOrSocial}}
+    {{#unless tilesStyle}}
+    <div class="main-link-footer">
+      {{raw-plugin-outlet name="topic-list-main-link-footer"}}
+    {{/unless}}
+      {{raw 'list/topic-meta' tilesStyle=tilesStyle likesHeat=likesHeat title=view.title topic=topic}}
       {{#if showActions}}
+        {{#if tilesStyle}}
+          </div>
+        {{/if}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
-      {{raw-plugin-outlet name="topic-list-after-title"}}
+    {{#unless tilesStyle}}
     </div>
+    {{/unless}}
   {{/if}}
 </td>

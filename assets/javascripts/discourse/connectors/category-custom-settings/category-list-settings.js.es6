@@ -1,5 +1,5 @@
 const listChoices = ['latest', 'new', 'unread', 'top', 'suggested', 'agenda', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'suggested-mobile', 'agenda-mobile'];
-const listSettings = ['tiles', 'social', 'thumbnail', 'excerpt', 'action'];
+const listSettings = ['tiles', 'social', 'thumbnail', 'excerpt', 'action', 'category_column'];
 const filterChoices = ['suggested', 'agenda', 'latest-mobile', 'new-mobile', 'unread-mobile','top-mobile', 'suggested-mobile', 'agenda-mobile'];
 
 export default {
@@ -11,8 +11,8 @@ export default {
     };
 
     listSettings.forEach((s) => {
-      if (typeof args.category.custom_fields[`topic_list_${s}`] !== 'string') {
-        args.category.custom_fields[`topic_list_${s}`] = '';
+      if (typeof category.custom_fields[`topic_list_${s}`] !== 'string') {
+        category.custom_fields[`topic_list_${s}`] = '';
       }
     });
     component.set('choices', listChoices);

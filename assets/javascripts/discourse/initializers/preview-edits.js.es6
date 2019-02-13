@@ -21,6 +21,8 @@ export default {
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
 
+        // Lifecyle logic
+
         @on('init')
         setup() {
           const suggestedList = this.get('suggestedList');
@@ -28,6 +30,10 @@ export default {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
           };
+        },
+
+        @on('didRender')
+        completeRender(){
           if (this.get('tilesStyle')){
             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           };
@@ -36,7 +42,6 @@ export default {
         @on('didInsertElement')
         @observes('currentRoute')
         setupListChanged() {
-          const mobile = this.get('site.mobileView');
           this.toggleProperty('listChanged');
         },
 
@@ -45,11 +50,13 @@ export default {
         setupListStyle() {
           if (!this.$()) {return;}
           this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
-          this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
-          this.$("tbody").toggleClass('grid', this.get('tilesStyle'));
-          if ( !this.$( ".grid-sizer" ).length && this.get('tilesStyle')){
-            this.$(".grid").prepend("<div class='grid-sizer'></div>");
-          };
+          if (this.get('tilesStyle')){
+            this.$().parents('#list-area').toggleClass('tiles-style', true);
+            this.$("tbody").toggleClass('grid', true);
+            if ( !this.$( ".grid-sizer" ).length) {
+              this.$(".grid").prepend("<div class='grid-sizer'></div><div class='gutter-sizer'></div>");
+            };
+          }
         },
 
         @on('willDestroyElement')
@@ -129,6 +136,19 @@ export default {
         },
 
         @computed('listChanged')
+        showCategoryBadge() {
+          return !this.settingEnabled('topic_list_category_column') &&
+          (!this.get('category') || this.get('category.has_children'));
+        },
+
+        @observes('showCategoryBadge', 'hideCategory')
+        toggleHideCategory() {
+          if (this.get('showCategoryBadge') && !this.get('hideCategory')) {
+            this.set('hideCategory', true);
+          }
+        },
+
+        @computed('listChanged')
         skipHeader() {
           return this.get('tilesStyle') || this.get('socialStyle') || this.get('site.mobileView');
         },
@@ -146,7 +166,7 @@ export default {
           }
       	},
 
-        applyMasonry(){
+        applyMasonry() {
           // initialize
           let msnry = this.$('.grid').data('masonry');
 
@@ -160,12 +180,14 @@ export default {
             msnry.options.transitionDuration = transitionDuration;
           } else {
             // init masonry
+            // transition set to zero on mobile due to undesirable behaviour on mobile safari if > 0
+            const transDuration = this.get('site.mobileView') ? 0 : Discourse.SiteSettings.topic_list_tiles_transition_time;
             this.$('.grid').masonry({
               itemSelector: '.grid-item',
-              transitionDuration: '0.7s',
+              transitionDuration: `${transDuration}s`,
               percentPosition: true,
               Width: '.grid-sizer',
-              gutter: 6
+              gutter: '.gutter-sizer'
             });
 
             msnry = this.$('.grid').data('masonry');
@@ -231,10 +253,10 @@ export default {
           if (topic.get('thumbnails') && this.get('thumbnailFirstXRows') && (this.$().index() > this.get('thumbnailFirstXRows'))) {
             this.set('showThumbnail', false);
           }
-
           this._afterRender();
         },
 
+        @on('didRender')
         @observes('thumbnails')
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
@@ -248,11 +270,27 @@ export default {
             if (this.get('showActions')) {
               this._setupActions();
             }
+            if (this.get('tilesStyle')) {
+              var myid = this.$().attr('id');
+              $(`#${myid} > .topic-title`).wrap("<div class='topic-header-grid'></div>");
+              $(`#${myid} .topic-users`).appendTo(`#${myid} .topic-header-grid`);
+              $(`#${myid} .topic-category`).appendTo(`#${myid} .topic-header-grid`);
+              $(`#${myid} .topic-category`).removeClass('inline').removeClass('sub');
+              $(`#${myid} .topic-actions`).unwrap(`#${myid} .main-link-footer`);
+              $(`#${myid} .discourse-tags`).insertAfter(`#${myid} .topic-details`);
+              $(`#${myid} .discourse-tags`).wrap("<div class='topic-tags'></div>");
+              $(`#${myid} .topic-meta`).insertAfter(`#${myid} .topic-tags`);
+              $(`#${myid} .topic-views`).prevAll().remove();
+              $(`#${myid} .topic-actions`).appendTo(`#${myid}`);
+            }
           });
         },
 
         _setupTitleCSS() {
-          this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
+          let $el = this.$('.topic-title a.visited');
+          if ($el) {
+            $el.closest('.topic-details').addClass('visited');
+          }
         },
 
         _setupExcerptClick() {
@@ -340,6 +378,24 @@ export default {
           return getDefaultThumbnail(category);
         },
 
+        @computed('tilesStyle', 'socialStyle', 'thumbnailWidth', 'thumbnailHeight')
+        thumbnailOpts(tilesStyle, socialStyle, thumbnailWidth, thumbnailHeight) {
+          let opts = {
+            tilesStyle,
+            socialStyle,
+          }
+
+          if (thumbnailWidth) {
+            opts['thumbnailWidth'] = thumbnailWidth;
+          }
+
+          if (thumbnailHeight) {
+            opts['thumbnailHeight'] = thumbnailHeight;
+          }
+
+          return opts;
+        },
+
         @computed('likeCount')
         topicActions(likeCount) {
           let actions = [];
@@ -368,6 +424,16 @@ export default {
         hasLikedDisplay() {
           let hasLiked = this.get('hasLiked');
           return hasLiked == null ? this.get('topic.topic_post_liked') : hasLiked;
+        },
+
+        @computed('parentView.showCategoryBadge', 'topic.isPinnedUncategorized')
+        showCategoryBadge(show, isPinnedUncategorized) {
+          return show && !isPinnedUncategorized;
+        },
+
+        @computed('hideCategory', 'topic.isPinnedUncategorized')
+        showCategoryColumn(hide, isPinnedUncategorized) {
+          return !hide && !isPinnedUncategorized;
         },
 
         changeLikeCount(change) {
