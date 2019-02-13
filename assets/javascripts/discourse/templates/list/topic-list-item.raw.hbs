@@ -39,20 +39,19 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-
     {{#unless tilesStyle}}
       <div class="actions-and-meta-data">
         {{#if showActions}}
           {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
         {{/if}}
-      {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
+        {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
       </div>
     {{/unless}}
 
     {{#if tilesStyle}}
+      </div>
       {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
       {{#if showActions}}
-          </div>
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
     {{/if}}
