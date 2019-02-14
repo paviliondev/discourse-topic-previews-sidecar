@@ -4,25 +4,33 @@
     {{raw "topic-status" topic=topic}}
     {{topic-link topic}}
     {{#if tilesStyle}}
-      {{#if showTopicPostBadges}}
-        {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
+      {{#if mobileView}}
+        {{#if topic.unseen}}
+          <span class="badge-notification new-topic"></span>
+        {{/if}}
+      {{else}}
+        {{#if showTopicPostBadges}}
+          {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
+        {{/if}}
       {{/if}}
     {{/if}}
+
     {{#if topic.featured_link}}
       {{topic-featured-link topic}}
     {{/if}}
 
-    {{#if mobileView}}
-      {{#if topic.unseen}}
-        <span class="badge-notification new-topic"></span>
-      {{/if}}
-    {{else}}
-      {{#unless tilesStyle}}
+    {{#unless tilesStyle}}
+      {{#if mobileView}}
+        {{#if topic.unseen}}
+          <span class="badge-notification new-topic"></span>
+        {{/if}}
+      {{else}}
         {{#if showTopicPostBadges}}
           {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
         {{/if}}
-      {{/unless}}
-    {{/if}}
+      {{/if}}
+    {{/unless}}
+
     {{raw-plugin-outlet name="topic-list-after-title"}}
   </span>
 </div>
