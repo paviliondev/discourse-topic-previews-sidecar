@@ -17,7 +17,7 @@
         <span class="badge-notification new-topic"></span>
       {{/if}}
     {{else}}
-      {{unless tilesStyle}}
+      {{#unless tilesStyle}}
         {{#if showTopicPostBadges}}
           {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
         {{/if}}
