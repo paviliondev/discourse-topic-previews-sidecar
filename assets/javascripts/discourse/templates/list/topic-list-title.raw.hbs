@@ -3,7 +3,11 @@
     {{raw-plugin-outlet name="topic-list-before-status"}}
     {{raw "topic-status" topic=topic}}
     {{topic-link topic}}
-
+    {{#if tilesStyle}}
+      {{#if showTopicPostBadges}}
+        {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
+      {{/if}}
+    {{/if}}
     {{#if topic.featured_link}}
       {{topic-featured-link topic}}
     {{/if}}
@@ -13,8 +17,10 @@
         <span class="badge-notification new-topic"></span>
       {{/if}}
     {{else}}
-      {{#if showTopicPostBadges}}
-        {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
+      {{unless tilesStyle}}
+        {{#if showTopicPostBadges}}
+          {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
+        {{/if}}
       {{/if}}
     {{/if}}
     {{raw-plugin-outlet name="topic-list-after-title"}}
