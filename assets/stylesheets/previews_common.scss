@@ -150,8 +150,12 @@
     padding-top: 10px;
   }
 
+  .list-tags {
+    padding-right: 10px;
+  }
+
   a.topic-featured-link {
-    display: block;
+    display: inline-block;
     padding-left: 0;
     padding-top: 3px;
   }
@@ -180,6 +184,11 @@
 
 .topic-list .main-link a.title {
   padding: 0;
+}
+
+.actions-and-meta-data {
+  float: left;
+  margin-top: 5px;
 }
 
 html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style {

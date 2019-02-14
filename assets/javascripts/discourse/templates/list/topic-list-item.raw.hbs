@@ -5,25 +5,21 @@
 {{/if}}
 
 <td class='main-link clearfix' colspan="{{titleColSpan}}">
-  {{#if tilesOrSocial}}
-    {{#if tilesStyle}}
+  {{#if tilesStyle}}
     <div class="topic-header-grid">
-    {{/if}}
-    {{raw "list/topic-list-title" topic=topic tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle showTopicPostBadges=showTopicPostBadges}}
-    {{#if tilesStyle}}
+      {{raw "list/topic-list-title" topic=topic tilesStyle=tilesStyle showTopicPostBadges=showTopicPostBadges}}
       <div class="topic-category">
         {{category-link topic.category}}
       </div>
     </div>
-    {{/if}}
   {{/if}}
 
   {{#if showThumbnail}}
-    {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category tilesStyle=tilesStyle}}
+    {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
   {{/if}}
 
   <div class="topic-details">
-    {{#unless tilesOrSocial}}
+    {{#unless tilesStyle}}
       {{raw "list/topic-list-title"
         topic=topic
         showTopicPostBadges=showTopicPostBadges
@@ -43,36 +39,25 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#unless tilesOrSocial}}
-    </div>
-    <div class="actions-and-meta-data">
-      {{#if showActions}}
-        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
-      {{/if}}
-      {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
-    </div>
-    {{/unless}}
-  </div>
-
-  {{#if tilesOrSocial}}
     {{#unless tilesStyle}}
-    <div class="main-link-footer">
-      {{raw-plugin-outlet name="topic-list-main-link-footer"}}
-    {{/unless}}
-      {{raw 'list/topic-meta' tilesStyle=tilesStyle likesHeat=likesHeat title=view.title topic=topic}}
-      {{#if showActions}}
-        {{#if tilesStyle}}
-          </div>
+      <div class="actions-and-meta-data">
+        {{#if showActions}}
+          {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
         {{/if}}
+        {{raw "list/action-list" topic=topic postNumbers=topic.liked_post_numbers className="likes" icon="heart"}}
+      </div>
+    {{/unless}}
+
+    {{#if tilesStyle}}
+      </div>
+      {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
+      {{#if showActions}}
         {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
       {{/if}}
-    {{#unless tilesStyle}}
-    </div>
-    {{/unless}}
-  {{/if}}
+    {{/if}}
 </td>
 
-{{#unless tilesOrSocial}}
+{{#unless tilesStyle}}
   {{#if showCategoryColumn}}
     {{raw "list/category-column" category=topic.category}}
   {{/if}}

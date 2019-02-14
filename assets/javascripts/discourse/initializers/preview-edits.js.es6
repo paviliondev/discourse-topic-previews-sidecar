@@ -16,12 +16,10 @@ export default {
       api.modifyClass('component:topic-list',  {
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
-        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle', 'tilesStyle'],
+        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'tilesStyle'],
         suggestedList: Ember.computed.equal('parentView.parentView.parentView.elementId', 'suggested-topics'),
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
-
-        // Lifecyle logic
 
         @on('init')
         setup() {
@@ -32,11 +30,11 @@ export default {
           };
         },
 
-        @on('didRender')
-        completeRender(){
-          if (this.get('tilesStyle')){
-            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-          };
+	      @on('didRender')
+	      completeRender(){
+         if (this.get('tilesStyle')){
+             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+         };
         },
 
         @on('didInsertElement')
@@ -46,20 +44,20 @@ export default {
         },
 
         @on('didInsertElement')
-        @observes('socialStyle','tilesStyle')
+        @observes('tilesStyle')
         setupListStyle() {
           if (!this.$()) {return;}
-          this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
-          this.$().parents('#list-area').toggleClass('tiles-style', this.get('tilesStyle'));
-          this.$("tbody").toggleClass('grid', this.get('tilesStyle'));
-          if ( !this.$( ".grid-sizer" ).length && this.get('tilesStyle')){
-            this.$(".grid").prepend("<div class='grid-sizer'></div><div class='gutter-sizer'></div>");
-          };
+          if (this.get('tilesStyle')){
+            this.$().parents('#list-area').toggleClass('tiles-style', true);
+            this.$("tbody").toggleClass('grid', true);
+            if ( !this.$( ".grid-sizer" ).length) {
+              this.$(".grid").prepend("<div class='grid-sizer'></div><div class='gutter-sizer'></div>");
+            };
+          }
         },
 
         @on('willDestroyElement')
         _tearDown() {
-          this.$().parents('#list-area').removeClass('social-style');
           this.$().parents('#list-area').removeClass('tiles-style');
           this.$("tbody").removeClass('grid');
         },
@@ -104,18 +102,8 @@ export default {
         },
 
         @computed('listChanged')
-        socialStyle() {
-          return this.settingEnabled('topic_list_social');
-        },
-
-        @computed('listChanged')
         tilesStyle() {
           return this.settingEnabled('topic_list_tiles');
-        },
-
-        @computed('listChanged')
-        tilesOrSocial() {
-          return (this.get('tilesStyle') || this.get('socialStyle'));
         },
 
         @computed('listChanged')
@@ -134,10 +122,10 @@ export default {
         },
 
         @computed('listChanged')
-        showCategoryBadge() {
-          return !this.settingEnabled('topic_list_category_column') &&
-          (!this.get('category') || this.get('category.has_children'));
-        },
+	        showCategoryBadge() {
+	          return !this.settingEnabled('topic_list_category_column') &&
+	          (!this.get('category') || this.get('category.has_children'));
+	        },
 
         @observes('showCategoryBadge', 'hideCategory')
         toggleHideCategory() {
@@ -148,21 +136,13 @@ export default {
 
         @computed('listChanged')
         skipHeader() {
-          return this.get('tilesStyle') || this.get('socialStyle') || this.get('site.mobileView');
+          return this.get('tilesStyle') || this.get('site.mobileView');
         },
 
         @computed('listChanged')
         thumbnailFirstXRows() {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         },
-
-        // don't forget to update masonry layout when required
-        @observes('topics.[]')
-        masonryObserver() {
-          if (this.get('tilesStyle')){
-            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-          }
-      	},
 
         applyMasonry() {
           // initialize
@@ -198,9 +178,7 @@ export default {
       api.modifyClass('component:topic-list-item', {
         canBookmark: Ember.computed.bool('currentUser'),
         rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
-        socialStyle: Ember.computed.alias('parentView.socialStyle'),
         tilesStyle: Ember.computed.alias('parentView.tilesStyle'),
-        tilesOrSocial: Ember.computed.alias('parentView.tilesOrSocial'),
         showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
         showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
         showActions: Ember.computed.alias('parentView.showActions'),
@@ -259,9 +237,6 @@ export default {
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
             this._setupTitleCSS();
-            if (this.get('showThumbnail') && (this.get('socialStyle') )) {
-              this._sizeThumbnails();
-            }
             if (this.get('showExcerpt') && !this.get('tilesStyle')) {
               this._setupExcerptClick();
             }
@@ -272,10 +247,7 @@ export default {
         },
 
         _setupTitleCSS() {
-          let $el = this.$('.topic-title a.visited');
-          if ($el) {
-            $el.closest('.topic-details').addClass('visited');
-          }
+          this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
         },
 
         _setupExcerptClick() {
@@ -361,6 +333,23 @@ export default {
         @computed('topic.category')
         defaultThumbnail(category){
           return getDefaultThumbnail(category);
+        },
+
+        @computed('tilesStyle', 'thumbnailWidth', 'thumbnailHeight')
+        thumbnailOpts(tilesStyle, thumbnailWidth, thumbnailHeight) {
+          let opts = {
+            tilesStyle
+          }
+
+          if (thumbnailWidth) {
+            opts['thumbnailWidth'] = thumbnailWidth;
+          }
+
+          if (thumbnailHeight) {
+            opts['thumbnailHeight'] = thumbnailHeight;
+          }
+
+          return opts;
         },
 
         @computed('likeCount')
