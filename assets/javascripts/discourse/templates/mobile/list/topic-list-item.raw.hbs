@@ -3,7 +3,9 @@
     <div class="topic-header-grid">
       {{raw "list/topic-list-title" topic=topic tilesStyle=tilesStyle mobileView=site.mobileView}}
       <div class="topic-category">
-        {{category-link topic.category}}
+        {{#if showCategoryBadge}}
+          {{category-link topic.category}}
+        {{/if}}
       </div>
     </div>
     {{#if showThumbnail}}
