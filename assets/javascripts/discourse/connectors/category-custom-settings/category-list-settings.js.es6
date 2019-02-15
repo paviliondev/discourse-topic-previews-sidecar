@@ -11,8 +11,8 @@ export default {
     }
 
     listSettings.forEach((s) => {
-      if (typeof args.category.custom_fields[`topic_list_${s}`] !== 'string') {
-        args.category.custom_fields[`topic_list_${s}`] = '';
+      if (typeof category.custom_fields[`topic_list_${s}`] !== 'string') {
+        category.custom_fields[`topic_list_${s}`] = '';
       }
     });
     component.set('choices', listChoices);
