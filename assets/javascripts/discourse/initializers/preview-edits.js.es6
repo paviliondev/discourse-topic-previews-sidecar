@@ -49,9 +49,9 @@ export default {
           if (!this.$()) {return;}
           if (this.get('tilesStyle')){
             this.$().parents('#list-area').toggleClass('tiles-style', true);
-            this.$("tbody").toggleClass('grid', true);
-            if ( !this.$( ".grid-sizer" ).length) {
-              this.$(".grid").prepend("<div class='grid-sizer'></div><div class='gutter-sizer'></div>");
+            this.$("tbody").toggleClass('tiles-grid', true);
+            if ( !this.$( ".tiles-grid-sizer" ).length) {
+              this.$(".tiles-grid").prepend("<div class='tiles-grid-sizer'></div><div class='tiles-gutter-sizer'></div>");
             };
           }
         },
@@ -59,7 +59,7 @@ export default {
         @on('willDestroyElement')
         _tearDown() {
           this.$().parents('#list-area').removeClass('tiles-style');
-          this.$("tbody").removeClass('grid');
+          this.$("tbody").removeClass('tiles-grid');
         },
 
         filter() {
@@ -146,31 +146,31 @@ export default {
 
         applyMasonry() {
           // initialize
-          let msnry = this.$('.grid').data('masonry');
+          let msnry = this.$('.tiles-grid').data('masonry');
 
           if (msnry) {
             msnry.reloadItems();
             //disable transition
             var transitionDuration = msnry.options.transitionDuration;
             msnry.options.transitionDuration = 0;
-            $('.grid').imagesLoaded(function() {msnry.layout()});
+            $('.tiles-grid').imagesLoaded(function() {msnry.layout()});
             //reset transition
             msnry.options.transitionDuration = transitionDuration;
           } else {
             // init masonry
             // transition set to zero on mobile due to undesirable behaviour on mobile safari if > 0
             const transDuration = this.get('site.mobileView') ? 0 : Discourse.SiteSettings.topic_list_tiles_transition_time;
-            this.$('.grid').masonry({
-              itemSelector: '.grid-item',
+            this.$('.tiles-grid').masonry({
+              itemSelector: '.tiles-grid-item',
               transitionDuration: `${transDuration}s`,
               percentPosition: true,
-              Width: '.grid-sizer',
-              gutter: '.gutter-sizer'
+              Width: '.tiles-grid-sizer',
+              gutter: '.tiles-gutter-sizer'
             });
 
-            msnry = this.$('.grid').data('masonry');
+            msnry = this.$('.tiles-grid').data('masonry');
 
-            $('.grid').imagesLoaded(function() {msnry.layout()});
+            $('.tiles-grid').imagesLoaded(function() {msnry.layout()});
           };
         }
       });
@@ -197,7 +197,7 @@ export default {
           if (this.get('tilesStyle')) {
             // needs 'div's for masonry
             this.set('tagName', 'div');
-            this.classNames = ['grid-item'];
+            this.classNames = ['tiles-grid-item'];
           };
 
           if (thumbnails) {
