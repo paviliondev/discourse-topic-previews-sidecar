@@ -74,6 +74,9 @@ plugins:
   topic_list_tiles_transition_time:
     default: 0.5
     client: true
+  topic_list_tiles_larger_featured_tiles:
+    default: true
+    client: true
   topic_list_category_column:
     client: true
     type: list
