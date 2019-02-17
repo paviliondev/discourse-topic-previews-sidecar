@@ -1,0 +1,15 @@
+fr:
+  js:
+    category:
+      topic_list_social: "Appliquez un arrangement d'alimentation sociale aux listes sélectionnées dans cette catégorie."
+      topic_list_thumbnail: "Afficher les vignettes d'aperçu de la rubrique dans les listes sélectionnées de cette catégorie."
+      topic_list_excerpt: "Afficher des extraits de sujets dans les listes sélectionnées dans cette catégorie."
+      topic_list_action: "Afficher les boutons comme les favoris et les favoris dans les listes sélectionnées de cette catégorie."
+      topic_list_category_badge_move: "Afficher le badge de la catégorie sous le titre du sujet dans les listes sélectionnées de cette catégorie."
+      topic_list_default_thumbnail: "URL de l'image pour la vignette affichée si le sujet de cette catégorie n'a pas de vignette d'aperçu."
+      topic_list_default_thumbnail_placeholder: "URL miniature par défaut"
+      topic_list_thumbnail_width: "Largeur des vignettes dans cette catégorie (refaites vos publications si vous changez cela)."
+      topic_list_thumbnail_height: "Hauteur des vignettes dans cette catégorie (refaites vos publications si vous changez cela)."
+      topic_list_thumbnail_width_placeholder: "px"
+      topic_list_thumbnail_height_placeholder: "px"
+      topic_list_featured_images: "Activer les images en vedette dans cette catégorie."
