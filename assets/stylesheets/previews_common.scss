@@ -22,6 +22,20 @@
     }
   }
 
+  .tiles-grid-item-width2 {
+    // for items with featured tags
+    // fill up an entire column for small views
+    width: 100%;
+    // fill up two columns when things are a little larger
+    @media screen and (min-width: 501px) and (max-width: 800px) {
+      width: 100%;
+    }
+    // Take up 2 of the 3 columns when there is even more room
+    @media screen and (min-width: 801px) {
+      width: calc(67% - 6px);
+    }
+  }
+
   .tiles-gutter-sizer {
      width: 6px;
    }
