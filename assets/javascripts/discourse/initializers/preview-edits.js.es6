@@ -164,7 +164,7 @@ export default {
               itemSelector: '.tiles-grid-item',
               transitionDuration: `${transDuration}s`,
               percentPosition: true,
-              Width: '.tiles-grid-sizer',
+              columnWidth: '.tiles-grid-sizer',
               gutter: '.tiles-gutter-sizer'
             });
 
