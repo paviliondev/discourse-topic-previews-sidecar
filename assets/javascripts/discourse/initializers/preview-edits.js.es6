@@ -144,6 +144,14 @@ export default {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         },
 
+        // restoring this call as experimental fudge to fix strange inconsistency between development and produciton behaviour
+        @observes('topics.[]')
+        masonryObserver() {
+          if (this.get('tilesStyle')){
+            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+          }
+        },
+
         applyMasonry() {
           // initialize
           let msnry = this.$('.tiles-grid').data('masonry');
