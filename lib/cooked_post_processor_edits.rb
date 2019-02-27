@@ -27,10 +27,18 @@ CookedPostProcessor.class_eval do
   def update_post_image
     img = extract_post_image
 
+    if img.nil?
+      Rails.logger.fatal "image is blank to begin with"
+    else
+      Rails.logger.fatal "image is " + img
+    end
+
     if @has_oneboxes
+      Rails.logger.fatal "has onebox"
       cooked = PrettyText.cook(@post.raw)
 
       if img
+        Rails.logger.fatal "has img"
         ## We need something more specific to identify the image with
         img_id = img
         src = img.attribute("src").to_s
@@ -46,15 +54,29 @@ CookedPostProcessor.class_eval do
       end
 
       if prior_oneboxes.any?
+        Rails.logger.fatal "prior_onboxes is not empty"
         prior_oneboxes = prior_oneboxes.reject do |html|
           class_str = html.attribute('class').to_s
           class_str.include?('site-icon') || class_str.include?('avatar')
+          #Rails.logger.fatal "these are the class strings " + class_str
+        end
+
+        if prior_oneboxes.any?
+          Rails.logger.fatal "prior_onboxes is still not empty"
+          Rails.logger.fatal "this is the first " + prior_oneboxes.first.to_s
         end
 
         if prior_oneboxes.any? && validate_image_for_previews(prior_oneboxes.first)
+        Rails.logger.fatal "prior_onboxes is not empty and images validated"
           img = prior_oneboxes.first
         end
       end
+    end
+
+    if img.nil?
+      Rails.logger.error "image is blank to after one box code"
+    else
+      Rails.logger.error "after onebox code image is not empty"
     end
 
     if img.blank?
@@ -69,6 +91,7 @@ CookedPostProcessor.class_eval do
       @post.update_column(:image_url, url) # post
 
       if @post.is_first_post?
+        Rails.logger.error "url written to image_url column is " + url
         @post.topic.update_column(:image_url, url) # topic
         return if SiteSetting.topic_list_hotlink_thumbnails ||
                   !SiteSetting.topic_list_previews_enabled
