@@ -1,15 +1,13 @@
 <td>
-  {{#if tilesOrSocial}}
   {{#if tilesStyle}}
-  <div class="topic-header-grid">
-  {{/if}}
-    {{raw "list/topic-list-title" topic=topic  tilesOrSocial=tilesOrSocial tilesStyle=tilesStyle socialStyle=socialStyle mobileView=site.mobileView}}
-    {{#if tilesStyle}}
-    <div class="topic-category">
-      {{category-link topic.category}}
+    <div class="topic-header-grid">
+      {{raw "list/topic-list-title" topic=topic tilesStyle=tilesStyle mobileView=site.mobileView}}
+      <div class="topic-category">
+        {{#if showCategoryBadge}}
+          {{category-link topic.category}}
+        {{/if}}
+      </div>
     </div>
-  </div>
-    {{/if}}
     {{#if showThumbnail}}
       {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails category=category opts=thumbnailOpts}}
     {{/if}}
@@ -24,7 +22,7 @@
   {{/if}}
 
   <div class='topic-details'>
-    {{#unless tilesOrSocial}}
+    {{#unless tilesStyle}}
       <div class='main-link'>
         {{raw "list/topic-list-title"
           topic=topic
@@ -42,7 +40,7 @@
       {{raw "list/topic-excerpt" topic=topic}}
     {{/if}}
 
-    {{#unless tilesOrSocial}}
+    {{#unless tilesStyle}}
       {{#if showCategoryBadge}}
         <div class='topic-category'>
           {{category-link topic.category}}
@@ -67,20 +65,10 @@
     {{/unless}}
   </div>
 
-  {{#if tilesOrSocial}}
-    {{#unless tilesStyle}}
-    <div class="main-link-footer">
-      {{raw-plugin-outlet name="topic-list-main-link-footer"}}
-    {{/unless}}
-      {{raw 'list/topic-meta' tilesStyle=tilesStyle likesHeat=likesHeat title=view.title topic=topic}}
-      {{#if showActions}}
-        {{#if tilesStyle}}
-          </div>
-        {{/if}}
-        {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
-      {{/if}}
-    {{#unless tilesStyle}}
-    </div>
-    {{/unless}}
+  {{#if tilesStyle}}
+    {{raw 'list/topic-meta' likesHeat=likesHeat title=view.title topic=topic}}
+    {{#if showActions}}
+      {{raw "list/topic-actions" likeCount=likeCount topicActions=topicActions}}
+    {{/if}}
   {{/if}}
 </td>

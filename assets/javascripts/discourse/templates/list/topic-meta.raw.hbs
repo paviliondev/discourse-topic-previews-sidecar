@@ -1,16 +1,10 @@
-<div class="topic-meta">
-  <div class='topic-category inline sub'>
-    {{raw-plugin-outlet name="topic-list-social-meta-category"}}
-    {{category-link topic.category}}
+{{#if topic.tags}}
+  <div class="topic-tags">
+    {{discourse-tags topic mode="list"}}
   </div>
-  {{#if topic.tags}}
-    <span class="middot inline sub"></span>
-    <div class='inline sub'>
-      {{discourse-tags topic mode="list"}}
-    </div>
-  {{/if}}
-  {{raw-plugin-outlet name="topic-list-social-meta"}}
-  <span class="middot inline sub"></span>
+{{/if}}
+<div class="topic-meta">
+  {{raw-plugin-outlet name="topic-list-tiles-meta"}}
   <div class="topic-views {{topic.viewsHeat}} inline sub">
     {{number topic.views numberKey="views_long"}}
     <span>{{i18n 'views_lowercase' count=topic.views}}</span>
