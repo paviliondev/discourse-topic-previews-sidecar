@@ -226,7 +226,7 @@ export default {
 
             if (Discourse.SiteSettings.topic_list_tiles_larger_featured_tiles && topic.tags) {
                 if (topic.tags.filter(tag => this.get('featuredTags').indexOf(tag) > -1)[0]) {
-                  this.classNames.push('tiles-grid-item-width2');
+                  this.classNames.push('grid-item-width2');
                 }
             }
           };
