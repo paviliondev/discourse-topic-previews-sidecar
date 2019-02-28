@@ -34,7 +34,7 @@ var renderUnboundPreview = function(thumbnails, params) {
   };
 
   const settings = Discourse.SiteSettings;
-  const attrPrefix = opts.socialStyle ? 'max-' : '';
+  const attrPrefix = '';
   const attrWidthSuffix = opts.tilesStyle ? '%' : 'px';
   const attrHeightSuffix = opts.tilesStyle ? '' : 'px';
   const css_classes = opts.tilesStyle? 'thumbnail tiles-thumbnail' : 'thumbnail';

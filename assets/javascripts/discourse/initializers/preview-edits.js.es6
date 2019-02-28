@@ -16,12 +16,10 @@ export default {
       api.modifyClass('component:topic-list',  {
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
-        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'socialStyle', 'tilesStyle'],
+        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'tilesStyle'],
         suggestedList: Ember.computed.equal('parentView.parentView.parentView.elementId', 'suggested-topics'),
         discoveryList: Ember.computed.equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         listChanged: false,
-
-        // Lifecyle logic
 
         @on('init')
         setup() {
@@ -32,11 +30,11 @@ export default {
           };
         },
 
-        @on('didRender')
-        completeRender(){
-          if (this.get('tilesStyle')){
-            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-          };
+	      @on('didRender')
+	      completeRender(){
+         if (this.get('tilesStyle')){
+             Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
+         };
         },
 
         @on('didInsertElement')
@@ -46,24 +44,22 @@ export default {
         },
 
         @on('didInsertElement')
-        @observes('socialStyle','tilesStyle')
+        @observes('tilesStyle')
         setupListStyle() {
           if (!this.$()) {return;}
-          this.$().parents('#list-area').toggleClass('social-style', this.get('socialStyle'));
           if (this.get('tilesStyle')){
             this.$().parents('#list-area').toggleClass('tiles-style', true);
-            this.$("tbody").toggleClass('grid', true);
-            if ( !this.$( ".grid-sizer" ).length) {
-              this.$(".grid").prepend("<div class='grid-sizer'></div><div class='gutter-sizer'></div>");
+            this.$("tbody").toggleClass('tiles-grid', true);
+            if ( !this.$( ".tiles-grid-sizer" ).length) {
+              this.$(".tiles-grid").prepend("<div class='tiles-grid-sizer'></div><div class='tiles-gutter-sizer'></div>");
             };
           }
         },
 
         @on('willDestroyElement')
         _tearDown() {
-          this.$().parents('#list-area').removeClass('social-style');
           this.$().parents('#list-area').removeClass('tiles-style');
-          this.$("tbody").removeClass('grid');
+          this.$("tbody").removeClass('tiles-grid');
         },
 
         filter() {
@@ -106,18 +102,8 @@ export default {
         },
 
         @computed('listChanged')
-        socialStyle() {
-          return this.settingEnabled('topic_list_social');
-        },
-
-        @computed('listChanged')
         tilesStyle() {
           return this.settingEnabled('topic_list_tiles');
-        },
-
-        @computed('listChanged')
-        tilesOrSocial() {
-          return (this.get('tilesStyle') || this.get('socialStyle'));
         },
 
         @computed('listChanged')
@@ -136,10 +122,10 @@ export default {
         },
 
         @computed('listChanged')
-        showCategoryBadge() {
-          return !this.settingEnabled('topic_list_category_column') &&
-          (!this.get('category') || this.get('category.has_children'));
-        },
+	        showCategoryBadge() {
+	          return !this.settingEnabled('topic_list_category_column') &&
+	          (!this.get('category') || this.get('category.has_children'));
+	        },
 
         @observes('showCategoryBadge', 'hideCategory')
         toggleHideCategory() {
@@ -150,7 +136,7 @@ export default {
 
         @computed('listChanged')
         skipHeader() {
-          return this.get('tilesStyle') || this.get('socialStyle') || this.get('site.mobileView');
+          return this.get('tilesStyle') || this.get('site.mobileView');
         },
 
         @computed('listChanged')
@@ -158,41 +144,33 @@ export default {
           return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
         },
 
-        // don't forget to update masonry layout when required
-        @observes('topics.[]')
-        masonryObserver() {
-          if (this.get('tilesStyle')){
-            Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-          }
-      	},
-
         applyMasonry() {
           // initialize
-          let msnry = this.$('.grid').data('masonry');
+          let msnry = this.$('.tiles-grid').data('masonry');
 
           if (msnry) {
             msnry.reloadItems();
             //disable transition
             var transitionDuration = msnry.options.transitionDuration;
             msnry.options.transitionDuration = 0;
-            $('.grid').imagesLoaded(function() {msnry.layout()});
+            $('.tiles-grid').imagesLoaded(function() {msnry.layout()});
             //reset transition
             msnry.options.transitionDuration = transitionDuration;
           } else {
             // init masonry
             // transition set to zero on mobile due to undesirable behaviour on mobile safari if > 0
             const transDuration = this.get('site.mobileView') ? 0 : Discourse.SiteSettings.topic_list_tiles_transition_time;
-            this.$('.grid').masonry({
-              itemSelector: '.grid-item',
+            this.$('.tiles-grid').masonry({
+              itemSelector: '.tiles-grid-item',
               transitionDuration: `${transDuration}s`,
               percentPosition: true,
-              Width: '.grid-sizer',
-              gutter: '.gutter-sizer'
+              columnWidth: '.tiles-grid-sizer',
+              gutter: '.tiles-gutter-sizer'
             });
 
-            msnry = this.$('.grid').data('masonry');
+            msnry = this.$('.tiles-grid').data('masonry');
 
-            $('.grid').imagesLoaded(function() {msnry.layout()});
+            $('.tiles-grid').imagesLoaded(function() {msnry.layout()});
           };
         }
       });
@@ -200,9 +178,7 @@ export default {
       api.modifyClass('component:topic-list-item', {
         canBookmark: Ember.computed.bool('currentUser'),
         rerenderTriggers: ['bulkSelectEnabled', 'topic.pinned', 'likeDifference', 'topic.thumbnails'],
-        socialStyle: Ember.computed.alias('parentView.socialStyle'),
         tilesStyle: Ember.computed.alias('parentView.tilesStyle'),
-        tilesOrSocial: Ember.computed.alias('parentView.tilesOrSocial'),
         showThumbnail: Ember.computed.and('thumbnails', 'parentView.showThumbnail'),
         showExcerpt: Ember.computed.and('topic.excerpt', 'parentView.showExcerpt'),
         showActions: Ember.computed.alias('parentView.showActions'),
@@ -221,7 +197,7 @@ export default {
           if (this.get('tilesStyle')) {
             // needs 'div's for masonry
             this.set('tagName', 'div');
-            this.classNames = ['grid-item'];
+            this.classNames = ['tiles-grid-item'];
           };
 
           if (thumbnails) {
@@ -253,44 +229,25 @@ export default {
           if (topic.get('thumbnails') && this.get('thumbnailFirstXRows') && (this.$().index() > this.get('thumbnailFirstXRows'))) {
             this.set('showThumbnail', false);
           }
+
           this._afterRender();
         },
 
-        @on('didRender')
         @observes('thumbnails')
         _afterRender() {
           Ember.run.scheduleOnce('afterRender', this, () => {
             this._setupTitleCSS();
-            if (this.get('showThumbnail') && (this.get('socialStyle') )) {
-              this._sizeThumbnails();
-            }
             if (this.get('showExcerpt') && !this.get('tilesStyle')) {
               this._setupExcerptClick();
             }
             if (this.get('showActions')) {
               this._setupActions();
             }
-            if (this.get('tilesStyle')) {
-              var myid = this.$().attr('id');
-              $(`#${myid} > .topic-title`).wrap("<div class='topic-header-grid'></div>");
-              $(`#${myid} .topic-users`).appendTo(`#${myid} .topic-header-grid`);
-              $(`#${myid} .topic-category`).appendTo(`#${myid} .topic-header-grid`);
-              $(`#${myid} .topic-category`).removeClass('inline').removeClass('sub');
-              $(`#${myid} .topic-actions`).unwrap(`#${myid} .main-link-footer`);
-              $(`#${myid} .discourse-tags`).insertAfter(`#${myid} .topic-details`);
-              $(`#${myid} .discourse-tags`).wrap("<div class='topic-tags'></div>");
-              $(`#${myid} .topic-meta`).insertAfter(`#${myid} .topic-tags`);
-              $(`#${myid} .topic-views`).prevAll().remove();
-              $(`#${myid} .topic-actions`).appendTo(`#${myid}`);
-            }
           });
         },
 
         _setupTitleCSS() {
-          let $el = this.$('.topic-title a.visited');
-          if ($el) {
-            $el.closest('.topic-details').addClass('visited');
-          }
+          this.$('.topic-title a.visited').closest('.topic-details').addClass('visited');
         },
 
         _setupExcerptClick() {
@@ -378,11 +335,10 @@ export default {
           return getDefaultThumbnail(category);
         },
 
-        @computed('tilesStyle', 'socialStyle', 'thumbnailWidth', 'thumbnailHeight')
-        thumbnailOpts(tilesStyle, socialStyle, thumbnailWidth, thumbnailHeight) {
+        @computed('tilesStyle', 'thumbnailWidth', 'thumbnailHeight')
+        thumbnailOpts(tilesStyle, thumbnailWidth, thumbnailHeight) {
           let opts = {
-            tilesStyle,
-            socialStyle,
+            tilesStyle
           }
 
           if (thumbnailWidth) {
