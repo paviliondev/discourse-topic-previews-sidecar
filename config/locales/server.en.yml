@@ -1,6 +1,5 @@
 en:
   site_settings:
-    topic_list_social: "Apply social feed arrangement to selected lists."
     topic_list_tiles: "Apply tiles arrangement to selected lists in this category."
     topic_list_tiles_transition_time: "Number of seconds for tiles layout transition on view change (desktop only)"
     topic_list_thumbnail: "Show topic preview thumbnails in selected lists."

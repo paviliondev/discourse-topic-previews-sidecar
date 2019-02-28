@@ -62,6 +62,10 @@
     "category posters"
   }
 
+  .show-more.has-topics {
+     position: relative;
+  }
+
   .topic-title {
     font-size: 1.143em;
     grid-area: title;
@@ -140,6 +144,10 @@
 
   .topic-tags {
     grid-area: tags;
+
+    .discourse-tags {
+        display: inline-block;
+    }
   }
 
   .topic-meta{
@@ -200,186 +208,12 @@
   margin-top: 5px;
 }
 
-html:not(.mobile-view) #list-area.social-style, #suggested-topics .social-style {
-  .show-more {
-    top: 0;
-  }
-
-  .topic-statuses {
-    float: right;
-  }
-
-  .topic-list-item {
-    border-radius: 3px;
-    display: inline-block;
-    width: 100%;
-
-    td:not(.main-link) {
-      display: none;
-    }
-  }
-
-  .topic-list-item-separator {
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 10px;
-
-    td {
-      display: block;
-    }
-  }
-
-  img.thumbnail {
-    max-width: 100%;
-  }
-
-  div.inline, span.inline {
-    float: none;
-    display: inline-flex;
-    vertical-align: middle;
-    padding: 0 5px 0 0;
-    margin: 0;
-    line-height: 20px;
-
-    .badge-wrapper {
-      margin: 0;
-    }
-
-    .number {
-      margin-right: 3px;
-    }
-  }
-
-  .topic-poster-names a {
-    font-size: 0.9em;
-  }
-
-  div.sub, span.sub {
-    padding: 0;
-    font-size: 0.8em;
-  }
-}
-
 img.thumbnail {
   object-fit: cover;
 }
 
 .middot:after {
   content: '\00B7';
-}
-
-#list-area.social-style .contents, #suggested-topics .social-style .contents {
-  .main-link {
-    display: block;
-  }
-
-  .topic-details {
-    float: left;
-    max-height: none;
-  }
-
-  .topic-intro, .topic-thumbnail {
-    padding: 0;
-    margin: 7px 0;
-  }
-
-  .badge-wrapper.box {
-    margin: 0px;
-  }
-
-  .topic-list-item td {
-    padding: 15px;
-  }
-
-  .topic-title {
-    font-size: 1.143em;
-    display: flex;
-
-    .link-top-line {
-      flex: 1 1 auto;
-    }
-
-    a.title {
-      color: $primary;
-    }
-
-    a.topic-featured-link {
-      display: block;
-      padding-left: 0;
-      padding-top: 3px;
-    }
-
-    .badge-notification.new-topic {
-      vertical-align: top;
-      display: inline-block;
-    }
-
-    .topic-users {
-      float: right;
-
-      .inline {
-        padding: 0 0 0 5px;
-      }
-    }
-  }
-
-  .topic-replies {
-    cursor: pointer;
-
-    a.badge-posts {
-      line-height: 20px;
-    }
-  }
-
-  .topic-excerpt {
-    float: none;
-    display: inline-block;
-  }
-
-  .topic-meta-social {
-    float: right;
-  }
-
-  .discourse-tags {
-    font-size: 1em;
-  }
-
-  .topic-details {
-    width: 100%;
-  }
-
-  .activity, .age {
-    width: initial;
-  }
-
-  .list-button {
-    padding: 0;
-  }
-
-  .topic-footer {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
-.topic-details {
-  overflow: hidden;
-  padding-top: 1px;
-
-  &:before {
-    float: left;
-  }
-
-  .topic-excerpt {
-    margin-top: 2px;
-    padding-right: 10px;
-    overflow: hidden;
-    line-height: 1.3;
-    max-height: 60px;
-    float: top;
-    clear: both;
-    cursor: pointer;
-  }
 }
 
 .topic-list span.badge-category .category-name {
@@ -558,19 +392,5 @@ button.list-button {
     margin-top: 10px;
     padding-right: 10px;
     float: right;
-  }
-}
-
-.social-footer {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-
-  .topic-rating {
-    font-size: 0.8em;
-  }
-
-  .topic-meta {
-    margin-left: auto;
   }
 }
