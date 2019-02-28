@@ -221,7 +221,6 @@ export default {
           if (this.get('tilesStyle')) {
             // needs 'div's for masonry
             this.set('tagName', 'div');
-
             this.classNames = ['grid-item'];
 
             if (Discourse.SiteSettings.topic_list_tiles_larger_featured_tiles && topic.tags) {
