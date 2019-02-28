@@ -76,6 +76,10 @@
     "category posters"
   }
 
+  .show-more.has-topics {
+     position: relative;
+  }
+
   .topic-title {
     font-size: 1.143em;
     grid-area: title;
@@ -154,6 +158,10 @@
 
   .topic-tags {
     grid-area: tags;
+
+    .discourse-tags {
+        display: inline-block;
+    }
   }
 
   .topic-meta{
