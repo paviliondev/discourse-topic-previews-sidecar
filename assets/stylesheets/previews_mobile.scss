@@ -9,6 +9,7 @@
   div + .topic-details {
     padding-left: 10px;
     min-height: 45px;
+    overflow: hidden;
   }
   .topic-excerpt {
     max-height: initial;
@@ -75,7 +76,6 @@ img.thumbnail:not(.tiles-thumbnail) {
     @media screen and (min-width: 801px) {
       width: calc((100% - 12px)/3);
     }
-    
     // iPhone 6/7/8 Plus
     @media only screen
         and (device-width : 414px)
