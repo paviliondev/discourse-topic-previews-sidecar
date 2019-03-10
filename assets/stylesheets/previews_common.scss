@@ -9,28 +9,28 @@
   }
 
   // 1 column on very thin views
-  .tiles-grid[max-width~="360px"] .tiles-grid-item,
-  .tiles-grid[max-width~="360px"].tiles-grid-sizer {
+  .tiles-grid[max-width~="380px"] .tiles-grid-item,
+  .tiles-grid[max-width~="380px"].tiles-grid-sizer {
     width: 100%;
   }
   // 2 columns on medium widths
-  .tiles-grid[min-width~="360px"] .tiles-grid-item,
-  .tiles-grid[min-width~="360px"] .tiles-grid-sizer {
+  .tiles-grid[min-width~="380px"] .tiles-grid-item,
+  .tiles-grid[min-width~="380px"] .tiles-grid-sizer {
     width: calc((100% - 6px)/2);
   }
   // 3 columns when there is room
-  .tiles-grid[min-width~="651px"] .tiles-grid-item,
-  .tiles-grid[min-width~="651px"] .tiles-grid-sizer {
+  .tiles-grid[min-width~="761px"] .tiles-grid-item,
+  .tiles-grid[min-width~="761px"] .tiles-grid-sizer {
     width: calc((100% - 12px)/3);
   }
 
   // now for featured tiles (with featured tags)
   // Takes up all columns on small to medium spaces
-  .tiles-grid[max-width~="650px"] .tiles-grid-item-width2{
+  .tiles-grid[max-width~="760px"] .tiles-grid-item-width2{
     width: 100%;
   }
   // 2 columns when things are wider
-  .tiles-grid[min-width~="651px"] .tiles-grid-item-width2 {
+  .tiles-grid[min-width~="761px"] .tiles-grid-item-width2 {
     width: calc(67% - 6px);
   }
 
