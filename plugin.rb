@@ -8,6 +8,8 @@ register_asset 'stylesheets/previews_common.scss'
 register_asset 'stylesheets/previews_mobile.scss'
 register_asset 'javascripts/discourse/lib/masonry/masonry.js'
 register_asset 'javascripts/discourse/lib/imagesloaded/imagesloaded.js'
+register_asset 'javascripts/discourse/lib/css-element-queries/ResizeSensor.js'
+register_asset 'javascripts/discourse/lib/css-element-queries/ElementQueries.js'
 
 register_svg_icon "bookmark" if respond_to?(:register_svg_icon)
 register_svg_icon "heart" if respond_to?(:register_svg_icon)
