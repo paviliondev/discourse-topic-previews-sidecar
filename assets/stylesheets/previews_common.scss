@@ -1,7 +1,7 @@
 //tiles styling  specific styling
 #list-area.tiles-style {
 
-  $columns: 3;
+  $max_columns: 3;
 
   .tiles-grid {
     display:block;
@@ -18,14 +18,14 @@
   // 2 columns on medium widths
   .tiles-grid[min-width~="461px"] .tiles-grid-item,
   .tiles-grid[min-width~="461px"] .tiles-grid-sizer {
-    @if $columns > 1  {
+    @if $max_columns > 1  {
       width: calc((100% - 6px)/2);
     }
   }
   // 3 columns when there is room
   .tiles-grid[min-width~="761px"] .tiles-grid-item,
   .tiles-grid[min-width~="761px"] .tiles-grid-sizer {
-    @if $columns > 2  {
+    @if $max_columns > 2  {
         width: calc((100% - 12px)/3);
     }
   }
@@ -37,7 +37,7 @@
   }
   // 2 columns when things are wider
   .tiles-grid[min-width~="761px"] .tiles-grid-item-width2 {
-    @if $columns > 2  {
+    @if $max_columns > 2  {
       width: calc(67% - 6px);
     }
   }
