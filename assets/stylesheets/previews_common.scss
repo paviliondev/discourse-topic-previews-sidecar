@@ -9,13 +9,13 @@
   }
 
   // 1 column on very thin views
-  .tiles-grid[max-width~="380px"] .tiles-grid-item,
-  .tiles-grid[max-width~="380px"].tiles-grid-sizer {
+  .tiles-grid[max-width~="460px"] .tiles-grid-item,
+  .tiles-grid[max-width~="460px"].tiles-grid-sizer {
     width: 100%;
   }
   // 2 columns on medium widths
-  .tiles-grid[min-width~="380px"] .tiles-grid-item,
-  .tiles-grid[min-width~="380px"] .tiles-grid-sizer {
+  .tiles-grid[min-width~="461px"] .tiles-grid-item,
+  .tiles-grid[min-width~="461px"] .tiles-grid-sizer {
     width: calc((100% - 6px)/2);
   }
   // 3 columns when there is room
