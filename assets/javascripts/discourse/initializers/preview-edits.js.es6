@@ -13,6 +13,13 @@ export default {
 
     withPluginApi('0.8.12', (api) => {
 
+      api.onPageChange(() => {
+        var primaryDiv = $(".tiles-grid");
+        if (primaryDiv) {
+          primaryDiv.masonry();
+        }
+      });
+
       api.modifyClass('component:topic-list',  {
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
