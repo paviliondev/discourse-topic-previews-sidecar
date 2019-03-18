@@ -53,16 +53,21 @@ after_initialize do
     end
   end
 
-  add_to_serializer(:basic_category, :topic_list_tiles) { object.custom_fields["topic_list_tiles"] }
-  add_to_serializer(:basic_category, :topic_list_excerpt) { object.custom_fields["topic_list_excerpt"] }
-  add_to_serializer(:basic_category, :topic_list_thumbnail) { object.custom_fields["topic_list_thumbnail"] }
-  add_to_serializer(:basic_category, :topic_list_action) { object.custom_fields["topic_list_action"] }
-  add_to_serializer(:basic_category, :topic_list_tiles_transition_time) { object.custom_fields["topic_list_tiles_transition_time"] }
-  add_to_serializer(:basic_category, :topic_list_category_column) { object.custom_fields["topic_list_category_column"] }
-  add_to_serializer(:basic_category, :topic_list_default_thumbnail) { object.custom_fields["topic_list_default_thumbnail"] }
-  add_to_serializer(:basic_category, :topic_list_thumbnail_width) { object.custom_fields['topic_list_thumbnail_width'] }
-  add_to_serializer(:basic_category, :topic_list_thumbnail_height) { object.custom_fields['topic_list_thumbnail_height'] }
-  add_to_serializer(:basic_category, :topic_list_featured_images) { object.custom_fields['topic_list_featured_images'] }
+  [
+    "topic_list_tiles",
+    "topic_list_excerpt",
+    "topic_list_thumbnail",
+    "topic_list_action",
+    "topic_list_tiles_transition_time",
+    "topic_list_category_column",
+    "topic_list_default_thumbnail",
+    "topic_list_thumbnail_width",
+    "topic_list_thumbnail_height",
+    "topic_list_featured_images"
+  ].each do |key|
+    Site.preloaded_category_custom_fields << key if Site.respond_to? :preloaded_category_custom_fields
+    add_to_serializer(:basic_category, key.to_sym) { object.custom_fields[key] }
+  end
 
   DiscourseEvent.trigger(:topic_previews_ready)
 end
