@@ -13,7 +13,7 @@ en:
     topic_list_default_thumbnail: "Image URL for default thumbnail if topic thumbnail is inaccessible."
     topic_list_default_thumbnail_fallback: "Use the default thumbnail when a topic has no previewed image."
     topic_list_thumbnail_width: "Width of topic preview thumbnail."
-    topic_list_thumbnail_height: "Height of topic preview thumbnail."
+    topic_list_thumbnail_height: "Height of topic preview thumbnail. (Setting this to 0 will cause TLP to seek the resolution from thumbnail width whilst maintaining the original image's aspect ratio - especially important for tiles view)"
     topic_list_previewable_image_width_min: "Minimum width of image that can be previewed."
     topic_list_previewable_image_height_min: "Minimum height of image that can be previewed."
     topic_list_hotlink_thumbnails: "Use topic image_url in thumbnails directly, rather than generated thumbnails. Warning: this means each full sized topic image will be loaded when the topic list loads and will affect performance."
