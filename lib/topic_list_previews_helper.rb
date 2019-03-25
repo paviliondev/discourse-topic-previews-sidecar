@@ -49,6 +49,12 @@ module ListHelper
 
       width = category_width.present? ? category_width.to_i : SiteSetting.topic_list_thumbnail_width.to_i
       height = category_height.present? ? category_height.to_i : SiteSetting.topic_list_thumbnail_height.to_i
+
+      # a little trick to keep aspect ratio (takes resolution from width if height specified as zero and maintains the aspect ratio)
+      if height == 0 && image.try(:height) && image.try(:width)
+        height = (width.to_f * (image.height.to_f/image.width.to_f)).to_i
+      end
+
       normal = image ? thumbnail_url(image, width, height, original_url) : original_url
       retina = image ? thumbnail_url(image, width * 2, height * 2, original_url) : original_url
       thumbnails = { normal: normal, retina: retina }
