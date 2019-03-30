@@ -1,3 +1,8 @@
+import Composer from 'discourse/models/composer';
+import ComposerBody from 'discourse/components/composer-body';
+import Topic from 'discourse/models/topic';
+import TopicController from 'discourse/controllers/topic';
+
 import { testImageUrl, animateHeart, getDefaultThumbnail } from '../lib/utilities';
 import { addLike, sendBookmark, removeLike } from '../lib/actions';
 import { withPluginApi } from 'discourse/lib/plugin-api';
@@ -11,7 +16,37 @@ export default {
 
     if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
 
+
+    Composer.reopen({
+      @computed('topicFirstPost')
+      showSelectPreviewButton(topicFirstPost) {
+        if (!topicFirstPost) return false;
+      }
+    });
+
+    Composer.serializeOnCreate('selectedPreviewImage');
+    Composer.serializeToTopic('selectedPreviewImage', 'topic.selectedPreviewImage');
+
+    let currentLocale = I18n.currentLocale();
+    I18n.translations[currentLocale].js.select_preview_button = "Select preview image";
+    I18n.translations[currentLocale].js.composer.select_preview_prompt = "something";
+
     withPluginApi('0.8.12', (api) => {
+
+      api.onToolbarCreate(toolbar => {
+        // create composer button
+        toolbar.addButton(
+          trimLeading: true,
+          id: "select-preview-button"
+          group: "insertions",
+          icon: "exclamation-circle",
+          title: "select_preview_button",
+          perform: function(e) {
+            return e.applySurround( '<div data-theme="preview-select">', "</div>", "select_preview_prompt" );
+          }
+        );
+      });
+
 
       api.modifyClass('component:topic-list',  {
         router: Ember.inject.service('-routing'),
