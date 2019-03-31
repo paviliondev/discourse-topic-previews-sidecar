@@ -78,6 +78,7 @@ export default {
         },
 
         settingEnabled(setting) {
+
           const routeEnabled = this.get('routeEnabled');
           if (routeEnabled) {
             return routeEnabled.indexOf(setting) > -1;
@@ -97,8 +98,10 @@ export default {
           const catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1;
           const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
           const siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
+          const path = window.location.pathname;
+          const isTopic = /^\/t\//.test(path);
 
-          return category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled;
+          return isTopic ? siteEnabled : (category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled);
         },
 
         @computed('listChanged')
@@ -123,8 +126,10 @@ export default {
 
         @computed('listChanged')
 	        showCategoryBadge() {
-	          return !this.settingEnabled('topic_list_category_column') &&
-	          (!this.get('category') || this.get('category.has_children'));
+            const catcolumn = this.settingEnabled('topic_list_category_column');
+            const path = window.location.pathname;
+            const isTopic = /^\/t\//.test(path);
+            return (isTopic && !catcolumn)||(!catcolumn && (!this.get('category') || this.get('category.has_children')));
 	        },
 
         @observes('showCategoryBadge', 'hideCategory')
