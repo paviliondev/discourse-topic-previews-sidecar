@@ -34,7 +34,7 @@ class ::TopicListItemSerializer
   end
 
   def include_excerpt?
-    object.excerpt.present? && SiteSetting.topic_list_previews_enabled
+    object.excerpt.present? && SiteSetting.topic_list_previews_enabled   && !(object.archetype == Archetype.private_message)
   end
 
   def topic_post_user
