@@ -1,0 +1,9 @@
+{{#d-modal-body class="select-thumbnail" title=title}}
+  <h3>...for Topic: "{{topic_title}}"</h3>
+  <span class="thumbnail-selection">
+  {{#each thumbnailList.thumbnailselection as |thumbnail|}}
+    <img class="select-thumbnail" src={{thumbnail.image}}
+    {{action "selectThumbnail" thumbnail.image thumbnail.post_id}}>
+  {{/each}}
+  </span>
+{{/d-modal-body}}
