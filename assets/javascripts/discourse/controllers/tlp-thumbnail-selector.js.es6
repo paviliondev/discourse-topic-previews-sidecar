@@ -14,7 +14,7 @@ export default Ember.Controller.extend(ModalFunctionality, {
 
       var topic_id = this.get('topic_id');
 
-      ajax(`/thumbnailselection`, {
+      ajax(`/topic-previews/thumbnail-selection`, {
         method: "PUT",
         data: {image: image, post_id: post_id, topic_id: topic_id }
       }).then(result => {

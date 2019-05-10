@@ -7,9 +7,6 @@ import { testImageUrl, animateHeart, getDefaultThumbnail } from '../lib/utilitie
 import { addLike, sendBookmark, removeLike } from '../lib/actions';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
-import { ajax } from 'discourse/lib/ajax';
-import { popupAjaxError } from 'discourse/lib/ajax-error';
-import showModal from "discourse/lib/show-modal";
 import DiscourseURL from 'discourse/lib/url';
 import PostsCountColumn from 'discourse/raw-views/list/posts-count-column';
 
@@ -20,39 +17,6 @@ export default {
     if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
 
     withPluginApi('0.8.12', (api) => {
-
-      api.onToolbarCreate(toolbar => {
-        // create thumbnail selector button
-        toolbar.addButton({
-          trimLeading: true,
-          id: "select-preview-button",
-          group: "insertions",
-          icon: "id-card",
-          title: "select_preview_button",
-          sendAction: event =>
-            toolbar.context.send("showThumbnailSelector", event)
-        });
-      });
-
-      api.modifyClass("component:d-editor", {
-        actions: {
-          showThumbnailSelector(event) {
-            var topic_id = this.get('parentView.topic.id');
-            var topic_title = this.get('parentView.topic.title')
-
-            ajax(`/thumbnailselection.json?topic=${topic_id}`).then(result => {
-              var controller = showModal('tlp-thumbnail-selector', { model: {
-                thumbnails: result,
-                topic_id: topic_id,
-                topic_title: topic_title
-                }}
-              );
-            }).catch(function(error) {
-                     popupAjaxError(error);
-            });
-          }
-        }
-      });
 
       api.modifyClass('component:topic-list',  {
         router: Ember.inject.service('-routing'),

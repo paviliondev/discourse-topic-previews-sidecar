@@ -1,9 +1,11 @@
 en:
   adminjs:
     thumbnail_selector:
+      select_preview_button: "Select thumbnail"
       title: "Select the desired preview thumbnail"
   js:
     thumbnail_selector:
+      select_preview_button: "Select thumbnail"
       title: "Select the desired preview thumbnail"
     category:
       topic_list_tiles: "Apply tiles arrangement to selected lists in this category."
