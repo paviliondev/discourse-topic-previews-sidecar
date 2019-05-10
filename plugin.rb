@@ -79,7 +79,7 @@ after_initialize do
     put '/thumbnail-selection' => 'thumbnailselection#update'
   end
 
-  load File.expand_path('../controllers/thumbnailselection.rb', __FILE__)
+  load File.expand_path('../controllers/thumbnail_selection.rb', __FILE__)
 
   DiscourseEvent.trigger(:topic_previews_ready)
 end
