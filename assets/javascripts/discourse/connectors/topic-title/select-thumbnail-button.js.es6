@@ -5,7 +5,7 @@ import { default as computed, on, observes } from 'ember-addons/ember-computed-d
 
 export default {
   setupComponent(args, component) {
-    component.set('isAuthorised',(this.get('currentUser.id') == this.get('topic.user_id')) || this.get('currentUser.admin') || this.get('currentUser.moderator'));
+    component.set('isAuthorised',(this.get('currentUser.id') == this.get('model.user_id')) || this.get('currentUser.admin') || this.get('currentUser.moderator'));
   },
 
   actions: {
