@@ -11,12 +11,12 @@ class Post
 
     upload_ids |= Upload.where(id: downloaded_images.values).pluck(:id)
     values = upload_ids.map! { |upload_id| "(#{self.id},#{upload_id})" }.join(",")
-    
+
     if !self.custom_fields['thumbnail_upload_id'].nil?
       thumbnail_upload_id = self.custom_fields['thumbnail_upload_id']
       if !values.include? "," + thumbnail_upload_id.to_s
         values << "," if values != ""
-        values <<  "(#{self.id},#{self.custom_fields['thumbnail_upload_id']})"
+        values <<  "(#{self.id},#{thumbnail_upload_id})"
       end
       self.custom_fields['thumbnail_upload_id'] = nil
     end
