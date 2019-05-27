@@ -1,8 +1,3 @@
-import Composer from 'discourse/models/composer';
-import ComposerBody from 'discourse/components/composer-body';
-import Topic from 'discourse/models/topic';
-import TopicController from 'discourse/controllers/topic';
-
 import { testImageUrl, animateHeart, getDefaultThumbnail } from '../lib/utilities';
 import { addLike, sendBookmark, removeLike } from '../lib/actions';
 import { withPluginApi } from 'discourse/lib/plugin-api';

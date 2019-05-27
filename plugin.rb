@@ -17,7 +17,6 @@ enabled_site_setting :topic_list_previews_enabled
 
 after_initialize do
   Topic.register_custom_field_type('thumbnails', :json)
-  Topic.register_custom_field_type('thumbnail_post_id', :integer)
   Category.register_custom_field_type('thumbnail_width', :integer)
   Category.register_custom_field_type('thumbnail_height', :integer)
   Category.register_custom_field_type('topic_list_featured_images', :boolean)
