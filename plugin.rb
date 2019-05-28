@@ -93,14 +93,13 @@ after_initialize do
               thumbnail_post_id = post_id
             end
           end
+          break if thumbnail_post_id != nil
       end
 
       unless SiteSetting.topic_list_hotlink_thumbnails ||
                 !SiteSetting.topic_list_previews_enabled
-
         if !thumbnail_post_id.nil?
           if upload_id = ListHelper.create_topic_thumbnails(thumbnail_post, image_url)
-
             ## ensure there is a post_upload record so the upload is not removed in the cleanup
             unless PostUpload.where(post_id: thumbnail_post_id).exists?
               PostUpload.create(post_id: thumbnail_post_id, upload_id: upload_id)
