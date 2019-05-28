@@ -25,62 +25,70 @@ CookedPostProcessor.class_eval do
   end
 
   def update_post_image
-    img = extract_post_image
 
-    if @has_oneboxes
-      cooked = PrettyText.cook(@post.raw)
+    unless @post.topic.custom_fields['user_thumbnail_selected']
 
-      if img
-        ## We need something more specific to identify the image with
-        img_id = img
-        src = img.attribute("src").to_s
-        img_id = src.split('/').last.split('.').first if src
-      end
+      @post.topic.custom_fields['user_thumbnail_selected'] = false
 
-      prior_oneboxes = []
-      Oneboxer.each_onebox_link(cooked) do |url, element|
-        if !img || (img && cooked.index(element).to_i < cooked.index(img_id).to_i)
-          html = Nokogiri::HTML::fragment(Oneboxer.cached_preview(url))
-          prior_oneboxes = html.css('img')
-        end
-      end
+      img = extract_post_image
 
-      if prior_oneboxes.any?
-        prior_oneboxes = prior_oneboxes.reject do |html|
-          class_str = html.attribute('class').to_s
-          class_str.include?('site-icon') || class_str.include?('avatar')
+      if @has_oneboxes
+        cooked = PrettyText.cook(@post.raw)
+
+        if img
+          ## We need something more specific to identify the image with
+          img_id = img
+          src = img.attribute("src").to_s
+          img_id = src.split('/').last.split('.').first if src
         end
 
-        if prior_oneboxes.any? && validate_image_for_previews(prior_oneboxes.first)
-          img = prior_oneboxes.first
+        prior_oneboxes = []
+        Oneboxer.each_onebox_link(cooked) do |url, element|
+          if !img || (img && cooked.index(element).to_i < cooked.index(img_id).to_i)
+            html = Nokogiri::HTML::fragment(Oneboxer.cached_preview(url))
+            prior_oneboxes = html.css('img')
+          end
         end
-      end
-    end
 
-    if img.blank?
-      @post.update_column(:image_url, nil)
+        if prior_oneboxes.any?
+          prior_oneboxes = prior_oneboxes.reject do |html|
+            class_str = html.attribute('class').to_s
+            class_str.include?('site-icon') || class_str.include?('avatar')
+          end
 
-      if @post.is_first_post?
-        @post.topic.update_column(:image_url, nil)
-        ListHelper.remove_topic_thumbnails(@post.topic)
-      end
-    elsif img["src"].present?
-      url = img["src"][0...255]
-      @post.update_column(:image_url, url) # post
-
-      if @post.is_first_post?
-        @post.topic.update_column(:image_url, url) # topic
-        return if SiteSetting.topic_list_hotlink_thumbnails ||
-                  !SiteSetting.topic_list_previews_enabled
-
-        if upload_id = ListHelper.create_topic_thumbnails(@post, url)
-
-          ## ensure there is a post_upload record so the upload is not removed in the cleanup
-          unless PostUpload.where(post_id: @post.id).exists?
-            PostUpload.create(post_id: @post.id, upload_id: upload_id)
+          if prior_oneboxes.any? && validate_image_for_previews(prior_oneboxes.first)
+            img = prior_oneboxes.first
           end
         end
       end
+
+      if img.blank?
+        @post.update_column(:image_url, nil)
+
+        if @post.is_first_post?
+          @post.topic.update_column(:image_url, nil)
+          ListHelper.remove_topic_thumbnails(@post.topic)
+        end
+      elsif img["src"].present?
+        url = img["src"][0...255]
+        @post.update_column(:image_url, url) # post
+
+        if @post.is_first_post?
+          @post.topic.update_column(:image_url, url) # topic
+          return if SiteSetting.topic_list_hotlink_thumbnails ||
+                    !SiteSetting.topic_list_previews_enabled
+
+          if upload_id = ListHelper.create_topic_thumbnails(@post, url)
+
+            ## ensure there is a post_upload record so the upload is not removed in the cleanup
+            unless PostUpload.where(post_id: @post.id).exists?
+              PostUpload.create(post_id: @post.id, upload_id: upload_id)
+            end
+          end
+        end
+      end
+    else
+      @post.topic.custom_fields['user_thumbnail_selected'] = false
     end
   end
 end

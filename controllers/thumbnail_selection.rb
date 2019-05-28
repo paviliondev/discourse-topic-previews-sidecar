@@ -16,6 +16,7 @@ class ::TopicPreviews::ThumbnailselectionController < ::ApplicationController
         @post_id = post.id
         @doc = Nokogiri::HTML( post.cooked )
         @img_srcs = @doc.css('img').map{ |i| i['src'] }
+        @img_srcs << post.image_url if ((!post.image_url.nil?) && (post.image_url != "") && (!@img_srcs.include? post.image_url))
         @img_srcs.map do |image|
           if (!image.include? "emoji") && (!image.include? "avatar")
             @thumbnails << {image: image, post_id: @post_id}

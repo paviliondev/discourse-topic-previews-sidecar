@@ -17,6 +17,7 @@ enabled_site_setting :topic_list_previews_enabled
 
 after_initialize do
   Topic.register_custom_field_type('thumbnails', :json)
+  Topic.register_custom_field_type('user_thumbnail_selected', :boolean)
   Category.register_custom_field_type('thumbnail_width', :integer)
   Category.register_custom_field_type('thumbnail_height', :integer)
   Category.register_custom_field_type('topic_list_featured_images', :boolean)
@@ -75,13 +76,14 @@ after_initialize do
   PostRevisor.class_eval do
     track_topic_field(:image_url) do |tc, image_url|
       tc.record_change('image_url', tc.topic.image_url, image_url)
+      tc.record_change('user_thumbnail_selected', tc.topic.custom_fields['user_thumbnail_selected'], true)
+      tc.topic.custom_fields['user_thumbnail_selected'] = true
 
       topic_id = tc.topic.id
       thumbnail_post = nil
       thumbnail_post_id  = nil
-
-      @topic = Topic.find(topic_id)
-      @posts = @topic.posts
+      topic = Topic.find(topic_id)
+      @posts = topic.posts
 
       @posts.each do |post|
           post_id = post.id
