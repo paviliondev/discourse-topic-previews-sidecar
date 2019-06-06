@@ -75,10 +75,8 @@ CookedPostProcessor.class_eval do
 
         if upload_id = ListHelper.create_topic_thumbnails(@post, url)
 
-          ## ensure there is a post_upload record so the upload is not removed in the cleanup
-          unless PostUpload.where(post_id: @post.id).exists?
-            PostUpload.create(post_id: @post.id, upload_id: upload_id)
-          end
+        # make a record of the upload id so it can be included in the PostUpload update later in the process
+        @post.custom_fields['thumbnail_upload_id'] = upload_id
         end
       end
     end

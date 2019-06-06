@@ -37,6 +37,9 @@ after_initialize do
     end
   end
 
+  Post.register_custom_field_type('thumbnail_upload_id', :integer)
+
+  load File.expand_path('../lib/post_edits.rb', __FILE__)
   load File.expand_path('../lib/topic_list_previews_helper.rb', __FILE__)
   load File.expand_path('../lib/guardian_edits.rb', __FILE__)
   load File.expand_path('../lib/featured_topics.rb', __FILE__)
