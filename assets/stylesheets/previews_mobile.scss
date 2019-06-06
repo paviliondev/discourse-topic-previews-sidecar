@@ -64,24 +64,8 @@ img.thumbnail:not(.tiles-thumbnail) {
 
   .tiles-grid-sizer,
   .tiles-grid-item {
-    // 1 column on very thin views
+    // 1 column on all phones
     width: 100%;
-    // 2 columns on medium widths
-    @media screen and (min-width: 401px) and (max-width: 800px) {
-      width: calc((100% - 6px)/2);
-    }
-    // 3 columns when there is room
-    @media screen and (min-width: 801px) {
-      width: calc((100% - 12px)/3);
-    }
-    // iPhone 6/7/8 Plus
-    @media only screen
-        and (device-width : 414px)
-        and (device-height : 736px)
-        and (-webkit-device-pixel-ratio : 3)
-        and (orientation : portrait)  {
-    width: 100%;
-    }
   }
 
   .tiles-gutter-sizer {
