@@ -80,6 +80,7 @@ after_initialize do
     track_topic_field(:image_url) do |tc, image_url|
       tc.record_change('image_url', tc.topic.image_url, image_url)
       tc.record_change('user_thumbnail_selected', tc.topic.custom_fields['user_thumbnail_selected'], true)
+      tc.topic.image_url = image_url
       tc.topic.custom_fields['user_thumbnail_selected'] = true
 
       topic_id = tc.topic.id
