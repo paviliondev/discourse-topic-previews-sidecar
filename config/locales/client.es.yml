@@ -1,0 +1,15 @@
+es:
+  js:
+    category:
+      topic_list_tiles: "Aplicar la disposición a las listas seleccionadas en esta categoría."
+      topic_list_thumbnail: "Mostrar miniaturas de vista previa del tema en listas seleccionadas en esta categoría."
+      topic_list_excerpt: "Mostrar extractos de temas en listas seleccionadas en esta categoría."
+      topic_list_action: "Mostrar botones de Me gusta y marcadores en listas seleccionadas en esta categoría."
+      topic_list_category_column: "Mostrar una columna de categoría separada en las listas seleccionadas en esta categoría."
+      topic_list_default_thumbnail: "La URL de la imagen para la miniatura se muestra si el tema en esta categoría no tiene un conjunto de miniaturas de vista previa."
+      topic_list_default_thumbnail_placeholder: "Thumbnail URL por defecto"
+      topic_list_thumbnail_width: "Anchura de las miniaturas en esta categoría (rehaga sus publicaciones si cambia esto)."
+      topic_list_thumbnail_height: "Altura de las miniaturas en esta categoría (rehaga sus publicaciones si cambia esto)."
+      topic_list_thumbnail_width_placeholder: "px"
+      topic_list_thumbnail_height_placeholder: "px"
+      topic_list_featured_images: "Habilitar imágenes destacadas en esta categoría."

@@ -34,7 +34,6 @@ var renderUnboundPreview = function(thumbnails, params) {
   };
 
   const settings = Discourse.SiteSettings;
-  const attrPrefix = '';
   const attrWidthSuffix = opts.tilesStyle ? '%' : 'px';
   const attrHeightSuffix = opts.tilesStyle ? '' : 'px';
   const css_classes = opts.tilesStyle? 'thumbnail tiles-thumbnail' : 'thumbnail';
@@ -50,7 +49,8 @@ var renderUnboundPreview = function(thumbnails, params) {
 
   const height = custom_height || tiles_height || featured_height || category_height || settings.topic_list_thumbnail_height;
   const width = custom_width || tiles_width || featured_width || category_width || settings.topic_list_thumbnail_width;
-  const style = `${attrPrefix}height:${height}${attrHeightSuffix};${attrPrefix}width:${width}${attrWidthSuffix}`;
+  const height_style = height ? `height:${height}${attrHeightSuffix};` : ``;
+  const style = `${height_style}width:${width}${attrWidthSuffix}`;
 
   return `<img class="${css_classes}" src="${url}" style="${style}" />`;
 };
