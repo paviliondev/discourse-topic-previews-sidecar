@@ -410,3 +410,25 @@ button.list-button {
     float: right;
   }
 }
+// formats for thumbnail selector modal
+.select-thumbnail img {
+  width: 80px;
+  height: 80px;
+  padding: 1px;
+  box-shadow: 2px 2px 2px 2px #888888;
+  cursor: pointer;
+}
+
+.select-thumbnail img:hover {
+  filter: brightness(120%);
+}
+
+.select-thumbnail img:active {
+  -webkit-transform: translateY(+2px);
+  -ms-transform: translateY(+2px);
+  transform: translateY(+2px);
+  -webkit-transform: translateX(+2px);
+  -ms-transform: translateX(+2px);
+  transform: translateX(+2px);
+  box-shadow: 1px 1px 1px 1px #888888;
+}
