@@ -14,14 +14,16 @@ export default {
       console.log(`before ajax topic_title is ${topic_title}`);
       var buffered = this.get('buffered');
 
+      var controller = showModal('tlp-thumbnail-selector', { model: {
+        thumbnails: [],
+        topic_id: topic_id,
+        topic_title: topic_title,
+        buffered: buffered
+        }}
+      );
+
       ajax(`/topic-previews/thumbnail-selection.json?topic=${topic_id}`).then(result => {
-        var controller = showModal('tlp-thumbnail-selector', { model: {
-          thumbnails: result,
-          topic_id: topic_id,
-          topic_title: topic_title,
-          buffered: buffered
-          }}
-        );
+
         console.log (`within promise result model.title is ${this.get('model.title')}`);
         console.log (`within promise result model.topic_title is ${this.get('model.topic_title')}`);
       }).catch(function(error) {
