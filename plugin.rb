@@ -12,6 +12,7 @@ register_asset 'javascripts/discourse/lib/imagesloaded/imagesloaded.js'
 register_svg_icon "bookmark" if respond_to?(:register_svg_icon)
 register_svg_icon "heart" if respond_to?(:register_svg_icon)
 register_svg_icon "id-card" if respond_to?(:register_svg_icon)
+register_svg_icon "star" if respond_to?(:register_svg_icon)
 
 enabled_site_setting :topic_list_previews_enabled
 
@@ -113,6 +114,13 @@ after_initialize do
           end
         end
       end
+    end
+  end
+
+  Discourse::Application.routes.draw do
+    scope "/topics", username: RouteFormat.username do
+      get "favourites/:username" => "list#favourites_topics_by", as: "favourites_topics_by", constraints: { format: /(json|html)/ }, defaults: { format: :json }
+      #get "favourite/:username/:tag_id.json" => "list#private_messages_tag", as: "topics_private_messages_tag", constraints: StaffConstraint.new
     end
   end
 

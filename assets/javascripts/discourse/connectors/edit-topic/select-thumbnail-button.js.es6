@@ -6,16 +6,16 @@ import { default as computed, on, observes } from 'ember-addons/ember-computed-d
 export default {
   actions: {
     showThumbnailSelector() {
-      var topic_id = this.get('model.id');
-      var topic_title = this.get('model.title');
-      var buffered = this.get('buffered');
+      // var topic_id = this.get('model.id');
+      // var topic_title = this.get('model.title');
+      // var buffered = this.get('buffered');
 
-      ajax(`/topic-previews/thumbnail-selection.json?topic=${topic_id}`).then(result => {
+      ajax(`/topic-previews/thumbnail-selection.json?topic=${this.get('model.id')}`).then(result => {
         var controller = showModal('tlp-thumbnail-selector', { model: {
           thumbnails: result,
-          topic_id: topic_id,
-          topic_title: topic_title,
-          buffered: buffered
+          topic_id: this.get('model.id'),
+          topic_title: this.get('model.title'),
+          buffered: this.get('buffered')
           }}
         );
       }).catch(function(error) {
