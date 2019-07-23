@@ -3,15 +3,17 @@ import { popupAjaxError } from 'discourse/lib/ajax-error';
 import showModal from "discourse/lib/show-modal";
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 
-export default {
+export default Ember.Component.extend ({
+  classNames: 'select-thumbnail',
+
   actions: {
     showThumbnailSelector() {
 
-      ajax(`/topic-previews/thumbnail-selection.json?topic=${this.get('model.id')}`).then(result => {
+      ajax(`/topic-previews/thumbnail-selection.json?topic=${this.get('topic_id')}`).then(result => {
         var controller = showModal('tlp-thumbnail-selector', { model: {
           thumbnails: result,
-          topic_id: this.get('model.id'),
-          topic_title: this.get('model.title'),
+          topic_id: this.get('topic_id'),
+          topic_title: this.get('topic_title'),
           buffered: this.get('buffered')
           }}
         );
@@ -20,4 +22,4 @@ export default {
       });
     }
   }
-}
+})
