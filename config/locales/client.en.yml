@@ -7,6 +7,7 @@ en:
     thumbnail_selector:
       select_preview_button: "Select thumbnail"
       title: "Select the desired preview thumbnail"
+      topic_title_prefix: "... for Topic:"
     category:
       topic_list_tiles: "Apply tiles arrangement to selected lists in this category."
       topic_list_thumbnail: "Show topic preview thumbnails in selected lists in this category."
