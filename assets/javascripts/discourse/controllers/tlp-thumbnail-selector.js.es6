@@ -8,11 +8,6 @@ export default Ember.Controller.extend(ModalFunctionality, bufferedProperty("mod
   buffered: Ember.computed.alias('model.buffered'),
   title: 'thumbnail_selector.title',
 
-  init(){
-    console.log (`within model controller result model.topic_title is ${this.get('topic_title')}`);
-    console.log (this);
-  },
-
   actions: {
     selectThumbnail: function(image_url, thumbnail_post_id){
       const buffered = this.get('buffered');
