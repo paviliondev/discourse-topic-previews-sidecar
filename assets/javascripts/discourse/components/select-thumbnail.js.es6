@@ -9,11 +9,11 @@ export default Ember.Component.extend ({
   actions: {
     showThumbnailSelector() {
 
-      ajax(`/topic-previews/thumbnail-selection.json?topic=${this.get('topic_id')}`).then(result => {
+      ajax(`/topic-previews/thumbnail-selection.json?topic=${this.get('banana_id')}`).then(result => {
         var controller = showModal('tlp-thumbnail-selector', { model: {
           thumbnails: result,
-          topic_id: this.get('topic_id'),
-          topic_title: this.get('topic_title'),
+          orange_id: this.get('banana_id'),
+          orange_title: this.get('banana_title'),
           buffered: this.get('buffered')
           }}
         );
