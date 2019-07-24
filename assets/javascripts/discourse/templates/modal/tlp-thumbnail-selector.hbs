@@ -1,5 +1,5 @@
-{{#d-modal-body class="select-thumbnail" title=title buffered=buffered}}
-  <h3>...for Topic: "{{topic_title}}"</h3>
+{{#d-modal-body class="select-thumbnail" title=modal_title}}
+  <h3>{{i18n 'thumbnail_selector.topic_title_prefix'}} "{{modal_topic_title}}"</h3>
   <span class="select-thumbnail">
   {{#each thumbnailList.thumbnailselection as |thumbnail|}}
     <img class="select-thumbnail" src={{thumbnail.image}}

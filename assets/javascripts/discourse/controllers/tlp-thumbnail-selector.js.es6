@@ -3,10 +3,10 @@ import ModalFunctionality from 'discourse/mixins/modal-functionality';
 import { bufferedProperty } from "discourse/mixins/buffered-content";
 
 export default Ember.Controller.extend(ModalFunctionality, bufferedProperty("model"), {
-  thumbnailList: Ember.computed.alias('model.thumbnails'),
-  topic_title: Ember.computed.alias('model.topic_title'),
+  thumbnailList: Ember.computed.oneWay('model.thumbnails'),
+  modal_topic_title: Ember.computed.oneWay('model.topic_title'),
   buffered: Ember.computed.alias('model.buffered'),
-  title: 'thumbnail_selector.title',
+  modal_title: 'thumbnail_selector.title',
 
   actions: {
     selectThumbnail: function(image_url, thumbnail_post_id){
