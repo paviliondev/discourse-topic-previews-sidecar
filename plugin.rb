@@ -120,7 +120,6 @@ after_initialize do
   Discourse::Application.routes.draw do
     scope "/topics", username: RouteFormat.username do
       get "favourites/:username" => "list#favourites_topics_by", as: "favourites_topics_by", constraints: { format: /(json|html)/ }, defaults: { format: :json }
-      #get "favourite/:username/:tag_id.json" => "list#private_messages_tag", as: "topics_private_messages_tag", constraints: StaffConstraint.new
     end
   end
 
