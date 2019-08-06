@@ -13,6 +13,52 @@ export default {
 
     withPluginApi('0.8.12', (api) => {
 
+      api.modifyClass('component:basic-topic-list',  {
+        router: Ember.inject.service('-routing'),
+        classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'tilesStyle'],
+        currentRoute: Ember.computed.alias('router.currentRouteName'),
+        listChanged: false,
+
+        skipHeader() {
+          this.get('tilesStyle') || this.get('site.mobileView');
+        },
+
+        @computed('listChanged')
+        tilesStyle() {
+          this.settingEnabled('topic_list_tiles');
+        },
+
+        settingEnabled(setting) {
+
+            const routeEnabled = this.get('routeEnabled');
+            if (routeEnabled) {
+               return routeEnabled.indexOf(setting) > -1;
+            }
+
+            const filter = this.filter();
+            const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
+            const filterArr = filter ? filter.split('/') : [];
+            const filterType = filterArr[filterArr.length - 1];
+            const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
+          
+            return siteEnabled;
+        },
+
+        filter() {
+
+            const currentRoute = this.get('currentRoute');
+
+            if (currentRoute == 'userActivity.favourites') filter = 'activity-favourites';
+            if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
+
+            const mobile = this.get('site.mobileView');
+            if (mobile) filter += '-mobile';
+
+          return filter;
+        },
+      });
+
+
       api.modifyClass('component:topic-list',  {
         router: Ember.inject.service('-routing'),
         currentRoute: Ember.computed.alias('router.router.currentRouteName'),
@@ -67,6 +113,8 @@ export default {
 
           const currentRoute = this.get('currentRoute');
           if (currentRoute.indexOf('tags') > -1) filter = 'tags';
+          if (currentRoute == 'userActivity.favourites') filter = 'activity-favourites';
+          if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
 
           const suggestedList = this.get('suggestedList');
           if (suggestedList) filter = 'suggested';
@@ -87,8 +135,9 @@ export default {
           const filter = this.filter();
           const discoveryList = this.get('discoveryList');
           const suggestedList = this.get('suggestedList');
+          const currentRoute = this.get('currentRoute');
 
-          if (!discoveryList && !suggestedList) return false;
+          if (!discoveryList && !suggestedList && !(currentRoute.indexOf('userActivity') > -1)) return false;
 
           const category = this.get('category');
           const catSetting = category ? category.get(setting) : false;

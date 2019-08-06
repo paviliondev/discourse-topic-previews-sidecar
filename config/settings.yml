@@ -9,6 +9,8 @@ plugins:
      - unread
      - top
      - tags
+     - activity-topics
+     - activity-favourites
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -26,6 +28,8 @@ plugins:
      - tags
      - suggested
      - agenda
+     - activity-topics
+     - activity-favourites
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -45,6 +49,8 @@ plugins:
      - tags
      - suggested
      - agenda
+     - activity-topics
+     - activity-favourites
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -64,6 +70,8 @@ plugins:
      - tags
      - suggested
      - agenda
+     - activity-topics
+     - activity-favourites
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -96,6 +104,9 @@ plugins:
      - tags-mobile
      - suggested-mobile
      - agenda-mobile
+  topic_list_activity_favourites_category:
+    default: ''
+    client: true
   topic_list_set_category_defaults:
     default: false
     client: true
