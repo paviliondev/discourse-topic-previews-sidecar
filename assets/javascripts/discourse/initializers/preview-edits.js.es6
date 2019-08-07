@@ -45,14 +45,15 @@ export default {
         },
 
         filter() {
+          let filter = this.get('parentView.model.filter') ||  ''
 
-            const currentRoute = this.get('currentRoute');
+          const currentRoute = this.get('currentRoute');
 
-            if (currentRoute == 'userActivity.favourites') filter = 'activity-favourites';
-            if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
+          if (currentRoute == 'userActivity.favourites') filter = 'activity-favourites';
+          if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
 
-            const mobile = this.get('site.mobileView');
-            if (mobile) filter += '-mobile';
+          const mobile = this.get('site.mobileView');
+          if (mobile) filter += '-mobile';
 
           return filter;
         },
