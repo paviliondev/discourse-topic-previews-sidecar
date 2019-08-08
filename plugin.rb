@@ -117,12 +117,6 @@ after_initialize do
     end
   end
 
-  Discourse::Application.routes.draw do
-    scope "/topics", username: RouteFormat.username do
-      get "favourites/:username" => "list#favourites_topics_by", as: "favourites_topics_by", constraints: { format: /(json|html)/ }, defaults: { format: :json }
-    end
-  end
-
   Discourse::Application.routes.append do
     mount ::TopicPreviews::Engine, at: '/topic-previews'
   end
