@@ -78,7 +78,7 @@ export default {
         },
 
         settingEnabled(setting) {
-
+          
           const routeEnabled = this.get('routeEnabled');
           if (routeEnabled) {
             return routeEnabled.indexOf(setting) > -1;
@@ -91,7 +91,7 @@ export default {
           if (!discoveryList && !suggestedList) return false;
 
           const category = this.get('category');
-          const catSetting = category ? category.get(setting) : false;
+          const catSetting = category ? category.custom_fields[setting] : false;
           const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
           const filterArr = filter ? filter.split('/') : [];
           const filterType = filterArr[filterArr.length - 1];
