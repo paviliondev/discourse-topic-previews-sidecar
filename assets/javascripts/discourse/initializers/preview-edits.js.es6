@@ -13,6 +13,17 @@ export default {
 
     withPluginApi('0.8.12', (api) => {
 
+      api.modifyClass('component:load-more', {
+          init() {
+            this._super(...arguments);
+            if (this.class == "paginated-topics-list") {
+              this.set("eyelineSelector", '.topic-list-item');
+            } else {
+              this.set("eyelineSelector", this.selector)
+            }
+          }
+       });
+
       api.modifyClass('component:basic-topic-list',  {
         router: Ember.inject.service('-routing'),
         classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'tilesStyle'],
@@ -56,7 +67,7 @@ export default {
           if (mobile) filter += '-mobile';
 
           return filter;
-        },
+        }
       });
 
 
