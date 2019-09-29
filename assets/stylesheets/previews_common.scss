@@ -432,3 +432,33 @@ button.list-button {
   transform: translateX(+2px);
   box-shadow: 1px 1px 1px 1px #888888;
 }
+
+.portfolio-button{
+  width:100px;
+  padding: 6px;
+  overflow: hidden;
+  font-size: 1em;
+  height: 18px;
+  min-width: 100px;
+  vertical-align: middle;
+  justify-content: center;
+  white-space: nowrap;
+  margin-left: 2px;
+  display: inline-flex;
+  
+  
+  background-color: $tertiary;
+
+  label {
+    //width: 80%;
+    color: $secondary;
+    display: inline-block;
+  }
+  svg {
+    //width: 20%;
+    color: $secondary;
+    //fill: $tertiary;
+    display: inline-block;
+  }
+}
+

@@ -10,7 +10,7 @@ plugins:
      - top
      - tags
      - activity-topics
-     - activity-favourites
+     - activity-portfolio
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -29,7 +29,7 @@ plugins:
      - suggested
      - agenda
      - activity-topics
-     - activity-favourites
+     - activity-portfolio
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -50,7 +50,7 @@ plugins:
      - suggested
      - agenda
      - activity-topics
-     - activity-favourites
+     - activity-portfolio
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -71,7 +71,7 @@ plugins:
      - suggested
      - agenda
      - activity-topics
-     - activity-favourites
+     - activity-portfolio
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -104,7 +104,7 @@ plugins:
      - tags-mobile
      - suggested-mobile
      - agenda-mobile
-  topic_list_activity_favourites_category:
+  topic_list_activity_portfolio_category:
     default: ''
     client: true
   topic_list_set_category_defaults:

@@ -60,7 +60,7 @@ export default {
 
           const currentRoute = this.get('currentRoute');
 
-          if (currentRoute == 'userActivity.favourites') filter = 'activity-favourites';
+          if (currentRoute == 'userActivity.portfolio') filter = 'activity-portfolio';
           if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
 
           const mobile = this.get('site.mobileView');
@@ -125,7 +125,7 @@ export default {
 
           const currentRoute = this.get('currentRoute');
           if (currentRoute.indexOf('tags') > -1) filter = 'tags';
-          if (currentRoute == 'userActivity.favourites') filter = 'activity-favourites';
+          if (currentRoute == 'userActivity.portfolio') filter = 'activity-portfolio';
           if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
 
           const suggestedList = this.get('suggestedList');

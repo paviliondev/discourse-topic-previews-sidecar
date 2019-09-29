@@ -12,7 +12,7 @@ register_asset 'javascripts/discourse/lib/imagesloaded/imagesloaded.js'
 register_svg_icon "bookmark" if respond_to?(:register_svg_icon)
 register_svg_icon "heart" if respond_to?(:register_svg_icon)
 register_svg_icon "id-card" if respond_to?(:register_svg_icon)
-register_svg_icon "star" if respond_to?(:register_svg_icon)
+register_svg_icon "images" if respond_to?(:register_svg_icon)
 
 enabled_site_setting :topic_list_previews_enabled
 

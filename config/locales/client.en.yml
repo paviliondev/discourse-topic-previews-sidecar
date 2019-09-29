@@ -1,13 +1,13 @@
 en:
   adminjs:
-    user_activity_favourites:
-      title: "Favourites"
+    user_activity_portfolio:
+      title: "Portfolio"
     thumbnail_selector:
       select_preview_button: "Select thumbnail"
       title: "Select the desired preview thumbnail"
   js:
-    user_activity_favourites:
-      title: "Favourites"
+    user_activity_portfolio:
+      title: "Portfolio"
     thumbnail_selector:
       select_preview_button: "Select thumbnail"
       title: "Select the desired preview thumbnail"
