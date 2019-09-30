@@ -445,20 +445,22 @@ button.list-button {
   white-space: nowrap;
   margin-left: 2px;
   display: inline-flex;
-  
+  cursor: pointer;
   
   background-color: $tertiary;
 
   label {
-    //width: 80%;
+    color: $secondary;
+    display: inline-block;
+    cursor: pointer;
+  }
+  svg {
     color: $secondary;
     display: inline-block;
   }
-  svg {
-    //width: 20%;
-    color: $secondary;
-    //fill: $tertiary;
-    display: inline-block;
+
+  &:hover {
+    background-color: darken($tertiary, 5%);
   }
 }
 
