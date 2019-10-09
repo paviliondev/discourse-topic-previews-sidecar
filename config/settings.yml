@@ -104,7 +104,7 @@ plugins:
      - tags-mobile
      - suggested-mobile
      - agenda-mobile
-  topic_list_activity_portfolio_category:
+  topic_list_activity_portfolio_filter:
     default: ''
     client: true
   topic_list_set_category_defaults:
