@@ -1,7 +1,5 @@
 en:
   adminjs:
-    user_activity_portfolio:
-      title: "Portfolio"
     thumbnail_selector:
       select_preview_button: "Select thumbnail"
       title: "Select the desired preview thumbnail"
