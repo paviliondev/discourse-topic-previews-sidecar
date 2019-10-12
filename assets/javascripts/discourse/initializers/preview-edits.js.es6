@@ -4,6 +4,7 @@ import { withPluginApi } from 'discourse/lib/plugin-api';
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 import DiscourseURL from 'discourse/lib/url';
 import PostsCountColumn from 'discourse/raw-views/list/posts-count-column';
+import Settings from "../mixins/settings";
 
 export default {
   name: 'preview-edits',
@@ -24,7 +25,9 @@ export default {
           }
        });
 
-      api.modifyClass('component:basic-topic-list',  {
+      api.modifyClass('component:basic-topic-list', Settings);
+
+      api.modifyClass('component:basic-topic-list', {
         router: Ember.inject.service('-routing'),
         classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'tilesStyle'],
         currentRoute: Ember.computed.alias('router.currentRouteName'),
@@ -36,40 +39,11 @@ export default {
 
         @computed('listChanged')
         tilesStyle() {
-          this.settingEnabled('topic_list_tiles');
-        },
-
-        settingEnabled(setting) {
-
-            const routeEnabled = this.get('routeEnabled');
-            if (routeEnabled) {
-               return routeEnabled.indexOf(setting) > -1;
-            }
-
-            const filter = this.filter();
-            const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
-            const filterArr = filter ? filter.split('/') : [];
-            const filterType = filterArr[filterArr.length - 1];
-            const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
-          
-            return siteEnabled;
-        },
-
-        filter() {
-          let filter = this.get('parentView.model.filter') ||  ''
-
-          const currentRoute = this.get('currentRoute');
-
-          if (currentRoute == 'userActivity.portfolio') filter = 'activity-portfolio';
-          if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
-
-          const mobile = this.get('site.mobileView');
-          if (mobile) filter += '-mobile';
-
-          return filter;
+          this._settingEnabled('topic_list_tiles');
         }
       });
 
+      api.modifyClass('component:topic-list',  Settings);
 
       api.modifyClass('component:topic-list',  {
         router: Ember.inject.service('-routing'),
@@ -120,74 +94,29 @@ export default {
           this.$("tbody").removeClass('tiles-grid');
         },
 
-        filter() {
-          let filter = this.get('parentView.model.filter');
-
-          const currentRoute = this.get('currentRoute');
-          if (currentRoute.indexOf('tags') > -1) filter = 'tags';
-          if (currentRoute == 'userActivity.portfolio') filter = 'activity-portfolio';
-          if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
-
-          const suggestedList = this.get('suggestedList');
-          if (suggestedList) filter = 'suggested';
-
-          const mobile = this.get('site.mobileView');
-          if (mobile) filter += '-mobile';
-
-          return filter;
-        },
-
-        settingEnabled(setting) {
-
-          const routeEnabled = this.get('routeEnabled');
-          if (routeEnabled) {
-            return routeEnabled.indexOf(setting) > -1;
-          }
-
-          const filter = this.filter();
-          const discoveryList = this.get('discoveryList');
-          const suggestedList = this.get('suggestedList');
-          const currentRoute = this.get('currentRoute');
-
-          if (!discoveryList && !suggestedList && !(currentRoute.indexOf('userActivity') > -1)) return false;
-
-          const category = this.get('category');
-          const catSetting = category ? category.get(setting) : false;
-          const siteSetting = Discourse.SiteSettings[setting] ? Discourse.SiteSettings[setting].toString() : false;
-          const filterArr = filter ? filter.split('/') : [];
-          const filterType = filterArr[filterArr.length - 1];
-          const catEnabled = catSetting && catSetting.split('|').indexOf(filterType) > -1;
-          const siteEnabled = siteSetting && siteSetting.split('|').indexOf(filterType) > -1;
-          const siteDefaults = Discourse.SiteSettings.topic_list_set_category_defaults;
-          const path = window.location.pathname;
-          const isTopic = /^\/t\//.test(path);
-
-          return isTopic ? siteEnabled : (category ? (catEnabled || siteDefaults && siteEnabled) : siteEnabled);
-        },
-
         @computed('listChanged')
         tilesStyle() {
-          return this.settingEnabled('topic_list_tiles');
+          return this._settingEnabled('topic_list_tiles');
         },
 
         @computed('listChanged')
         showThumbnail() {
-          return this.settingEnabled('topic_list_thumbnail');
+          return this._settingEnabled('topic_list_thumbnail');
         },
 
         @computed('listChanged')
         showExcerpt() {
-          return this.settingEnabled('topic_list_excerpt');
+          return this._settingEnabled('topic_list_excerpt');
         },
 
         @computed('listChanged')
         showActions() {
-          return this.settingEnabled('topic_list_action');
+          return this._settingEnabled('topic_list_action');
         },
 
         @computed('listChanged')
 	        showCategoryBadge() {
-            const catcolumn = this.settingEnabled('topic_list_category_column');
+            const catcolumn = this._settingEnabled('topic_list_category_column');
             const path = window.location.pathname;
             const isTopic = /^\/t\//.test(path);
             return (isTopic && !catcolumn)||(!catcolumn && (!this.get('category') || this.get('category.has_children')));
