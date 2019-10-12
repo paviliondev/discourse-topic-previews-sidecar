@@ -72,7 +72,7 @@ after_initialize do
     "topic_list_featured_images"
   ].each do |key|
     Site.preloaded_category_custom_fields << key if Site.respond_to? :preloaded_category_custom_fields
-    add_to_serializer(:basic_category, key.to_sym) { object.custom_fields[key] }
+    add_to_serializer(:basic_category, key.to_sym, false) { object.custom_fields[key] }
   end
 
   PostRevisor.track_topic_field(:image_url)
