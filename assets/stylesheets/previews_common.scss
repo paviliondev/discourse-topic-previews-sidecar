@@ -1,5 +1,5 @@
 //tiles styling  specific styling
-#list-area.tiles-style {
+.tiles-style {
 
   .tiles-grid {
     display:block;
@@ -442,3 +442,35 @@ button.list-button {
   transform: translateX(+2px);
   box-shadow: 1px 1px 1px 1px #888888;
 }
+
+.portfolio-button-inner{
+  width:100px;
+  padding: 6px;
+  overflow: hidden;
+  font-size: 1em;
+  height: 18px;
+  min-width: 100px;
+  vertical-align: middle;
+  justify-content: center;
+  white-space: nowrap;
+  margin-left: 2px;
+  display: inline-flex;
+  cursor: pointer;
+  
+  background-color: $tertiary;
+
+  label {
+    color: $secondary;
+    display: inline-block;
+    cursor: pointer;
+  }
+  svg {
+    color: $secondary;
+    display: inline-block;
+  }
+
+  &:hover {
+    background-color: darken($tertiary, 5%);
+  }
+}
+

@@ -1,0 +1,8 @@
+{{#if portfolioEnabled}}
+    <div class="portfolio-button-inner">
+    {{#link-to 'userActivity.portfolio' user}}
+        <svg class="fa d-icon d-icon-images svg-icon svg-string" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#images"></use></svg>
+        <label>{{i18n 'user_activity_portfolio.title'}}</label>
+    {{/link-to}}
+    </div>
+{{/if}}

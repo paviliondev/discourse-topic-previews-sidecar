@@ -9,6 +9,8 @@ plugins:
      - unread
      - top
      - tags
+     - activity-topics
+     - activity-portfolio
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -26,6 +28,8 @@ plugins:
      - tags
      - suggested
      - agenda
+     - activity-topics
+     - activity-portfolio
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -45,6 +49,8 @@ plugins:
      - tags
      - suggested
      - agenda
+     - activity-topics
+     - activity-portfolio
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -64,6 +70,8 @@ plugins:
      - tags
      - suggested
      - agenda
+     - activity-topics
+     - activity-portfolio
      - latest-mobile
      - new-mobile
      - unread-mobile
@@ -96,6 +104,19 @@ plugins:
      - tags-mobile
      - suggested-mobile
      - agenda-mobile
+  topic_list_portfolio:
+    default: true
+    client: true
+  topic_list_portfolio_filter_type:
+    default: 'tag'
+    type: 'enum'
+    choices:
+      - tag
+      - category
+    client: true
+  topic_list_portfolio_filter_parameter:
+    default: ''
+    client: true
   topic_list_set_category_defaults:
     default: false
     client: true
