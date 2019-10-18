@@ -61,12 +61,12 @@ export default {
             this.set('category', category);
           };
         },
-
-	      @on('didRender')
-	      completeRender(){
-         if (this.get('tilesStyle')){
+        
+        @on('didRender')
+        completeRender(){
+          if (this.get('tilesStyle') && !this.site.mobileView){
              Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
-         };
+          };
         },
 
         @on('didInsertElement')
