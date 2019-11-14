@@ -94,7 +94,7 @@ after_initialize do
           post_id = post.id
           doc = Nokogiri::HTML( post.cooked )
           @img_srcs = doc.css('img').map{ |i| i['src'] }
-          @img_srcs << post.image_url if ((!post.image_url.nil?) && (post.image_url != "") && (!@img_srcs.include? post.image_url))
+          @img_srcs << post.image_url if (!post.image_url.blank? && (!@img_srcs.include? post.image_url))
           @img_srcs.each do |image|
             if image == image_url
               thumbnail_post = post
