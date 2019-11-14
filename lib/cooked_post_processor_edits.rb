@@ -26,10 +26,6 @@ CookedPostProcessor.class_eval do
 
   def update_post_image
 
-   # unless @post.topic.custom_fields['user_thumbnail_selected']
-
-    #  @post.topic.custom_fields['user_thumbnail_selected'] = false
-
       img = extract_post_image
 
       if @has_oneboxes
@@ -84,8 +80,5 @@ CookedPostProcessor.class_eval do
           end
         end
       end
-    #else
-     # @post.topic.custom_fields['user_thumbnail_selected'] = false
-    #end
   end
 end
