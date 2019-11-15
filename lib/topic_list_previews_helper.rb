@@ -9,9 +9,9 @@ module ListHelper
       local = UrlHelper.is_local(url)
       image = local ? Upload.find_by(sha1: url[/[a-z0-9]{40,}/i]) : get_linked_image(post, url)
       Rails.logger.info "Creating thumbnails with: #{image}"
-      create_thumbnails(post.topic, image, url)
+      thumbnails = create_thumbnails(post.topic, image, url)
       post.image_url = url
-      image.id
+      return {id: image.id, thumbnails: thumbnails}
     end
 
     def get_linked_image(post, url)
