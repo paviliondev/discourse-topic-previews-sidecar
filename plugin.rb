@@ -19,6 +19,7 @@ enabled_site_setting :topic_list_previews_enabled
 after_initialize do
   Topic.register_custom_field_type('thumbnails', :json)
   Topic.register_custom_field_type('user_thumbnail_selected', :boolean)
+  Topic.register_custom_field_type('thumbnail_from_post', :integer)
   Category.register_custom_field_type('thumbnail_width', :integer)
   Category.register_custom_field_type('thumbnail_height', :integer)
   Category.register_custom_field_type('topic_list_featured_images', :boolean)
@@ -103,6 +104,8 @@ after_initialize do
           end
           break if thumbnail_post_id != nil
       end
+
+      topic.custom_fields['thumbnail_from_post'] = thumbnail_post_id
 
       unless SiteSetting.topic_list_hotlink_thumbnails ||
                 !SiteSetting.topic_list_previews_enabled
