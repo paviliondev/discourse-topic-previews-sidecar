@@ -28,6 +28,8 @@ CookedPostProcessor.class_eval do
 
     unless @post.topic.custom_fields['user_thumbnail_selected']
 
+      return unless @post.topic.custom_fields['thumbnail_from_post'].blank? || @post.topic.custom_fields['thumbnail_from_post'] == @post.id
+
       @post.topic.custom_fields['user_thumbnail_selected'] = false
 
       img = extract_post_image

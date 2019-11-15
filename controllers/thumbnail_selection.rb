@@ -18,7 +18,7 @@ class ::TopicPreviews::ThumbnailselectionController < ::ApplicationController
         @img_srcs = @doc.css('img').map{ |i| i['src'] }
         @img_srcs << post.image_url if (!post.image_url.blank? && (!@img_srcs.include? post.image_url))
         @img_srcs.map do |image|
-          if (!image.include? "emoji") && (!image.include? "avatar")
+          if (!image.include? "emoji") && (!image.include? "avatar") && (!@thumbnails.any? {|h| h[:image] == image})
             @thumbnails << {image: image, post_id: @post_id}
           end
         end
