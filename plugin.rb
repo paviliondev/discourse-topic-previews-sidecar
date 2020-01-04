@@ -76,8 +76,6 @@ after_initialize do
     add_to_serializer(:basic_category, key.to_sym, false) { object.custom_fields[key] }
   end
 
-  PostRevisor.track_topic_field(:image_url)
-
   PostRevisor.class_eval do
     track_topic_field(:image_url) do |tc, image_url|
       tc.record_change('image_url', tc.topic.image_url, image_url)
