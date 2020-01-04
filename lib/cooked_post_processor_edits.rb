@@ -25,7 +25,7 @@ CookedPostProcessor.class_eval do
   end
 
   def update_post_image
-
+    return if !@post.topic.image_url.blank? && !@post.topic.custom_fields['thumbnail_from_post'].blank?  
     img = extract_post_image
     
     if @has_oneboxes
