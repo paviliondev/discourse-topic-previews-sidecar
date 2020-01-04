@@ -2,7 +2,7 @@
   <h3>{{i18n 'thumbnail_selector.topic_title_prefix'}} "{{modal_topic_title}}"</h3>
   <span class="select-thumbnail">
   {{#each thumbnailList.thumbnailselection as |thumbnail|}}
-    <img class="select-thumbnail" src={{thumbnail.image}}
+    <img class="select-thumbnail-options" src={{thumbnail.image}}
     {{action "selectThumbnail" thumbnail.image thumbnail.post_id}}>
   {{/each}}
   </span>

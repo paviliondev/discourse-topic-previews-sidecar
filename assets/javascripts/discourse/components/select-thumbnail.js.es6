@@ -6,6 +6,11 @@ import { default as computed, on, observes } from 'ember-addons/ember-computed-d
 export default Ember.Component.extend ({
   classNames: 'select-thumbnail',
 
+  @computed
+  showSelected() {
+    return this.get('buffered.image_url') ? true : false;
+  },
+
   actions: {
     showThumbnailSelector() {
 
