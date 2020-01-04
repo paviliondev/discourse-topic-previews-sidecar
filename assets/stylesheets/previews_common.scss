@@ -420,8 +420,13 @@ button.list-button {
     float: right;
   }
 }
-// formats for thumbnail selector modal
-.select-thumbnail img {
+
+// formats for thumbnail selector functionality
+div.select-thumbnail-connector {
+  padding: 0 0 10px 0;
+}
+
+img.select-thumbnail-options {
   width: 80px;
   height: 80px;
   padding: 1px;
@@ -429,11 +434,11 @@ button.list-button {
   cursor: pointer;
 }
 
-.select-thumbnail img:hover {
+img.select-thumbnail-options:hover {
   filter: brightness(120%);
 }
 
-.select-thumbnail img:active {
+img.select-thumbnail-options:active {
   -webkit-transform: translateY(+2px);
   -ms-transform: translateY(+2px);
   transform: translateY(+2px);
@@ -443,9 +448,9 @@ button.list-button {
   box-shadow: 1px 1px 1px 1px #888888;
 }
 
-.tlp-thumbnail-header-preview-img {
-  border: solid 1px #919191;
-  margin: 10px 0px 10px 0px;
+img.select-thumbnail-preview {
+  border: solid 1px $primary;
+  margin: 5px 0px 5px 0px;
   padding: 5px;
   width: 148px;
   max-height: 148px;
