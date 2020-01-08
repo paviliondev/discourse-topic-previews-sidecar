@@ -40,7 +40,7 @@ export default {
 
         @discourseComputed('listChanged')
         tilesStyle() {
-          this._settingEnabled('topic_list_tiles');
+          this._settingEnabled('topic_list_tiles');       
         }
       });
 
@@ -50,6 +50,7 @@ export default {
         router: Ember.inject.service('-routing'),
         currentRoute: alias('router.router.currentRouteName'),
         classNameBindings: ['showThumbnail', 'showExcerpt', 'showActions', 'tilesStyle'],
+        discoveryList: equal('parentView._debugContainerKey', 'component:discovery-topics-list'),
         suggestedList: equal('parentView.parentView.parentView.elementId', 'suggested-topics'),
         listChanged: false,
 
