@@ -85,25 +85,6 @@ plugins:
   topic_list_tiles_larger_featured_tiles:
     default: true
     client: true
-  topic_list_category_column:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - tags
-     - suggested
-     - agenda
-     - latest-mobile
-     - new-mobile
-     - unread-mobile
-     - top-mobile
-     - tags-mobile
-     - suggested-mobile
-     - agenda-mobile
   topic_list_portfolio:
     default: true
     client: true

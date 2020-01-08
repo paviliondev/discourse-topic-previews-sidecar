@@ -6,7 +6,6 @@ en:
     topic_list_thumbnail: "Show topic preview thumbnails in selected lists."
     topic_list_excerpt: "Show topic excerpts in selected lists."
     topic_list_action: "Show the like and bookmark buttons in selected lists."
-    topic_list_category_column: "Show a separate category column in selected lists"
     topic_list_portfolio: "Enable additional User Activity view for User Portfolio"
     topic_list_portfolio_filter_type: "Which type of filter should be used to limit Activity Portfolio Topics"
     topic_list_portfolio_filter_parameter: "Enter the tag or category slug (depending of value of filter type setting)"

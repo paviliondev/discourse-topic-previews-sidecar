@@ -1,7 +1,7 @@
 
 const listChoices = ['latest', 'new', 'unread', 'top', 'suggested', 'agenda', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'suggested-mobile', 'agenda-mobile'];
 const filterChoices = ['suggested', 'suggested-mobile'];
-const listSettings = ['tiles', 'thumbnail', 'excerpt', 'action', 'category_column'];
+const listSettings = ['tiles', 'thumbnail', 'excerpt', 'action'];
 
 export default {
   setupComponent(args, component) {

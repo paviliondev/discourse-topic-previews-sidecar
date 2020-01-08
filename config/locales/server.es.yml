@@ -6,7 +6,6 @@ es:
     topic_list_thumbnail: "Mostrar vistas previas de temas en las listas seleccionadas."
     topic_list_excerpt: "Mostrar extractos de temas en listas seleccionadas."
     topic_list_action: "Muestra los botones Me gusta y Marcadores en las listas seleccionadas."
-    topic_list_category_column: "Mostrar una columna de categoría separada en las listas seleccionadas"
     topic_list_set_category_defaults: "Establecer la configuración de visualización de la lista de temas del sitio como predeterminada para las listas de temas de categoría."
     topic_list_show_like_on_current_users_posts: "Mostrar un botón de 'Me gusta' inactivo en los elementos de la lista de temas en la vista previa de una publicación creada por el usuario actual (comportamiento de Discourse no predeterminado)."
     topic_list_excerpt_length: "Longitud del carácter de los extractos del tema."

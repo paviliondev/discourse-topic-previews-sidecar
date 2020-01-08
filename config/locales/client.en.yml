@@ -11,11 +11,11 @@ en:
       title: "Select the desired preview thumbnail"
       topic_title_prefix: "... for Topic:"
     category:
+      topic_list_previews_settings_heading: "Topic List Previews"
       topic_list_tiles: "Apply tiles arrangement to selected lists in this category."
       topic_list_thumbnail: "Show topic preview thumbnails in selected lists in this category."
       topic_list_excerpt: "Show topic excerpts in selected lists in this category."
       topic_list_action: "Show like and bookmark buttons in selected lists in this category."
-      topic_list_category_column: "Show a separate category column in selected lists in this category."
       topic_list_default_thumbnail: "Image URL for thumbnail shown if topic in this category has no preview thumbnail set."
       topic_list_default_thumbnail_placeholder: "Default thumbnail URL"
       topic_list_thumbnail_width: "Width of thumbnails in this category (rebake your posts if you change this)."
