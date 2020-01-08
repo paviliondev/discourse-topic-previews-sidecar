@@ -379,7 +379,8 @@ export default {
 
         @discourseComputed('category','topic.isPinnedUncategorized')
         showCategoryBadge(category, isPinnedUncategorized) {
-          return (!category || category.has_children) && !isPinnedUncategorized;
+          const isTopic = (typeof(topic) !== 'undefined') ;
+          return (isTopic || !category || category.has_children) && !isPinnedUncategorized;
         },
 
         changeLikeCount(change) {
