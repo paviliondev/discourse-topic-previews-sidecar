@@ -19,7 +19,7 @@
       {{topic-featured-link topic}}
     {{/if}}
 
-    {{#unless tilesStyle}}
+    {{#if notTilesStyle}}
       {{#if mobileView}}
         {{#if topic.unseen}}
           <span class="badge-notification new-topic"></span>
@@ -29,7 +29,7 @@
           {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
         {{/if}}
       {{/if}}
-    {{/unless}}
+    {{/if}}
 
     {{raw-plugin-outlet name="topic-list-after-title"}}
   </span>
