@@ -40,7 +40,7 @@ var renderUnboundPreview = function(thumbnails, params) {
 
   const category_width = params.category ? params.category.topic_list_thumbnail_width : false;
   const category_height = params.category ? params.category.topic_list_thumbnail_height : false;
-  const featured_width = opts.featured ? settings.topic_list_featured_width : false;
+  const featured_width = opts.featured ? settings.topic_list_featured_width ? settings.topic_list_featured_width : 'auto' : false;
   const featured_height = opts.featured ? settings.topic_list_featured_height : false;
   const tiles_width = opts.tilesStyle ? '100' : false;
   const tiles_height = opts.tilesStyle ? 'auto' : false;
