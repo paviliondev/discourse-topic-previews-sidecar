@@ -389,7 +389,7 @@ export default {
               newCount = count + (change || 0);
           this.set('hasLiked', Boolean(change > 0));
           this.set('likeDifference', newCount);
-          this.rerenderBuffer();
+          this.renderTopicListItem();
           this._afterRender();
         },
 
