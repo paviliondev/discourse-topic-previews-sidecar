@@ -27,7 +27,7 @@ en:
     topic_list_featured_images_tag: "Featured images tag."
     topic_list_featured_images_tag_show: "Show featured images tag below featured images."
     topic_list_featured_images_count: "Featured images count."
-    topic_list_featured_width: "Featured image width."
+    topic_list_featured_width: "Featured image width.  Setting this to zero will make it responsive to image aspect ratio."
     topic_list_featured_height: "Featured image height."
     topic_list_featured_title: "Featured images title. Supports Markdown."
     topic_list_featured_excerpt: "Include topic excerpt in featured image."
