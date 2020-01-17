@@ -1,4 +1,4 @@
-import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
+import discourseComputed, { on, observes } from "discourse-common/utils/decorators";
 import { cookAsync } from 'discourse/lib/text';
 
 export default Ember.Component.extend({
@@ -21,17 +21,17 @@ export default Ember.Component.extend({
     }
   },
 
-  @computed
+  @discourseComputed
   showFeaturedTitle() {
     return Discourse.SiteSettings.topic_list_featured_title;
   },
 
-  @computed
+  @discourseComputed
   featuredTags() {
     return Discourse.SiteSettings.topic_list_featured_images_tag.split('|');
   },
 
-  @computed
+  @discourseComputed
   showFeaturedTags() {
     return this.get('featuredTags') &&
            Discourse.SiteSettings.topic_list_featured_images_tag_show;
