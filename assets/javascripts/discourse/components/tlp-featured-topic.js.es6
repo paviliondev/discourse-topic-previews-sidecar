@@ -1,5 +1,5 @@
 import DiscourseUrl from 'discourse/lib/url';
-import { default as computed } from 'ember-addons/ember-computed-decorators';
+import discourseComputed from "discourse-common/utils/decorators";
 import { testImageUrl, getDefaultThumbnail } from '../lib/utilities';
 
 export default Ember.Component.extend({
@@ -27,12 +27,12 @@ export default Ember.Component.extend({
     }
   },
 
-  @computed
+  @discourseComputed
   featuredTags() {
     return Discourse.SiteSettings.topic_list_featured_images_tag.split('|');
   },
 
-  @computed('topic.tags')
+  @discourseComputed('topic.tags')
   featuredTag(tags) {
     return tags.filter(tag => this.get('featuredTags').indexOf(tag) > -1)[0];
   },
@@ -45,7 +45,7 @@ export default Ember.Component.extend({
     this.set('showDetails', false);
   },
 
-  @computed('topic.id')
+  @discourseComputed('topic.id')
   href(topicId) {
     return `/t/${topicId}`;
   },
