@@ -4,6 +4,10 @@ en:
       select_preview_button: "Select thumbnail"
       title: "Select the desired preview thumbnail"
   js:
+    tlp:
+      user_prefs:
+        title: "Topic List Previews User Preferences"
+        force_low_res_thumbnail: "Force low res thumbnails in Topic Lists and Featured Topics"
     user_activity_portfolio:
       title: "Portfolio"
     thumbnail_selector:
