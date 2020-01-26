@@ -7,7 +7,7 @@ en:
     tlp:
       user_prefs:
         title: "Topic List Previews User Preferences"
-        force_low_res_thumbnail: "Force low res thumbnails in Topic Lists and Featured Topics"
+        prefer_low_res_thumbnail: "Prefer low res thumbnails in Topic Lists and Featured Images (can be overruled by admin)"
     user_activity_portfolio:
       title: "Portfolio"
     thumbnail_selector:
