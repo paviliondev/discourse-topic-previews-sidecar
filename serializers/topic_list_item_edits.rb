@@ -52,7 +52,7 @@ class ::TopicListItemSerializer
   def thumbnails
     return unless object.archetype == Archetype.default
 
-    if SiteSetting.topic_list_hotlink_thumbnails
+    if SiteSetting.topic_list_hotlink_thumbnails || @options[:featured_topics] && SiteSetting.topic_list_featured_images_full_res
       original_images
     else
       get_thumbnails || get_thumbnails_from_image_url

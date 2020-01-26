@@ -135,6 +135,9 @@ plugins:
   topic_list_featured_images:
     default: false
     client: true
+  topic_list_featured_images_full_res:
+    default: false
+    client: false
   topic_list_featured_images_category:
     default: false
     client: true
