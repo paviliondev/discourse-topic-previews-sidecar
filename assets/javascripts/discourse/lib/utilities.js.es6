@@ -9,7 +9,7 @@ var isThumbnail = function(path) {
 };
 
 var previewUrl = function(thumbnails) {
-  const forceLowRes = (Discourse.User._current === null) ? false : Discourse.User._current.custom_fields.tlp_user_prefs_force_low_res_thumbnails;
+  const forceLowRes = (Discourse.User._current === null) ? false : Discourse.User._current.custom_fields.tlp_user_prefs_prefer_low_res_thumbnails;
   if (thumbnails) {
     if (thumbnails.retina && isThumbnail(thumbnails.retina)) {
       return ((window.devicePixelRatio >= 2) && !forceLowRes) ? thumbnails.retina : thumbnails.normal;

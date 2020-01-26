@@ -16,17 +16,17 @@ register_svg_icon "images" if respond_to?(:register_svg_icon)
 
 enabled_site_setting :topic_list_previews_enabled
 
-DiscoursePluginRegistry.serialized_current_user_fields << "tlp_user_prefs_force_low_res_thumbnails"
+DiscoursePluginRegistry.serialized_current_user_fields << "tlp_user_prefs_prefer_low_res_thumbnails"
 
 after_initialize do
-  User.register_custom_field_type('tlp_user_prefs_force_low_res_thumbnails', :boolean)
+  User.register_custom_field_type('tlp_user_prefs_prefer_low_res_thumbnails', :boolean)
   Topic.register_custom_field_type('thumbnails', :json)
   Topic.register_custom_field_type('thumbnail_from_post', :integer)
   Category.register_custom_field_type('thumbnail_width', :integer)
   Category.register_custom_field_type('thumbnail_height', :integer)
   Category.register_custom_field_type('topic_list_featured_images', :boolean)
 
-  register_editable_user_custom_field :tlp_user_prefs_force_low_res_thumbnails
+  register_editable_user_custom_field :tlp_user_prefs_prefer_low_res_thumbnails
 
   SiteSetting.create_thumbnails = true
 
