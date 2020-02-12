@@ -32,7 +32,7 @@ export default Ember.Mixin.create({
         let filter = this.get('parentView.model.filter');
 
         const currentRoute = this.get('currentRoute');
-        if (currentRoute.indexOf('tags') > -1) filter = 'tags';
+        if (currentRoute.indexOf('tag') > -1) filter = 'tags';
         if (currentRoute.indexOf('top') > -1) filter = 'top';
         if (currentRoute == 'userActivity.portfolio') filter = 'activity-portfolio';
         if (currentRoute == 'userActivity.topics') filter = 'activity-topics';
