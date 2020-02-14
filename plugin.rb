@@ -54,8 +54,9 @@ after_initialize do
   load File.expand_path('../lib/featured_topics.rb', __FILE__)
   load File.expand_path('../lib/topic_list_edits.rb', __FILE__)
   load File.expand_path('../lib/cooked_post_processor_edits.rb', __FILE__)
+  load File.expand_path('../serializers/topic_list_item_edits_mixin.rb', __FILE__)
   load File.expand_path('../serializers/topic_list_item_edits.rb', __FILE__)
-
+  
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
   TopicList.preloaded_custom_fields << "thumbnails" if TopicList.respond_to? :preloaded_custom_fields
 
