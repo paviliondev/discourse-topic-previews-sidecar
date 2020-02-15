@@ -175,3 +175,6 @@ plugins:
   topic_list_test_image_url_timeout:
     default: 5000
     client: true
+  topic_list_fade_in_time:
+    default: 0
+    client: true
