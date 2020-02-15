@@ -61,6 +61,9 @@ export default {
             const category = this.get('parentView.parentView.parentView.topic.category');
             this.set('category', category);
           };
+          if (Discourse.SiteSettings.topic_list_fade_in_time) {
+            $("#list-area").fadeOut(0)
+          }
         },
         
         @on('didRender')
@@ -68,6 +71,9 @@ export default {
           if (this.get('tilesStyle') && !this.site.mobileView){
              Ember.run.scheduleOnce('afterRender', this, this.applyMasonry);
           };
+          if (Discourse.SiteSettings.topic_list_fade_in_time) {
+            $("#list-area").fadeIn(Discourse.SiteSettings.topic_list_fade_in_time)
+          }
         },
 
         @on('didInsertElement')
@@ -450,7 +456,12 @@ export default {
 
         @on('willDestroyElement')
         removeRefreshTimelinePosition() {
-          this.appEvents.off('topic:refresh-timeline-position', this, () => this.queueDockCheck());
+          try {
+            this.appEvents.off('topic:refresh-timeline-position', this, () => this.queueDockCheck());
+          }
+          catch(err) {
+            console.log(err.message);
+          }
         }
       });
     });

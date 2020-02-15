@@ -34,3 +34,4 @@ en:
     topic_list_featured_excerpt: "Include topic excerpt in featured image."
     topic_list_featured_order: "Order featured images by when topic was created, or featured tag was applied."
     topic_list_test_image_url_timeout: "Timeout for testing image url"
+    topic_list_fade_in_time: "Optional fade in of Topic Lists in milliseconds.  0 means OFF"
