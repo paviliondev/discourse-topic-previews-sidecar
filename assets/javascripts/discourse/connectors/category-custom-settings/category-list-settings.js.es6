@@ -1,5 +1,5 @@
-const listChoices = ['latest', 'new', 'unread', 'top', 'suggested', 'agenda', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'suggested-mobile', 'agenda-mobile'];
-const filterChoices = ['suggested', 'suggested-mobile'];
+const listChoices = ['latest', 'new', 'unread', 'top', 'suggested', 'agenda', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'agenda-mobile'];
+const filterChoices = ['suggested'];
 const listSettings = ['tiles', 'thumbnail', 'excerpt', 'action'];
 
 export default {
