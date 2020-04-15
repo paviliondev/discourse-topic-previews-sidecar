@@ -12,7 +12,7 @@ export default Ember.Mixin.create({
         const suggestedList = this.get('suggestedList');
         const currentRoute = this.get('currentRoute');
 
-        if (!discoveryList && !suggestedList && !(currentRoute.indexOf('userActivity') > -1)) return false;
+        if (!discoveryList && !suggestedList && !(currentRoute.indexOf('userActivity') > -1) && !(currentRoute.indexOf('tag') > -1)) return false;
 
         const category = this.get('category');
         const catSetting = category ? category.get(setting) : false;
