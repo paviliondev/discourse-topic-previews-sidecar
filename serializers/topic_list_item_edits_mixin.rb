@@ -90,8 +90,9 @@ module TopicListItemEditsMixin
   end
 
   def topic_post_bookmarked
-    !!topic_post_actions.any? { |a| a.post_action_type_id == PostActionType.types[:bookmark] }
+    object.previewed_post_bookmark || false
   end
+
   alias :include_topic_post_bookmarked? :include_topic_post_id?
 
   def topic_post_liked
