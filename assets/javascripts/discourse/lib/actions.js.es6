@@ -1,5 +1,5 @@
-import { ajax } from 'discourse/lib/ajax';
-import { popupAjaxError } from 'discourse/lib/ajax-error';
+import {ajax} from 'discourse/lib/ajax';
+import {popupAjaxError} from 'discourse/lib/ajax-error';
 
 var addLike = function (postId) {
   ajax ('/post_actions', {
@@ -14,13 +14,13 @@ var addLike = function (postId) {
   });
 };
 
-var sendBookmark = function (topicId, postId, bookmarked) {
+var sendBookmark = function (topic, bookmarked) {
   if (bookmarked) {
     const data = {
       reminder_type: null,
       reminder_at: null,
       name: null,
-      post_id: postId,
+      post_id: topic.topic_post_id,
     };
     return ajax ('/bookmarks', {
       type: 'POST',
@@ -29,11 +29,26 @@ var sendBookmark = function (topicId, postId, bookmarked) {
       popupAjaxError (error);
     });
   } else {
-    return ajax (`/t/${topicId}/remove_bookmarks`, {
+    return ajax (`/t/${topic.id}/remove_bookmarks`, {
       type: 'PUT',
-    }).catch (function (error) {
-      popupAjaxError (error);
-    });
+    })
+      .then (
+        topic.firstPost().then (firstPost => {
+          topic.toggleProperty ('bookmarked');
+          topic.set ('bookmark_reminder_at', null);
+          let clearedBookmarkProps = {
+            bookmarked: false,
+            bookmarked_with_reminder: false,
+            bookmark_id: null,
+            bookmark_name: null,
+            bookmark_reminder_at: null,
+          };
+          firstPost.setProperties (clearedBookmarkProps);
+        })
+      )
+      .catch (function (error) {
+        popupAjaxError (error);
+      });
   }
 };
 
