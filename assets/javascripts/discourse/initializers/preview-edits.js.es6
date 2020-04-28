@@ -6,6 +6,7 @@ import { addLike, sendBookmark, removeLike } from '../lib/actions';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import PostsCountColumn from 'discourse/raw-views/list/posts-count-column';
 import Settings from "../mixins/settings";
+import Topic from 'discourse/models/topic';
 
 export default {
   name: 'preview-edits',
@@ -294,7 +295,7 @@ export default {
               $like = this.$('.topic-like');
 
           $bookmark.on('click.topic-bookmark', () => {
-            this.toggleBookmark($bookmark, postId);
+            this.toggleBookmark($bookmark);
           });
 
           $like.on('click.topic-like', () => {
@@ -437,9 +438,9 @@ export default {
 
         // Action toggles and server methods
 
-        toggleBookmark($bookmark, postId) {
-          sendBookmark(this.topic.id, postId, !$bookmark.hasClass('bookmarked'));
-          $bookmark.toggleClass('bookmarked');
+        toggleBookmark($bookmark) {
+         sendBookmark(this.topic, !$bookmark.hasClass('bookmarked'));
+         $bookmark.toggleClass('bookmarked');
         },
 
         toggleLike($like, postId) {
