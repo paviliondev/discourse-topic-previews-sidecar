@@ -438,7 +438,7 @@ export default {
         // Action toggles and server methods
 
         toggleBookmark($bookmark, postId) {
-          sendBookmark(postId, !$bookmark.hasClass('bookmarked'));
+          sendBookmark(this.topic.id, postId, !$bookmark.hasClass('bookmarked'));
           $bookmark.toggleClass('bookmarked');
         },
 
