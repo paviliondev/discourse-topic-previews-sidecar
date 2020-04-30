@@ -38,7 +38,6 @@ var sendBookmark = function (topic, bookmarked) {
           topic.set ('bookmark_reminder_at', null);
           let clearedBookmarkProps = {
             bookmarked: false,
-            bookmarked_with_reminder: false,
             bookmark_id: null,
             bookmark_name: null,
             bookmark_reminder_at: null,
