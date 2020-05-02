@@ -133,7 +133,7 @@ module ListHelper
       topics.each do |topic|
         topic.previewed_post = posts_map[topic.id]
         topic.previewed_post_actions = post_actions_map[topic.previewed_post.id] if topic.previewed_post
-        topic.previewed_post_bookmark = Bookmark.find_by(post_id: topic.previewed_post.id).present?
+        topic.previewed_post_bookmark = Bookmark.find_by(post_id: topic.previewed_post.id).present? if topic.previewed_post
       end
 
       topics
