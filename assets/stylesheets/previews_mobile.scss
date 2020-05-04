@@ -226,10 +226,17 @@ img.thumbnail:not(.tiles-thumbnail) {
     text-align: right;
     vertical-align: bottom;
 
+    .like-count {
+      margin-right: -4px;
+    }
+
     .list-button {
       font-size: 1em;
       padding: 0 0 0 10px;
       color: $primary-medium;
+      &.has-like, &.topic-like:not([disabled]):hover {
+        color: $love;
+      }
     }
   }
 }
