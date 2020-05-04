@@ -6,13 +6,12 @@
 <div class="topic-meta">
   {{raw-plugin-outlet name="topic-list-tiles-meta"}}
   <div class="topic-views {{topic.viewsHeat}} inline sub">
+    {{d-icon "far-eye"}}
     {{number topic.views numberKey="views_long"}}
-    <span>{{i18n 'views_lowercase' count=topic.views}}</span>
   </div>
   <span class="middot inline sub"></span>
   <div class='topic-replies posts-map {{likesHeat}} inline sub' title='{{title}}'>
-    <a href class='posts-map badge-posts {{likesHeat}}'>{{number topic.replyCount}}</a>
-    <span>{{i18n 'replies_lowercase' count=topic.replyCount}}</span>
+    <a href class='posts-map badge-posts {{likesHeat}}'>{{d-icon "far-comment"}}{{number topic.replyCount}}</a>
   </div>
   <span class="middot inline sub"></span>
   <div class="{{class}} {{cold-age-class topic.createdAt startDate=topic.bumpedAt class=""}} activity inline sub" title="{{{topic.bumpedAtTitle}}}">
