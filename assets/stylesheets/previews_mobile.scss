@@ -225,6 +225,12 @@ img.thumbnail:not(.tiles-thumbnail) {
     justify-content: flex-end;
     text-align: right;
     vertical-align: bottom;
+
+    .list-button {
+      font-size: 1em;
+      padding: 0 0 0 10px;
+      color: $primary-medium;
+    }
   }
 }
 
