@@ -178,6 +178,9 @@
 
   .topic-meta{
     grid-area: meta;
+    .topic-replies span {
+      padding-left: 3px;
+    }
   }
 
   .topic-poster-names a {
