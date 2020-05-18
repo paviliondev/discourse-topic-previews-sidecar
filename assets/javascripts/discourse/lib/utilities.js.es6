@@ -8,16 +8,15 @@ var isThumbnail = function(path) {
          path !== '';
 };
 
-var previewUrl = function(thumbnails) {
+var previewUrl = function (thumbnails) {
   const preferLowRes = (Discourse.User._current === null) ? false : Discourse.User._current.custom_fields.tlp_user_prefs_prefer_low_res_thumbnails;
   if (thumbnails) {
-    if (thumbnails.retina && isThumbnail(thumbnails.retina)) {
-      return ((window.devicePixelRatio >= 2) && !preferLowRes) ? thumbnails.retina : thumbnails.normal;
-    } else if (thumbnails.normal && isThumbnail(thumbnails.normal)) {
-      return thumbnails.normal;
-    } else if (isThumbnail(thumbnails)) {
-      return thumbnails;
-    }
+    let resLevel = Discourse.SiteSettings.topic_list_thumbnail_resolution_level
+    if (preferLowRes) {resLevel++};
+    if (window.devicePixelRatio && resLevel > 0) {resLevel--};
+    return resLevel <= thumbnails.length - 1
+      ? thumbnails[resLevel].url
+      : thumbnails[thumbnails.length - 1].url;
   } else {
     return false;
   }
@@ -31,7 +30,7 @@ var renderUnboundPreview = function(thumbnails, params) {
   const opts = params.opts || {};
 
   if (!opts.tilesStyle && Discourse.Site.currentProp('mobileView')) {
-    return `<img class="thumbnail" src="${url}"/>`;
+    return `<img class="thumbnail" src="${url}" loading="lazy"/>`;
   };
 
   const settings = Discourse.SiteSettings;
@@ -53,7 +52,7 @@ var renderUnboundPreview = function(thumbnails, params) {
   const height_style = height ? `height:${height}${attrHeightSuffix};` : ``;
   const style = `${height_style}width:${width}${attrWidthSuffix}`;
 
-  return `<img class="${css_classes}" src="${url}" style="${style}" />`;
+  return `<img class="${css_classes}" src="${url}" style="${style}" loading="lazy"/>`;
 };
 
 var testImageUrl = function(thumbnails, callback) {

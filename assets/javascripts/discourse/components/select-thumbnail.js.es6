@@ -8,7 +8,7 @@ export default Ember.Component.extend ({
 
   @discourseComputed
   showSelected() {
-    return this.get('buffered.image_url') ? true : false;
+    return this.get('buffered.user_chosen_thumbnail_url') ? true : false;
   },
 
   actions: {

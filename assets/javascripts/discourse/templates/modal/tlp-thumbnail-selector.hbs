@@ -2,8 +2,8 @@
   <h3>{{i18n 'thumbnail_selector.topic_title_prefix'}} "{{modal_topic_title}}"</h3>
   <span class="select-thumbnail">
   {{#each thumbnailList.thumbnailselection as |thumbnail|}}
-    <img class="select-thumbnail-options" src={{thumbnail.image}}
-    {{action "selectThumbnail" thumbnail.image thumbnail.post_id}}>
+    <img class="select-thumbnail-options" src={{thumbnail.image_url}}
+    {{action "selectThumbnail" thumbnail.image_url thumbnail.upload_id}}>
   {{/each}}
   </span>
 {{/d-modal-body}}
