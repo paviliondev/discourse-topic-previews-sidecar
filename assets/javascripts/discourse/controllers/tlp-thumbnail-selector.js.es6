@@ -9,10 +9,10 @@ export default Ember.Controller.extend(ModalFunctionality, bufferedProperty("mod
   modal_title: 'thumbnail_selector.title',
 
   actions: {
-    selectThumbnail: function(image_url, thumbnail_post_id){
+    selectThumbnail: function(image_url, image_upload_id){
       const buffered = this.get('buffered');
-      this.set("buffered.image_url", image_url);
-      this.set("buffered.thumbnail_post_id", thumbnail_post_id);
+      this.set("buffered.user_chosen_thumbnail_url", image_url);
+      this.set("buffered.image_upload_id", image_upload_id);
       this.send('closeModal');
     }
   }

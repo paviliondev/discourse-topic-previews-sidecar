@@ -104,6 +104,9 @@ plugins:
   topic_list_excerpt_length:
     default: 200
     client: true
+  topic_list_thumbnail_resolution_level:
+    default: 2
+    client: true
   topic_list_default_thumbnail:
     default: ''
     client: true
@@ -115,13 +118,6 @@ plugins:
     client: true
   topic_list_thumbnail_height:
     default: 100
-    client: true
-  topic_list_previewable_image_width_min:
-    default: 100
-  topic_list_previewable_image_height_min:
-    default: 100
-  topic_list_hotlink_thumbnails:
-    default: false
     client: true
   topic_list_thumbnail_first_x_rows:
     default: 0

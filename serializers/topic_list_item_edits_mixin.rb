@@ -15,48 +15,6 @@ module TopicListItemEditsMixin
     object.excerpt.present? && SiteSetting.topic_list_previews_enabled   && !(object.archetype == Archetype.private_message)
   end
 
-  def thumbnails
-    return unless object.archetype == Archetype.default
-
-    if SiteSetting.topic_list_hotlink_thumbnails || @options[:featured_topics] && SiteSetting.topic_list_featured_images_full_res
-      original_images
-    else
-      get_thumbnails || get_thumbnails_from_image_url
-    end
-  end
-
-  def include_thumbnails?
-    return unless SiteSetting.topic_list_previews_enabled && thumbnails.present?
-    thumbnails['normal'].present? && is_thumbnail?(thumbnails['normal'])
-  end
-
-  def is_thumbnail?(path)
-    path.is_a?(String) &&
-    path != 'false' &&
-    path != 'null' &&
-    path != 'nil'
-  end
-
-  def get_thumbnails
-    thumbs = object.custom_fields['thumbnails']
-    if thumbs.is_a?(String)
-      thumbs = ::JSON.parse(thumbs)
-    end
-    if thumbs.is_a?(Array)
-      thumbs = thumbs[0]
-    end
-    thumbs.is_a?(Hash) ? thumbs : false
-  end
-
-  def get_thumbnails_from_image_url
-    image = Upload.get_from_url(object.image_url) rescue false
-    return ListHelper.create_thumbnails(object, image, object.image_url)
-  end
-
-  def original_images
-    { 'normal' => object.image_url, 'retina' => object.image_url }
-  end
-
   def include_topic_post_id?
     object.previewed_post.present? && SiteSetting.topic_list_previews_enabled
   end
