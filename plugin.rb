@@ -27,6 +27,12 @@ after_initialize do
 
   register_editable_user_custom_field :tlp_user_prefs_prefer_low_res_thumbnails
 
+  register_topic_thumbnail_size [50, 50]
+  register_topic_thumbnail_size [100, 100]
+  register_topic_thumbnail_size [200, 200]
+  register_topic_thumbnail_size [400, 400]
+  register_topic_thumbnail_size [800, 800]
+
   module ::TopicPreviews
     class Engine < ::Rails::Engine
       engine_name "topic_previews"
