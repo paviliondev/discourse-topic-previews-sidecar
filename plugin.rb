@@ -1,6 +1,6 @@
 # name: discourse-topic-list-previews
 # about: Allows you to add topic previews and other topic features to topic lists
-# version: 4.3.1
+# version: 4.4.0
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-topic-previews
 
