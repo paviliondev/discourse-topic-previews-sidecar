@@ -2,6 +2,10 @@
 
 module TopicListItemEditsMixin
 
+  def sidecar_installed
+    true
+  end
+
   def include_topic_post_id?
     object.previewed_post.present? && SiteSetting.topic_list_previews_enabled
   end

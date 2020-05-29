@@ -4,6 +4,8 @@
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-topic-previews
 
+enabled_site_setting :topic_list_previews_enabled
+
 DiscoursePluginRegistry.serialized_current_user_fields << "tlp_user_prefs_prefer_low_res_thumbnails"
 
 after_initialize do
@@ -19,9 +21,10 @@ after_initialize do
     end
   end
 
-
   load File.expand_path('../lib//thumbnail_selection_helper.rb', __FILE__)
   load File.expand_path('../lib/topic_list_previews_helper.rb', __FILE__)
+  load File.expand_path('../lib/guardian_edits.rb', __FILE__)
+  load File.expand_path('../lib/topic_list_edits.rb', __FILE__)
   load File.expand_path('../controllers/thumbnail_selection.rb', __FILE__)
   load File.expand_path('../lib/cooked_post_processor_edits.rb', __FILE__)
   load File.expand_path('../serializers/topic_list_item_edits_mixin.rb', __FILE__)
