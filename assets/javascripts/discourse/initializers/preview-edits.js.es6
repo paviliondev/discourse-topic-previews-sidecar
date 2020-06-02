@@ -19,7 +19,10 @@ import { cookAsync } from 'discourse/lib/text';
 export default {
   name: 'preview-edits',
   initialize (container) {
-    if (!Discourse.SiteSettings.topic_list_previews_enabled) return;
+
+    const siteSettings = container.lookup('site-settings:main');
+
+    if (!siteSettings.topic_list_previews_enabled) return;
 
     withPluginApi ('0.8.12', api => {
       api.modifyClass ('component:load-more', {
@@ -78,7 +81,7 @@ export default {
             );
             this.set ('category', category);
           }
-          if (Discourse.SiteSettings.topic_list_fade_in_time) {
+          if (this.siteSettings.topic_list_fade_in_time) {
             $ ('#list-area').fadeOut (0);
           }
         },
@@ -88,9 +91,9 @@ export default {
           if (this.get ('tilesStyle') && !this.site.mobileView) {
             Ember.run.scheduleOnce ('afterRender', this, this.applyMasonry);
           }
-          if (Discourse.SiteSettings.topic_list_fade_in_time) {
+          if (this.siteSettings.topic_list_fade_in_time) {
             $ ('#list-area').fadeIn (
-              Discourse.SiteSettings.topic_list_fade_in_time
+              this.siteSettings.topic_list_fade_in_time
             );
           }
         },
@@ -166,7 +169,7 @@ export default {
 
         @discourseComputed ('listChanged')
         thumbnailFirstXRows () {
-          return Discourse.SiteSettings.topic_list_thumbnail_first_x_rows;
+          return this.siteSettings.topic_list_thumbnail_first_x_rows;
         },
 
         applyMasonry () {
@@ -188,7 +191,7 @@ export default {
             // transition set to zero on mobile due to undesirable behaviour on mobile safari if > 0
             const transDuration = this.get ('site.mobileView')
               ? 0
-              : Discourse.SiteSettings.topic_list_tiles_transition_time;
+              : this.siteSettings.topic_list_tiles_transition_time;
             this.$ ('.tiles-grid').masonry ({
               itemSelector: '.tiles-grid-item',
               transitionDuration: `${transDuration}s`,
@@ -237,7 +240,7 @@ export default {
             this.classNames = ['tiles-grid-item'];
 
             if (
-              Discourse.SiteSettings.topic_list_tiles_larger_featured_tiles &&
+              this.siteSettings.topic_list_tiles_larger_featured_tiles &&
               topic.tags
             ) {
               if (
@@ -268,13 +271,13 @@ export default {
             });
           } else if (
             defaultThumbnail &&
-            Discourse.SiteSettings.topic_list_default_thumbnail_fallback
+            this.siteSettings.topic_list_default_thumbnail_fallback
           ) {
             this.set ('thumbnails', defaultThumbnail);
           }
 
           const obj = PostsCountColumn.create ({topic});
-          obj.siteSettings = Discourse.SiteSettings;
+          obj.siteSettings = this.siteSettings;
           this.set ('likesHeat', obj.get ('likesHeat'));
         },
 
@@ -307,7 +310,7 @@ export default {
 
         @discourseComputed
         featuredTags () {
-          return Discourse.SiteSettings.topic_list_featured_images_tag.split (
+          return this.siteSettings.topic_list_featured_images_tag.split (
             '|'
           );
         },
@@ -441,7 +444,7 @@ export default {
             likeCount ||
             this.get ('topic.topic_post_can_like') ||
             !this.get ('currentUser') ||
-            Discourse.SiteSettings.topic_list_show_like_on_current_users_posts
+            this.siteSettings.topic_list_show_like_on_current_users_posts
           ) {
             actions.push (this._likeButton ());
           }

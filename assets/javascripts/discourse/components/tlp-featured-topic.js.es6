@@ -29,7 +29,7 @@ export default Ember.Component.extend({
 
   @discourseComputed
   featuredTags() {
-    return Discourse.SiteSettings.topic_list_featured_images_tag.split('|');
+    return this.siteSettings.topic_list_featured_images_tag.split('|');
   },
 
   @discourseComputed('topic.tags')
