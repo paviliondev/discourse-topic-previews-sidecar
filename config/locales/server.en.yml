@@ -12,7 +12,7 @@ en:
     topic_list_set_category_defaults: "Set site topic list display settings as defaults for category topic lists."
     topic_list_show_like_on_current_users_posts: "Show an inactive like button in topic list items previewing a post created by the current user (non-default Discourse behavior)."
     topic_list_excerpt_length: "Character length of topic excerpts."
-    topic_list_thumbnail_resolution_level: "Resolution level of thumbnail used in the Topic List: 0 is original, 1 is next highest, up to 5 lowest. Actual resolution will depend on number of thumbnails available for any one image. Experiment for best setting for your site, but 2 is recommended for Tiles"
+    topic_list_thumbnail_resolution_level: "Resolution level of thumbnail used in the Topic List: 0 is original, 1 is next highest, up to 6 lowest. Actual resolution will depend on number of thumbnails available for any one image. Experiment for best setting for your site, but 2 is recommended for Tiles"
     topic_list_default_thumbnail: "Image URL for default thumbnail if topic thumbnail is inaccessible."
     topic_list_default_thumbnail_fallback: "Use the default thumbnail when a topic has no previewed image."
     topic_list_thumbnail_width: "Width of topic preview thumbnail."
