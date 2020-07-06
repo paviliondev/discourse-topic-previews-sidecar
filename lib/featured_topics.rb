@@ -51,8 +51,8 @@ module PreviewsTopicQueryExtension
 
     result = Topic.visible
       .where('NOT topics.closed AND NOT topics.archived AND topics.deleted_at IS NULL')
-      .where("topics.image_upload_id in (
-        SELECT image_upload_id FROM topic_thumbnails
+      .where("EXISTS (
+        SELECT image_upload_id FROM topic_thumbnails where topics.image_upload_id = image_upload_id
       )")
       .joins(:tags)
       .where("tags.id IN (?)", tag_ids)
