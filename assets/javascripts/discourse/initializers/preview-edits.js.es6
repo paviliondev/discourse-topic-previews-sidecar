@@ -273,7 +273,7 @@ export default {
             defaultThumbnail &&
             this.siteSettings.topic_list_default_thumbnail_fallback
           ) {
-            this.set ('thumbnails', defaultThumbnail);
+            this.set ('thumbnails', [{url: defaultThumbnail}]);
           }
 
           const obj = PostsCountColumn.create ({topic});
