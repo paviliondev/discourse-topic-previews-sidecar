@@ -6,6 +6,20 @@ module TopicListItemEditsMixin
     true
   end
 
+  def excerpt
+    if object.previewed_post
+      doc = Nokogiri::HTML::fragment(object.previewed_post.cooked)
+      doc.search('.//img').remove
+      if !SiteSetting.topic_list_excerpt_remove_links
+        PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
+      else
+        PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true).gsub!(/#{URI::regexp}/, '')
+      end
+    else
+      object.excerpt
+    end
+  end
+
   def include_topic_post_id?
     object.previewed_post.present? && SiteSetting.topic_list_previews_enabled
   end
