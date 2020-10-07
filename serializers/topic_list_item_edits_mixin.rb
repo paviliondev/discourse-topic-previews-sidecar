@@ -13,7 +13,7 @@ module TopicListItemEditsMixin
       if !SiteSetting.topic_list_excerpt_remove_links
         PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
       else
-        ::TopicPreviews::SerializerLib.remove_links(PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true))
+        PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true).gsub!(/#{URI::regexp}/, '')
       end
     else
       object.excerpt
