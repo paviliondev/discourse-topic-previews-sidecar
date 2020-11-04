@@ -15,9 +15,7 @@ export default {
     let discoveryTopicRoutes = [];
     let discoveryCategoryRoutes = [
       'Category',
-      'ParentCategory',
-      'CategoryNone',
-      'CategoryWithID'
+      'CategoryNone'
     ];
     let filters = site.get('filters');
     filters.push('top');
@@ -26,7 +24,6 @@ export default {
       discoveryTopicRoutes.push(filterCapitalized);
       discoveryCategoryRoutes.push(...[
         `${filterCapitalized}Category`,
-        `${filterCapitalized}ParentCategory`,
         `${filterCapitalized}CategoryNone`
       ]);
     });
@@ -36,7 +33,6 @@ export default {
       discoveryTopicRoutes.push(`Top${periodCapitalized}`);
       discoveryCategoryRoutes.push(...[
         `Top${periodCapitalized}Category`,
-        `Top${periodCapitalized}ParentCategory`,
         `Top${periodCapitalized}CategoryNone`
       ]);
     });
