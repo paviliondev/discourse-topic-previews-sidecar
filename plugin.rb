@@ -27,6 +27,7 @@ after_initialize do
   load File.expand_path('../lib/topic_list_edits.rb', __FILE__)
   load File.expand_path('../controllers/thumbnail_selection.rb', __FILE__)
   load File.expand_path('../lib/cooked_post_processor_edits.rb', __FILE__)
+  load File.expand_path('../lib/topic_list_serializer_lib.rb', __FILE__)
   load File.expand_path('../serializers/topic_list_item_edits_mixin.rb', __FILE__)
   load File.expand_path('../serializers/topic_list_item_edits.rb', __FILE__)
   load File.expand_path('../serializers/topic_view_edits.rb', __FILE__)
