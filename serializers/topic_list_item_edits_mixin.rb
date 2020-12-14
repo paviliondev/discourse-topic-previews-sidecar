@@ -14,6 +14,7 @@ module TopicListItemEditsMixin
         PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
       else
         ::TopicPreviews::SerializerLib.remove_links(PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true))
+      end
     else
       object.excerpt
     end
