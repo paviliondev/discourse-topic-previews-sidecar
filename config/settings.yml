@@ -58,6 +58,7 @@ plugins:
      - unread-mobile
      - top-mobile
      - tags-mobile
+     - suggested-mobile
      - agenda-mobile
   topic_list_action:
     client: true
