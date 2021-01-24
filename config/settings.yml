@@ -9,6 +9,7 @@ plugins:
      - unread
      - top
      - tags
+     - suggested
      - activity-topics
      - activity-portfolio
      - latest-mobile
@@ -16,6 +17,7 @@ plugins:
      - unread-mobile
      - top-mobile
      - tags-mobile
+     - suggested-mobile
   topic_list_thumbnail:
     client: true
     type: list
@@ -35,6 +37,7 @@ plugins:
      - unread-mobile
      - top-mobile
      - tags-mobile
+     - suggested-mobile
      - agenda-mobile
   topic_list_excerpt:
     client: true
