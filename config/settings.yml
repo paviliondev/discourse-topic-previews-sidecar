@@ -134,9 +134,11 @@ plugins:
   topic_list_featured_images:
     default: false
     client: true
-  topic_list_featured_images_full_res:
-    default: false
-    client: false
+  topic_list_featured_images_resolution_level:
+    default: 2
+    max: 6
+    min: 0
+    client: true
   topic_list_featured_images_category:
     default: false
     client: true
@@ -151,7 +153,7 @@ plugins:
     default: true
     client: true
   topic_list_featured_images_count:
-    default: 4
+    default: 8
     client: true
   topic_list_featured_width:
     default: 100

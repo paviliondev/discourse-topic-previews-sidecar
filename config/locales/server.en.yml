@@ -22,7 +22,7 @@ en:
     topic_list_thumbnail_first_x_rows: "Show thumbnail only for first X rows. Enter 0 to show on all rows."
     topic_list_previews_enabled: "Enable Topic List Previews plugin."
     topic_list_featured_images: "Enable featured images for non-category routes."
-    topic_list_featured_images_full_res: "Force featured images to use full size original images (use with caution wrt user bandwidth as ignores user pref)"
+    topic_list_featured_images_resolution_level: "Thumbnail resolution level for Featured Images (see Thumbnail Resolution Level)"
     topic_list_featured_images_category: "Apply featured images site setting to all categories."
     topic_list_featured_images_topic: "Show featured images above topics."
     topic_list_featured_images_tag: "Featured images tag."

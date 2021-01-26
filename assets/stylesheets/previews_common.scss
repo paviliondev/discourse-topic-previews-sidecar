@@ -352,75 +352,81 @@ button.list-button {
   width: 100%;
 
   .topics {
-    padding: 0 10px;
     display: flex;
-    overflow-x: auto;
+    overflow-x: scroll;
     overflow-y: hidden;
 
     .tlp-featured-topic {
-      margin-right: 10px;
+
+      display:block;
+      padding-right: 5px;
       cursor: pointer;
-      position: relative;
 
-      &.show-details .featured-details {
-        background-color: rgba(62, 66, 79, 0.8);
+     .featured-details {
+       position: relative;
 
-        .content, .content a {
-          color: $secondary;
-        }
-
-        .content a.mention {
-          background-color: $primary-high;
-        }
-
-        img {
-          visibility: visible;
-        }
-      }
-
-      .title {
-        font-weight: 700;
-        margin-bottom: 7px;
-      }
-
-      .user {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-
-        img {
-          margin-left: 5px;
-        }
-      }
-    }
-
-    .featured-details {
-      transition: background-color 200ms linear;
-      background-color: rgba(0,0,0,0);
-      padding: 15px;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
+       img.thumbnail {
+         z-index:0;
+       }
 
       .content, .content a {
+        z-index:-2;
         color: transparent;
         background-color: transparent;
         transition: background-color 200ms linear;
         transition: color 200ms linear;
+        padding-bottom: 15px;
+        padding: 15px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        .title {
+          font-weight: 700;
+          margin-bottom: 7px;
+        }
+
+        .user {
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+        }
+
+        img {
+          margin-left: 5px;
+          max-height:100%;
+          max-width:100%;
+        }
       }
+    }
+
+    &.show-details .featured-details {
 
       img {
-        visibility: hidden;
-        transition: visibility 100ms linear;
+        -webkit-filter: brightness(50%);
+        transition: background-color 200ms linear;
       }
 
-      .excerpt {
-        padding-bottom: 15px;
+      .content, .content a {
+
+        z-index: 2;
+        color: $secondary;
+
+        a.mention {
+          background-color: $primary-high;
+        }
+
+        img {
+          -webkit-filter: brightness(150%);
+          visibility: visible;
+        }
       }
     }
   }
+}
+
 
   .featured-tags {
     margin-top: 10px;
