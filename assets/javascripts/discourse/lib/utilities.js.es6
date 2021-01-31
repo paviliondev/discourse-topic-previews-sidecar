@@ -8,7 +8,8 @@ var isThumbnail = function(path) {
          path !== '';
 };
 
-var previewUrl = function (thumbnails, featured = false) {
+var previewUrl = function (thumbnails, params) {
+  const featured = params ? params.featured : false;
 
   const preferLowRes = (Discourse.User._current === null) ? false : Discourse.User._current.custom_fields.tlp_user_prefs_prefer_low_res_thumbnails;
   if (thumbnails) {
@@ -25,11 +26,10 @@ var previewUrl = function (thumbnails, featured = false) {
 };
 
 var renderUnboundPreview = function (thumbnails, params) {
-  const url = previewUrl (thumbnails, params.opts.featured);
+  const opts = params.opts || {};
+  const url = previewUrl (thumbnails, opts || null);
 
   if (!url) return '';
-
-  const opts = params.opts || {};
 
   if ((!opts.tilesStyle && !opts.featured && Discourse.Site.currentProp ('mobileView'))) {
     return `<img class="thumbnail" src="${url}" loading="lazy"/>`;
