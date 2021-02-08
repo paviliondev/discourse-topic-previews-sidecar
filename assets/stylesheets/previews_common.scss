@@ -153,7 +153,7 @@
       max-width: 100%;
       float: left;
       clear: both;
-      display: block;
+      padding-right: 0px;
       
       overflow-wrap: break-word;
       word-wrap: break-word;
@@ -236,6 +236,10 @@
 
 .topic-list .main-link a.title {
   padding: 0;
+}
+
+.topic-details .topic-excerpt {
+  display: block;
 }
 
 .actions-and-meta-data {
