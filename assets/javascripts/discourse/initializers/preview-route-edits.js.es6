@@ -16,22 +16,18 @@ export default {
       'CategoryNone'
     ];
     let filters = site.get('filters');
-    filters.push('top');
+
+    const topIndex = filters.indexOf('top');
+    if (topIndex > -1) {
+      filters.splice(topIndex, 1);
+    }
+
     filters.forEach(filter => {
       const filterCapitalized = filter.capitalize();
       discoveryTopicRoutes.push(filterCapitalized);
       discoveryCategoryRoutes.push(...[
         `${filterCapitalized}Category`,
         `${filterCapitalized}CategoryNone`
-      ]);
-    });
-
-    site.get('periods').forEach(period => {
-      const periodCapitalized = period.capitalize();
-      discoveryTopicRoutes.push(`Top${periodCapitalized}`);
-      discoveryCategoryRoutes.push(...[
-        `Top${periodCapitalized}Category`,
-        `Top${periodCapitalized}CategoryNone`
       ]);
     });
 
