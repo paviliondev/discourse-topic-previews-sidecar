@@ -44,6 +44,7 @@ CookedPostProcessor.class_eval do
     unless @post.is_first_post? && @post.topic.custom_fields["user_chosen_thumbnail_url"]
 
       upload = nil
+      mypixels = nil
       eligible_image_fragments = extract_images_for_post
     
       # Loop through those fragments until we find one with an upload record
@@ -64,20 +65,21 @@ CookedPostProcessor.class_eval do
         @post.topic.update_column(:image_upload_id, nil) if @post.topic.image_upload_id && @post.is_first_post?
         nil
       end
+      mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: upload.id).url).get_colors(5).first
     else
       extra_sizes = ThemeModifierHelper.new(theme_ids: Theme.user_selectable.pluck(:id)).topic_thumbnail_sizes
       @post.topic.generate_thumbnails!(extra_sizes: extra_sizes)
+      mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: @post.topic.image_upload_id).url).get_colors(5).first
     end
-#byebug
-  #myhist = Colorscore::Histogram.new("public" + Upload.find_by(id: upload.id).url, 1, 8)
-  ## pp myhist.scores.first
-    mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: upload.id).url).get_colors(5).first
-    red =  mypixels.red/256
-    green = mypixels.green/256
-    blue = mypixels.blue/256
 
-    topic = Topic.find(@post.topic.id)
-    topic.custom_fields['dominant_colour'] = {red: red, green: green, blue: blue}
-    topic.save_custom_fields(true)
+    if mypixels
+      red =  mypixels.red/256
+      green = mypixels.green/256
+      blue = mypixels.blue/256
+
+      topic = Topic.find(@post.topic.id)
+      topic.custom_fields['dominant_colour'] = {red: red, green: green, blue: blue}
+      topic.save_custom_fields(true)
+    end
   end
 end
