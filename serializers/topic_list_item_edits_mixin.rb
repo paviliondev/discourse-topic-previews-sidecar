@@ -87,4 +87,8 @@ module TopicListItemEditsMixin
     action = topic_like_action[0]
     !!(action && (action.user_id == scope.current_user.id) && (action.created_at > SiteSetting.post_undo_action_window_mins.minutes.ago))
   end
+
+  def dominant_colour
+    object.custom_fields['dominant_colour']
+  end
 end

@@ -68,5 +68,16 @@ CookedPostProcessor.class_eval do
       extra_sizes = ThemeModifierHelper.new(theme_ids: Theme.user_selectable.pluck(:id)).topic_thumbnail_sizes
       @post.topic.generate_thumbnails!(extra_sizes: extra_sizes)
     end
+#byebug
+  #myhist = Colorscore::Histogram.new("public" + Upload.find_by(id: upload.id).url, 1, 8)
+  ## pp myhist.scores.first
+    mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: upload.id).url).get_colors(5).first
+    red =  mypixels.red/256
+    green = mypixels.green/256
+    blue = mypixels.blue/256
+
+    topic = Topic.find(@post.topic.id)
+    topic.custom_fields['dominant_colour'] = {red: red, green: green, blue: blue}
+    topic.save_custom_fields(true)
   end
 end
