@@ -11,3 +11,6 @@ plugins:
   topic_list_excerpt_remove_links:
     default: true
     client: false
+  topic_list_enable_thumbnail_colour_determination:
+    default: true
+    client: false
