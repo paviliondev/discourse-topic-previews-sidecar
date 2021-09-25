@@ -60,18 +60,18 @@ CookedPostProcessor.class_eval do
           extra_sizes = ThemeModifierHelper.new(theme_ids: Theme.user_selectable.pluck(:id)).topic_thumbnail_sizes
           @post.topic.generate_thumbnails!(extra_sizes: extra_sizes)
         end
+        if SiteSetting.topic_list_enable_thumbnail_colour_determination
+          mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: upload.id).url).get_colors(5).first
+        end
       else
         @post.update_column(:image_upload_id, nil) if @post.image_upload_id
         @post.topic.update_column(:image_upload_id, nil) if @post.topic.image_upload_id && @post.is_first_post?
         nil
       end
-      if topic_list_enable_thumbnail_colour_determination
-        mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: upload.id).url).get_colors(5).first
-      end
     else
       extra_sizes = ThemeModifierHelper.new(theme_ids: Theme.user_selectable.pluck(:id)).topic_thumbnail_sizes
       @post.topic.generate_thumbnails!(extra_sizes: extra_sizes)
-      if topic_list_enable_thumbnail_colour_determination
+      if SiteSetting.topic_list_enable_thumbnail_colour_determination
         mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: @post.topic.image_upload_id).url).get_colors(5).first
       end
     end
