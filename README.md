@@ -1,6 +1,6 @@
 # discourse-topic-previews
 
-This plugin is now deprecated in favour of the equivalent TC, see https://thepavilion.io/t/which-one-to-install-plugin-or-tc/3996?u=merefield
+This plugin is now deprecated in favour of the equivalent TC, see https://thepavilion.io/t/which-one-to-install-plugin-or-tc/3996
 
 [See further here](https://meta.discourse.org/t/topic-list-previews/101646).
 
