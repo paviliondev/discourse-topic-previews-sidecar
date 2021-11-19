@@ -42,6 +42,7 @@ after_initialize do
   load File.expand_path('../serializers/topic_list_item_edits_mixin.rb', __FILE__)
   load File.expand_path('../serializers/topic_list_item_edits.rb', __FILE__)
   load File.expand_path('../serializers/topic_view_edits.rb', __FILE__)
+  load File.expand_path('../serializers/search_topic_list_item_serializer_edits.rb', __FILE__)
   
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
   TopicList.preloaded_custom_fields << "dominant_colour" if TopicList.respond_to? :preloaded_custom_fields
