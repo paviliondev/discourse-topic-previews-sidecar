@@ -6,7 +6,7 @@
 
 gem 'color', '1.8', {require: false}
 gem 'colorscore', '0.0.5', {require: true}
-gem 'rmagick', '4.2.2', {require: false}
+gem 'rmagick', '4.2.3', {require: false}
 gem 'prizm', '0.0.3', {require: true}
 # gem 'oily_png', '1.1.0', {require: false}
 # gem 'climate_control', '0.2.0', {require: false}
