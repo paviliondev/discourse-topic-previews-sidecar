@@ -19,6 +19,10 @@ enabled_site_setting :topic_list_previews_enabled
 DiscoursePluginRegistry.serialized_current_user_fields << "tlp_user_prefs_prefer_low_res_thumbnails"
 
 after_initialize do
+  AdminDashboardData.add_problem_check do
+    I18n.t("topic_previews_deprecated")
+  end
+
   User.register_custom_field_type('tlp_user_prefs_prefer_low_res_thumbnails', :boolean)
   Topic.register_custom_field_type('user_chosen_thumbnail_url', :string)
   Category.register_custom_field_type('thumbnail_width', :integer)
