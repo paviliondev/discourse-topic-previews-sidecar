@@ -1,4 +1,5 @@
 en:
+  topic_previews_deprecated: "The discourse-topic-previews plugin is deprecated in favour of <a href='https://thepavilion.io/t/which-one-to-install-plugin-or-tc/3996'>the equivalent theme component</a>. Remove discourse-topic-previews from your app.yml file to avoid errors."
   site_settings:
     topic_list_tiles: "Apply tiles arrangement to selected lists in this category."
     topic_list_tiles_transition_time: "Number of seconds for tiles layout transition on view change (desktop only)"
