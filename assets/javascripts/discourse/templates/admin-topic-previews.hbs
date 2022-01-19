@@ -1,0 +1,19 @@
+{{#admin-nav}}
+  {{nav-item route="adminTopicPreviewsSubscription" label="admin.topic_previews.subscription.nav_label"}}
+
+  <div class="admin-actions">
+    <div class="wizard-notices-link">
+      {{nav-item tagName="div" route="adminTopicPreviewsNotices" label="admin.topic_previews.notices.nav_label"}}
+      {{#if activeNoticeCount}}
+        <span class="active-notice-count">{{activeNoticeCount}}</span>
+      {{/if}}
+    </div>
+    <a target="_blank" class="btn btn-pavilion-support" rel="noreferrer noopener" href="https://thepavilion.io/w/support" title={{i18n "admin.wizard.support_button.title"}}>
+      {{d-icon "far-life-ring"}}{{i18n "admin.wizard.support_button.label"}}
+    </a>
+  </div>
+{{/admin-nav}}
+
+<div class="admin-container">
+  {{outlet}}
+</div>

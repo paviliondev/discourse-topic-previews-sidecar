@@ -1,0 +1,211 @@
+current directory: /home/merefield/code/discourse-topic-previews/gems/2.6.3/gems/oily_png-1.1.2/ext/oily_png
+/home/merefield/.rbenv/versions/2.6.3/bin/ruby -I /home/merefield/.rbenv/versions/2.6.3/lib/ruby/2.6.0 -r ./siteconf20210924-2731099-1t4xzs8.rb extconf.rb
+creating Makefile
+
+current directory: /home/merefield/code/discourse-topic-previews/gems/2.6.3/gems/oily_png-1.1.2/ext/oily_png
+make "DESTDIR=" clean
+
+current directory: /home/merefield/code/discourse-topic-previews/gems/2.6.3/gems/oily_png-1.1.2/ext/oily_png
+make "DESTDIR="
+compiling color.c
+compiling oily_png_ext.c
+oily_png_ext.c: In function ‘Init_oily_png’:
+oily_png_ext.c:13:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   13 |   VALUE OilyPNG_PNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");
+      |   ^~~~~
+oily_png_ext.c:17:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   17 |   VALUE OilyPNG_PNGEncoding = rb_define_module_under(OilyPNG, "PNGEncoding");
+      |   ^~~~~
+oily_png_ext.c:21:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   21 |   VALUE OilyPNG_Color = rb_define_module_under(OilyPNG, "Color");
+      |   ^~~~~
+oily_png_ext.c:30:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   30 |   VALUE OilyPNG_Operations = rb_define_module_under(OilyPNG, "Operations");
+      |   ^~~~~
+oily_png_ext.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
+compiling operations.c
+operations.c: In function ‘oily_png_compose_bang’:
+operations.c:28:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   28 |   long offset_x = 0;
+      |   ^~~~
+operations.c:41:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   41 |   long self_width        = FIX2LONG(rb_funcall(self, rb_intern("width"), 0));
+      |   ^~~~
+operations.c:51:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   51 |   VALUE* bg_pixels = RARRAY_PTR(rb_funcall(self, rb_intern("pixels"), 0));
+      |   ^~~~~
+operations.c: In function ‘oily_png_replace_bang’:
+operations.c:84:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   84 |   long offset_x = 0;
+      |   ^~~~
+operations.c:97:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   97 |   long self_width        = FIX2LONG(rb_funcall(self, rb_intern("width"), 0));
+      |   ^~~~
+operations.c:107:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  107 |   VALUE* bg_pixels = RARRAY_PTR(rb_funcall(self, rb_intern("pixels"), 0));
+      |   ^~~~~
+operations.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
+compiling png_decoding.c
+png_decoding.c: In function ‘oily_png_decode_filter_up’:
+png_decoding.c:20:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   20 |   long i;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_grayscale_1bit’:
+png_decoding.c:98:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   98 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_grayscale_2bit’:
+png_decoding.c:110:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  110 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_grayscale_4bit’:
+png_decoding.c:122:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  122 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_grayscale_8bit’:
+png_decoding.c:134:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  134 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_grayscale_16bit’:
+png_decoding.c:146:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  146 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_grayscale_alpha_8bit’:
+png_decoding.c:158:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  158 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_grayscale_alpha_16bit’:
+png_decoding.c:170:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  170 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_truecolor_8bit’:
+png_decoding.c:210:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  210 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_truecolor_16bit’:
+png_decoding.c:222:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  222 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_truecolor_alpha_8bit’:
+png_decoding.c:234:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  234 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_scanline_truecolor_alpha_16bit’:
+png_decoding.c:246:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  246 |   long x;
+      |   ^~~~
+png_decoding.c: In function ‘oily_png_decode_png_image_pass’:
+png_decoding.c:336:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  336 |     BYTE* bytes = ALLOC_N(BYTE, pass_size);
+      |     ^~~~
+png_decoding.c:340:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  340 |     VALUE decoding_palette = Qnil;
+      |     ^~~~~
+png_decoding.c:346:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  346 |     scanline_decoder_func scanline_decoder = oily_png_decode_scanline_func(FIX2INT(color_mode), FIX2INT(depth));
+      |     ^~~~~~~~~~~~~~~~~~~~~
+png_decoding.c:351:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  351 |     long y, line_start;
+      |     ^~~~
+png_decoding.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
+compiling png_encoding.c
+png_encoding.c: In function ‘oily_png_encode_filter_up’:
+png_encoding.c:15:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   15 |   long x;
+      |   ^~~~
+png_encoding.c: In function ‘oily_png_encode_scanline_grayscale_1bit’:
+png_encoding.c:53:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   53 |   long x; BYTE p1, p2, p3, p4, p5, p6, p7, p8;
+      |   ^~~~
+png_encoding.c: In function ‘oily_png_encode_scanline_grayscale_2bit’:
+png_encoding.c:72:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   72 |   long x; BYTE p1, p2, p3, p4;
+      |   ^~~~
+png_encoding.c: In function ‘oily_png_encode_scanline_grayscale_4bit’:
+png_encoding.c:86:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   86 |   long x; BYTE p1, p2;
+      |   ^~~~
+png_encoding.c: In function ‘oily_png_encode_scanline_grayscale_8bit’:
+png_encoding.c:98:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   98 |   long x; PIXEL pixel;
+      |   ^~~~
+png_encoding.c: In function ‘oily_png_encode_scanline_grayscale_alpha_8bit’:
+png_encoding.c:109:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  109 |   long x; PIXEL pixel;
+      |   ^~~~
+png_encoding.c: In function ‘oily_png_encode_scanline_truecolor_8bit’:
+png_encoding.c:161:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  161 |   long x; PIXEL pixel;
+      |   ^~~~
+png_encoding.c: In function ‘oily_png_encode_scanline_truecolor_alpha_8bit’:
+png_encoding.c:172:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  172 |   long x; PIXEL pixel;
+      |   ^~~~
+png_encoding.c: In function ‘oily_png_encode_png_image_pass_to_stream’:
+png_encoding.c:247:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  247 |   char depth      = (char) FIX2INT(bit_depth);
+      |   ^~~~
+png_encoding.c:257:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  257 |   VALUE encoding_palette = Qnil;
+      |   ^~~~~
+png_encoding.c:262:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  262 |   char pixel_size = oily_png_pixel_bytesize(FIX2INT(color_mode), depth);
+      |   ^~~~
+png_encoding.c:275:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  275 |   long y, pos;
+      |   ^~~~
+png_encoding.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
+compiling resampling.c
+resampling.c: In function ‘oily_png_generate_steps_residues’:
+resampling.c:23:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   23 |   long i;
+      |   ^~~~
+resampling.c: In function ‘oily_png_canvas_steps’:
+resampling.c:48:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   48 |   long width = NUM2LONG(v_width);
+      |   ^~~~
+resampling.c:57:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   57 |   long i;
+      |   ^~~~
+resampling.c: In function ‘oily_png_canvas_steps_residues’:
+resampling.c:75:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   75 |   long width = NUM2LONG(v_width);
+      |   ^~~~
+resampling.c:89:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   89 |   long i;
+      |   ^~~~
+resampling.c:107:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  107 |   VALUE ret = rb_ary_new2(2);
+      |   ^~~~~
+resampling.c: In function ‘oily_png_canvas_resample_nearest_neighbor_bang’:
+resampling.c:130:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  130 |   long index = 0;
+      |   ^~~~
+resampling.c:136:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  136 |       VALUE pixel = rb_ary_entry(source, src_index);
+      |       ^~~~~
+resampling.c: In function ‘oily_png_canvas_resample_bilinear_bang’:
+resampling.c:173:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  173 |   long index = 0;
+      |   ^~~~
+resampling.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
+linking shared-object oily_png/oily_png.so
+
+current directory: /home/merefield/code/discourse-topic-previews/gems/2.6.3/gems/oily_png-1.1.2/ext/oily_png
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 oily_png.so ./.gem.20210924-2731099-fjkwv2/oily_png

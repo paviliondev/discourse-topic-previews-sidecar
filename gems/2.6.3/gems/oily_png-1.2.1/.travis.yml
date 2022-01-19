@@ -1,0 +1,15 @@
+sudo: false
+language: ruby
+script: bundle exec rake
+
+rvm:
+- "2.0"
+- "2.1"
+- "2.2"
+- ruby-head
+- rbx-19mode
+
+matrix:
+  allow_failures:
+  - rvm: rbx-19mode
+  - rvm: ruby-head

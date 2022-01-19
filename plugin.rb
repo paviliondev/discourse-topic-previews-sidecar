@@ -13,6 +13,7 @@ gem 'prizm', '0.0.3', {require: true}
 # gem 'terrapin', '0.6.0', {require: false}
 # gem 'cocaine', '0.6.0', {require: false}
 # gem 'miro', '0.4.0', {require: true}
+register_asset 'stylesheets/admin/admin.scss', :desktop
 
 enabled_site_setting :topic_list_previews_enabled
 
@@ -25,24 +26,37 @@ after_initialize do
 
   register_editable_user_custom_field :tlp_user_prefs_prefer_low_res_thumbnails
 
-  module ::TopicPreviews
-    class Engine < ::Rails::Engine
-      engine_name "topic_previews"
-      isolate_namespace TopicPreviews
-    end
+  %w[
+    ../lib/topic_previews/engine.rb
+    ../config/routes.rb
+    ../controllers/topic_previews/admin/admin.rb
+    ../controllers/topic_previews/admin/subscription.rb
+    ../controllers/topic_previews/admin/notice.rb
+    ../controllers/topic_previews/thumbnail_selection.rb
+    ../jobs/scheduled/topic_previews/update_subscription.rb
+    ../jobs/scheduled/topic_previews/update_notices.rb
+    ../lib/topic_previews/notice.rb
+    ../lib/topic_previews/notice/connection_error.rb
+    ../lib/topic_previews/subscription.rb
+    ../lib/topic_previews/subscription/subscription.rb
+    ../lib/topic_previews/subscription/authentication.rb
+    ../lib//thumbnail_selection_helper.rb
+    ../lib/topic_list_previews_helper.rb
+    ../lib/guardian_edits.rb
+    ../lib/topic_list_edits.rb
+    ../lib/cooked_post_processor_edits.rb
+    ../lib/topic_list_serializer_lib.rb
+    ../serializers/topic_previews/subscription/authentication_serializer.rb
+    ../serializers/topic_previews/subscription/subscription_serializer.rb
+    ../serializers/topic_previews/subscription_serializer.rb
+    ../serializers/topic_previews/notice_serializer.rb
+    ../serializers/topic_previews/topic_list_item_edits_mixin.rb
+    ../serializers/topic_previews/topic_list_item_edits.rb
+    ../serializers/topic_previews/topic_view_edits.rb
+    ../serializers/topic_previews/search_topic_list_item_serializer_edits.rb
+  ].each do |path|
+    load File.expand_path(path, __FILE__)
   end
-
-  load File.expand_path('../lib//thumbnail_selection_helper.rb', __FILE__)
-  load File.expand_path('../lib/topic_list_previews_helper.rb', __FILE__)
-  load File.expand_path('../lib/guardian_edits.rb', __FILE__)
-  load File.expand_path('../lib/topic_list_edits.rb', __FILE__)
-  load File.expand_path('../controllers/thumbnail_selection.rb', __FILE__)
-  load File.expand_path('../lib/cooked_post_processor_edits.rb', __FILE__)
-  load File.expand_path('../lib/topic_list_serializer_lib.rb', __FILE__)
-  load File.expand_path('../serializers/topic_list_item_edits_mixin.rb', __FILE__)
-  load File.expand_path('../serializers/topic_list_item_edits.rb', __FILE__)
-  load File.expand_path('../serializers/topic_view_edits.rb', __FILE__)
-  load File.expand_path('../serializers/search_topic_list_item_serializer_edits.rb', __FILE__)
   
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
   TopicList.preloaded_custom_fields << "dominant_colour" if TopicList.respond_to? :preloaded_custom_fields

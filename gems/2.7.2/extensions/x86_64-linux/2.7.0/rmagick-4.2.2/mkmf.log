@@ -1,0 +1,508 @@
+find_executable: checking for brew... -------------------- no
+
+--------------------
+
+find_executable: checking for pacman... -------------------- no
+
+--------------------
+
+assert_minimum_ruby_version!: checking for Ruby version >= 2.3.0... -------------------- yes
+
+--------------------
+
+find_executable: checking for pkg-config... -------------------- yes
+
+--------------------
+
+assert_has_dev_libs!: checking for outdated ImageMagick version (<= 6.7.7)... -------------------- no
+
+Detected ImageMagick version: 7.0.11
+--------------------
+
+find_executable: checking for gcc... -------------------- yes
+
+--------------------
+
+have_macro: checking for __GNUC__... -------------------- yes
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return !!argv[argc];
+6: }
+/* end */
+
+"gcc -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7   -c conftest.c"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: #ifndef __GNUC__
+5: # error
+6: |:/ === __GNUC__ undefined === /:|
+7: #endif
+/* end */
+
+--------------------
+
+have_header: checking for MagickCore/MagickCore.h... -------------------- yes
+
+"gcc -E -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <MagickCore/MagickCore.h>
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_adjust_memory_usage() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,MagickCore/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_adjust_memory_usage; return !p; }
+/* end */
+
+--------------------
+
+have_func: checking for posix_memalign() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,MagickCore/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: int t(void) { void ((*volatile p)()); p = (void ((*)()))posix_memalign; return !p; }
+/* end */
+
+--------------------
+
+have_func: checking for malloc_usable_size() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,MagickCore/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:23:57: error: ‘malloc_usable_size’ undeclared (first use in this function)
+   23 | int t(void) { void ((*volatile p)()); p = (void ((*)()))malloc_usable_size; return !p; }
+      |                                                         ^~~~~~~~~~~~~~~~~~
+conftest.c:23:57: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: int t(void) { void ((*volatile p)()); p = (void ((*)()))malloc_usable_size; return !p; }
+/* end */
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: extern void malloc_usable_size();
+24: int t(void) { malloc_usable_size(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for malloc_size() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,MagickCore/MagickCore.h... -------------------- no
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:23:57: error: ‘malloc_size’ undeclared (first use in this function)
+   23 | int t(void) { void ((*volatile p)()); p = (void ((*)()))malloc_size; return !p; }
+      |                                                         ^~~~~~~~~~~
+conftest.c:23:57: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: int t(void) { void ((*volatile p)()); p = (void ((*)()))malloc_size; return !p; }
+/* end */
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+/usr/bin/ld: /tmp/ccfOTWU0.o: in function `t':
+conftest.c:(.text+0x70): undefined reference to `malloc_size'
+collect2: error: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: extern void malloc_size();
+24: int t(void) { malloc_size(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for _aligned_msize() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,MagickCore/MagickCore.h... -------------------- no
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:23:57: error: ‘_aligned_msize’ undeclared (first use in this function)
+   23 | int t(void) { void ((*volatile p)()); p = (void ((*)()))_aligned_msize; return !p; }
+      |                                                         ^~~~~~~~~~~~~~
+conftest.c:23:57: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: int t(void) { void ((*volatile p)()); p = (void ((*)()))_aligned_msize; return !p; }
+/* end */
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+/usr/bin/ld: /tmp/ccm7Ozfy.o: in function `t':
+conftest.c:(.text+0x70): undefined reference to `_aligned_msize'
+collect2: error: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: extern void _aligned_msize();
+24: int t(void) { _aligned_msize(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for GetImageChannelEntropy() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,MagickCore/MagickCore.h... -------------------- no
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:23:57: error: ‘GetImageChannelEntropy’ undeclared (first use in this function); did you mean ‘GetImageEntropy’?
+   23 | int t(void) { void ((*volatile p)()); p = (void ((*)()))GetImageChannelEntropy; return !p; }
+      |                                                         ^~~~~~~~~~~~~~~~~~~~~~
+      |                                                         GetImageEntropy
+conftest.c:23:57: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: int t(void) { void ((*volatile p)()); p = (void ((*)()))GetImageChannelEntropy; return !p; }
+/* end */
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+/usr/bin/ld: /tmp/cc3PNpx4.o: in function `t':
+conftest.c:(.text+0x70): undefined reference to `GetImageChannelEntropy'
+collect2: error: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: extern void GetImageChannelEntropy();
+24: int t(void) { GetImageChannelEntropy(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for SetImageGray() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,MagickCore/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: int t(void) { void ((*volatile p)()); p = (void ((*)()))SetImageGray; return !p; }
+/* end */
+
+--------------------
+
+have_func: checking for SetMagickAlignedMemoryMethods() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,MagickCore/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99 conftest.c  -L. -L/home/merefield/.rbenv/versions/2.7.2/lib -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib  -L/usr/local/lib -lMagickCore-7.Q16HDRI    -L/usr/local/lib -lMagickCore-7.Q16HDRI  -Wl,-rpath,/home/merefield/.rbenv/versions/2.7.2/lib -L/home/merefield/.rbenv/versions/2.7.2/lib -lruby  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <assert.h>
+ 4: #include <ctype.h>
+ 5: #include <stdio.h>
+ 6: #include <stdlib.h>
+ 7: #include <math.h>
+ 8: #include <time.h>
+ 9: #include <sys/types.h>
+10: #include <MagickCore/MagickCore.h>
+11: 
+12: /*top*/
+13: extern int t(void);
+14: int main(int argc, char **argv)
+15: {
+16:   if (argc > 1000000) {
+17:     int (* volatile tp)(void)=(int (*)(void))&t;
+18:     printf("%d", (*tp)());
+19:   }
+20: 
+21:   return !!argv[argc];
+22: }
+23: int t(void) { void ((*volatile p)()); p = (void ((*)()))SetMagickAlignedMemoryMethods; return !p; }
+/* end */
+
+--------------------
+
+have_header: checking for malloc.h... -------------------- yes
+
+"gcc -E -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/x86_64-linux -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0/ruby/backward -I/home/merefield/.rbenv/versions/2.7.2/include/ruby-2.7.0 -I.  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7  -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <malloc.h>
+/* end */
+
+--------------------
+
+extconf.h is:
+/* begin */
+ 1: #ifndef EXTCONF_H
+ 2: #define EXTCONF_H
+ 3: #define HAVE_MAGICKCORE_MAGICKCORE_H 1
+ 4: #define HAVE_RB_GC_ADJUST_MEMORY_USAGE 1
+ 5: #define HAVE_POSIX_MEMALIGN 1
+ 6: #define HAVE_MALLOC_USABLE_SIZE 1
+ 7: #define HAVE_SETIMAGEGRAY 1
+ 8: #define HAVE_SETMAGICKALIGNEDMEMORYMETHODS 1
+ 9: #define HAVE_MALLOC_H 1
+10: #define RUBY_VERSION_STRING ruby 2.7.2
+11: #define RMAGICK_VERSION_STRING RMagick 4.2.2
+12: #define IMAGEMAGICK_GREATER_THAN_EQUAL_6_8_9 1
+13: #define IMAGEMAGICK_GREATER_THAN_EQUAL_6_9_0 1
+14: #define IMAGEMAGICK_GREATER_THAN_EQUAL_6_9_10 1
+15: #define IMAGEMAGICK_7 1
+16: #define IMAGEMAGICK_GREATER_THAN_EQUAL_7_0_8 1
+17: #define IMAGEMAGICK_GREATER_THAN_EQUAL_7_0_10 1
+18: #endif
+/* end */
+
+======================================================================
+Thu 04 Nov 21 23:13:48
+This installation of RMagick 4.2.2 is configured for
+Ruby 2.7.2 (x86_64-linux) and ImageMagick 7.0.11
+======================================================================
+
+
+Configured compile options: {:magick_version=>"7.0.11", :local_libs=>" -L/usr/local/lib -lMagickCore-7.Q16HDRI", :cflags=>" -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7 -std=gnu99", :cppflags=>" -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/include/ImageMagick-7", :ldflags=>" -L/usr/local/lib -lMagickCore-7.Q16HDRI", :defs=>[], :config_h=>"Makefile"}

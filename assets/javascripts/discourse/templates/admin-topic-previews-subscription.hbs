@@ -1,0 +1,35 @@
+<div class="admin-topic-previews-controls">
+  <h3>{{i18n "admin.topic_previews.subscription.title"}}</h3>
+
+  <div class="buttons">
+    {{#if model.authentication.active}}
+      {{conditional-loading-spinner size="small" condition=unauthorizing}}
+      <a {{action "unauthorize"}} title={{i18n "admin.topic_previews.subscription.unauthorize"}} role="button">
+        {{i18n "admin.topic_previews.subscription.unauthorize"}}
+      </a>
+      <label title={{i18n "admin.topic_previews.subscription.authorized"}}>
+        {{i18n "admin.topic_previews.subscription.authorized"}}
+      </label>
+    {{else}}
+      {{d-button
+        icon="id-card"
+        class="btn-primary"
+        label="admin.topic_previews.subscription.authorize"
+        title="admin.topic_previews.subscription.authorize"
+        action=(route-action "authorize")}}
+    {{/if}}
+  </div>
+</div>
+
+{{topic-previews-message
+  key=messageKey
+  url=messageUrl
+  type=messageType
+  opts=messageOpts
+  component="subscription"}}
+
+<div class="admin-topic-previews-container">
+  {{#if showSubscription}}
+    {{topic-previews-subscription subscription=model.subscription}}
+  {{/if}}
+</div>

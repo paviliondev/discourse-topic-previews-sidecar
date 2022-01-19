@@ -1,0 +1,7 @@
+{{#if currentUser.admin}}
+  {{nav-item route="adminTopicPreviews" label="admin.topic_previews.nav_label"}}
+
+  {{#if wizardErrorNotice}}
+    {{d-icon "exclaimation-circle"}}
+  {{/if}}
+{{/if}}
