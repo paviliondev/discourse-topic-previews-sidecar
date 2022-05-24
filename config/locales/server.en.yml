@@ -3,3 +3,4 @@ en:
     topic_list_show_like_on_current_users_posts: "Show an inactive like button in topic list items previewing a post created by the current user (non-default Discourse behavior)."
     topic_list_excerpt_length: "Character length of topic excerpts."
     topic_list_excerpt_remove_links: "Remove links from excerpts."
+    topic_list_keep_link_text_content: "Keep text content inside link tags from excerpts"
