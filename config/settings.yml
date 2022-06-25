@@ -11,3 +11,6 @@ plugins:
   topic_list_excerpt_remove_links:
     default: true
     client: false
+  topic_list_keep_link_text_content:
+    default: false
+    client: false

@@ -2,3 +2,5 @@ fr:
   site_settings:
     topic_list_show_like_on_current_users_posts: "Afficher un bouton semblable à inactif dans les éléments de la liste de sujets, prévisualisant un article créé par l'utilisateur actuel (comportement Discourse autre que par défaut)."
     topic_list_excerpt_length: "Longueur de caractère des extraits de sujet."
+    topic_list_excerpt_remove_links: "Supprimer les liens des extraits de sujet"
+    topic_list_keep_link_text_content: "Conserver le texte à l'intérieur des balises de lien des extraits de sujet"
