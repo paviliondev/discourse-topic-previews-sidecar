@@ -2,7 +2,8 @@ require 'topic_list_item_serializer'
 class ::TopicListItemSerializer
   include TopicListItemEditsMixin
 
-  attributes :topic_post_id,
+  attributes :sidecar_installed,
+             :topic_post_id,
              :topic_post_liked,
              :topic_post_like_count,
              :topic_post_can_like,
@@ -19,7 +20,8 @@ end
 class ::SuggestedTopicSerializer
   include TopicListItemEditsMixin
 
-  attributes :topic_post_id,
+  attributes :sidecar_installed,
+             :topic_post_id,
              :topic_post_liked,
              :topic_post_like_count,
              :topic_post_can_like,
