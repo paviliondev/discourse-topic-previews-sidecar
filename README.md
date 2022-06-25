@@ -1,6 +1,6 @@
 # discourse-topic-previews (sidecar plugin)
 
-This is a sidecar plugin to add features to the otherwise standalone TC Topic List Previews:
+This is a sidecar plugin to add features to the otherwise [standalone TC Topic List Previews](https://github.com/paviliondev/discourse-tc-topic-list-previews):
 
 - 'actions’ (bookmarking and liking from Topic List)
 - Thumbnail Picker in the Topic Meta Editor.
