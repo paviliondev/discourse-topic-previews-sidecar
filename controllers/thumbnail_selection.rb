@@ -1,5 +1,5 @@
 class ::TopicPreviews::ThumbnailselectionController < ::ApplicationController
-
+  
   def index
     params.require(:topic)
 
