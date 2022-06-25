@@ -1,18 +1,23 @@
 # frozen_string_literal: true
 
 module TopicListItemEditsMixin
+
+  def sidecar_installed
+    true
+  end
+
   def excerpt
     if object.previewed_post
       doc = Nokogiri::HTML::fragment(object.previewed_post.cooked)
       doc.search('.//img').remove
-      PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
+      if !SiteSetting.topic_list_excerpt_remove_links
+        PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
+      else
+        ::TopicPreviews::SerializerLib.remove_links(PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true))
+      end
     else
       object.excerpt
     end
-  end
-
-  def include_excerpt?
-    object.excerpt.present? && SiteSetting.topic_list_previews_enabled   && !(object.archetype == Archetype.private_message)
   end
 
   def include_topic_post_id?

@@ -6,14 +6,6 @@ end
 
 module ListHelper
   class << self
-    def featured_topics_enabled(category_id = nil)
-      if category_id
-        category = Category.find(category_id)
-        category.featured_topics_enabled
-      else
-        SiteSetting.topic_list_featured_images
-      end
-    end
 
     def load_previewed_posts(topics, user = nil)
       # TODO: better to keep track of previewed posts' id so they can be loaded at once
