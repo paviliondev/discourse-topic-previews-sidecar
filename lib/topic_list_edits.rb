@@ -1,3 +1,4 @@
+
 module TopicListAddon
   def load_topics
     @topics = super
