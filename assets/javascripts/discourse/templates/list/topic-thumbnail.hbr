@@ -1,5 +1,0 @@
-<div class="topic-thumbnail">
-  <a href='{{topic.url}}'>
-    {{preview-unbound thumbnails category=category opts=opts}}
-  </a>
-</div>

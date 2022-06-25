@@ -10,7 +10,9 @@ module ::TopicPreviews::ThumbnailSelectionHelper
     # minus onebox site icons
     doc.css("img.site-icon") -
     # minus onebox avatars
-    doc.css("img.onebox-avatar") #Broader criteria that core Discourse
+    doc.css("img.onebox-avatar") #-
+    # minus small onebox images (large images are .aspect-image-full-size)
+    # @doc.css(".onebox .aspect-image img")
   end
 
   def self.get_thumbnails_from_topic(topic)

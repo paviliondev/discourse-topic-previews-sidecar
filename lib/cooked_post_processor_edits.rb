@@ -1,6 +1,5 @@
 require_dependency 'cooked_post_processor'
 CookedPostProcessor.class_eval do
-
   def extract_images_for_post
     # all images with a src attribute
     @doc.css("img[src]") -
@@ -11,16 +10,18 @@ CookedPostProcessor.class_eval do
     # minus onebox site icons
     @doc.css("img.site-icon") -
     # minus onebox avatars
-    @doc.css("img.onebox-avatar") #Broader criteria than Discourse Core
+    @doc.css("img.onebox-avatar") #-
+    # minus small onebox images (large images are .aspect-image-full-size)
+   # @doc.css(".onebox .aspect-image img")
   end
 
   def update_post_image
-
+    
     unless @post.is_first_post? && @post.topic.custom_fields["user_chosen_thumbnail_url"]
 
       upload = nil
       eligible_image_fragments = extract_images_for_post
-
+    
       # Loop through those fragments until we find one with an upload record
       @post.each_upload_url(fragments: eligible_image_fragments) do |src, path, sha1|
         upload = Upload.find_by(sha1: sha1)
