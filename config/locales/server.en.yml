@@ -1,6 +1,6 @@
 en:
-  topic_previews_deprecated: "The discourse-topic-previews plugin is deprecated in favour of <a href='https://thepavilion.io/t/which-one-to-install-plugin-or-tc/3996'>the equivalent theme component</a>. Remove discourse-topic-previews from your app.yml file to avoid errors."
   site_settings:
+    topic_list_previews_enabled: "Enable the topic list previews sidecar"
     topic_list_show_like_on_current_users_posts: "Show an inactive like button in topic list items previewing a post created by the current user (non-default Discourse behavior)."
     topic_list_excerpt_length: "Character length of topic excerpts."
     topic_list_excerpt_remove_links: "Remove links from excerpts."
