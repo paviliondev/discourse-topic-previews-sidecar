@@ -3,7 +3,7 @@
 module TopicListItemEditsMixin
 
   def sidecar_installed
-    true
+    SiteSetting.topic_list_previews_enabled || false
   end
 
   def excerpt
