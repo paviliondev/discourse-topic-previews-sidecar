@@ -4,6 +4,16 @@
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-topic-previews
 
+gem 'color', '1.8', {require: false}
+gem 'colorscore', '0.0.5', {require: true}
+gem 'rmagick', '4.2.2', {require: false}
+gem 'prizm', '0.0.3', {require: true}
+# gem 'oily_png', '1.1.0', {require: false}
+# gem 'climate_control', '0.2.0', {require: false}
+# gem 'terrapin', '0.6.0', {require: false}
+# gem 'cocaine', '0.6.0', {require: false}
+# gem 'miro', '0.4.0', {require: true}
+
 enabled_site_setting :topic_list_previews_enabled
 
 DiscoursePluginRegistry.serialized_current_user_fields << "tlp_user_prefs_prefer_low_res_thumbnails"
@@ -11,6 +21,7 @@ DiscoursePluginRegistry.serialized_current_user_fields << "tlp_user_prefs_prefer
 after_initialize do
   User.register_custom_field_type('tlp_user_prefs_prefer_low_res_thumbnails', :boolean)
   Topic.register_custom_field_type('user_chosen_thumbnail_url', :string)
+  Topic.register_custom_field_type('dominant_colour', :json)
 
   register_editable_user_custom_field :tlp_user_prefs_prefer_low_res_thumbnails
 
@@ -31,8 +42,10 @@ after_initialize do
   load File.expand_path('../serializers/topic_list_item_edits_mixin.rb', __FILE__)
   load File.expand_path('../serializers/topic_list_item_edits.rb', __FILE__)
   load File.expand_path('../serializers/topic_view_edits.rb', __FILE__)
+  load File.expand_path('../serializers/search_topic_list_item_serializer_edits.rb', __FILE__)
   
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
+  TopicList.preloaded_custom_fields << "dominant_colour" if TopicList.respond_to? :preloaded_custom_fields
   
   # DiscourseEvent.on(:accepted_solution) do |post|
   #   if post.image_url && SiteSetting.topic_list_previews_enabled
