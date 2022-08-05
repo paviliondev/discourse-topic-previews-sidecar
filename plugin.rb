@@ -31,6 +31,7 @@ after_initialize do
   load File.expand_path('../lib/topic_list_previews_helper.rb', __FILE__)
   load File.expand_path('../lib/guardian_edits.rb', __FILE__)
   load File.expand_path('../lib/topic_list_edits.rb', __FILE__)
+  load File.expand_path('../lib/optimized_image_edits.rb', __FILE__)
   load File.expand_path('../controllers/thumbnail_selection.rb', __FILE__)
   load File.expand_path('../lib/cooked_post_processor_edits.rb', __FILE__)
   load File.expand_path('../lib/topic_list_serializer_lib.rb', __FILE__)

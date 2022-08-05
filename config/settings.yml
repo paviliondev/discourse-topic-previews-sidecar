@@ -17,6 +17,9 @@ plugins:
   topic_list_enable_thumbnail_colour_determination:
     default: true
     client: false
+  topic_list_enable_thumbnail_black_border_elimination:
+    default: false
+    client: false
   topic_list_search_previews_enabled:
     default: true
     client: true
