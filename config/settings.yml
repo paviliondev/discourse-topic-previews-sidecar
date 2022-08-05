@@ -11,15 +11,12 @@ plugins:
   topic_list_excerpt_remove_links:
     default: true
     client: false
-<<<<<<< HEAD
   topic_list_keep_link_text_content:
     default: false
     client: false
-=======
   topic_list_enable_thumbnail_colour_determination:
     default: true
     client: false
   topic_list_search_previews_enabled:
     default: true
     client: true
->>>>>>> ad9b55090f022d171e72928a10b0ea7100f14543

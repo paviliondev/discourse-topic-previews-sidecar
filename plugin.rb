@@ -8,11 +8,6 @@ gem 'color', '1.8', {require: false}
 gem 'colorscore', '0.0.5', {require: true}
 gem 'rmagick', '4.2.2', {require: false}
 gem 'prizm', '0.0.3', {require: true}
-# gem 'oily_png', '1.1.0', {require: false}
-# gem 'climate_control', '0.2.0', {require: false}
-# gem 'terrapin', '0.6.0', {require: false}
-# gem 'cocaine', '0.6.0', {require: false}
-# gem 'miro', '0.4.0', {require: true}
 
 enabled_site_setting :topic_list_previews_enabled
 
