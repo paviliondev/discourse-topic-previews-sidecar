@@ -91,12 +91,13 @@ module OptimizedImmageExtension
       -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
     })
 
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
-      instructions.concat(%W{
       #   -fuzz 1%
       #   -define trim:percent-background=0%
       #   -trim
       #   +repage
+
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+      instructions.concat(%W{
         -gravity South
         -background white
         -splice 0x5
@@ -198,12 +199,13 @@ end
       -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
     })
 
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
-      instructions.concat(%W{
       #   -fuzz 1%
       #   -define trim:percent-background=0%
       #   -trim
       #   +repage
+
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+      instructions.concat(%W{
         -gravity South
         -background white
         -splice 0x5
