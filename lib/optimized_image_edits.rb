@@ -93,10 +93,29 @@ module OptimizedImmageExtension
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
-        -fuzz 1%
-        -define trim:percent-background=0%
+      #   -fuzz 1%
+      #   -define trim:percent-background=0%
+      #   -trim
+      #   +repage
+        -gravity South
+        -background white
+        -splice 0x5
+        -background black
+        -splice 0x5
+        -fuzz 5%
         -trim
         +repage
+        -chop 0x5
+        -gravity North
+        -background white
+        -splice 0x5
+        -background black
+        -splice 0x5
+        -fuzz 5%
+        -trim
+        +repage
+        -chop 0x5
+        -shave 1x1
       })
     end
 
@@ -181,10 +200,29 @@ end
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
-        -fuzz 1%
-        -define trim:percent-background=0%
+      #   -fuzz 1%
+      #   -define trim:percent-background=0%
+      #   -trim
+      #   +repage
+        -gravity South
+        -background white
+        -splice 0x5
+        -background black
+        -splice 0x5
+        -fuzz 5%
         -trim
         +repage
+        -chop 0x5
+        -gravity North
+        -background white
+        -splice 0x5
+        -background black
+        -splice 0x5
+        -fuzz 5%
+        -trim
+        +repage
+        -chop 0x5
+        -shave 1x1
       })
     end
 
