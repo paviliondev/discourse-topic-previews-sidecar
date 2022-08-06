@@ -1,7 +1,5 @@
 require_dependency 'optimized_image'
 
-# OptimizedImage.class_eval do
-
 module OptimizedImmageExtension
 
   def optimize(operation, from, to, dimensions, opts = {})
@@ -25,9 +23,6 @@ module OptimizedImmageExtension
     convert_with(instructions, to, opts)
   end
 
-
-  # alias_method :old_resize_instructions, :resize_instructions
-
   def resize_instructions(from, to, dimensions, opts = {})
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination 
       dimensions = dimensions.split("x",2)[0]
@@ -48,22 +43,6 @@ module OptimizedImmageExtension
     if opts[:quality]
       instructions << "-quality" << opts[:quality].to_s
     end
-
-    # NOTE: ORIGINAL, ORDER is important!
-    # instructions.concat(%W{
-    #   -auto-orient
-    #   -gravity center
-    #   -background transparent
-    #   -#{thumbnail_or_resize} #{dimensions}^
-    #   -extent #{dimensions}
-    #   -interpolate catrom
-    #   -unsharp 2x0.5+0.7+0
-    #   -interlace none
-    #   -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
-    #   #{to}
-    # })
-
-    # ALGO -fuzz 4% -define trim:percent-background=0% -trim +repage -format jpg img.jpg
 
     # NOTE: ORDER is important!
     instructions.concat(%W{
@@ -98,26 +77,6 @@ module OptimizedImmageExtension
       -interlace none
       -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
     })
-
-      # -gravity South
-      # -background white
-      # -splice 0x5
-      # -background black
-      # -splice 0x5
-      # -fuzz 5%
-      # -trim
-      # +repage
-      # -chop 0x5
-      # -gravity North
-      # -background white
-      # -splice 0x5
-      # -background black
-      # -splice 0x5
-      # -fuzz 5%
-      # -trim
-      # +repage
-      # -chop 0x5
-      # -shave 1x1
 
     instructions.concat(%W{
       #{to}
@@ -168,16 +127,6 @@ end
 
     from = prepend_decoder!(from, to, opts)
     to = prepend_decoder!(to, to, opts)
-
-    # instructions.concat(%W{
-    #   -      -auto-orient
-    #   -      -gravity center
-    #   -      -background transparent
-    #   -      -interlace none
-    #   -      -resize #{dimensions}
-    #   -      -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
-    #          #{to}
-    #        })
 
     instructions = ['convert', "#{from}[0]"]
 
