@@ -79,9 +79,16 @@ module OptimizedImmageExtension
       })
     else
       instructions.concat(%W{
-        -background black
         -#{thumbnail_or_resize} #{dimensions.split("x",2)[0]}^
-        -extent #{dimensions.split("x",2)[0]}
+      })
+    end
+
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+      instructions.concat(%W{
+        -fuzz 0%
+        -define trim:percent-background=0%
+        -trim
+        +repage
       })
     end
     
@@ -111,15 +118,6 @@ module OptimizedImmageExtension
       # +repage
       # -chop 0x5
       # -shave 1x1
-
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
-      instructions.concat(%W{
-        -fuzz 3%
-        -define trim:percent-background=0%
-        -trim
-        +repage
-      })
-    end
 
     instructions.concat(%W{
       #{to}
@@ -192,10 +190,6 @@ end
       instructions.concat(%W{
         -background transparent
       })
-    else
-      instructions.concat(%W{
-        -background black
-      })
     end
 
     instructions.concat(%W{
@@ -204,29 +198,9 @@ end
       -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
     })
 
-      # -gravity South
-      # -background white
-      # -splice 0x5
-      # -background black
-      # -splice 0x5
-      # -fuzz 5%
-      # -trim
-      # +repage
-      # -chop 0x5
-      # -gravity North
-      # -background white
-      # -splice 0x5
-      # -background black
-      # -splice 0x5
-      # -fuzz 5%
-      # -trim
-      # +repage
-      # -chop 0x5
-      # -shave 1x1
-
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
-        -fuzz 3%
+        -fuzz 0%
         -define trim:percent-background=0%
         -trim
         +repage
