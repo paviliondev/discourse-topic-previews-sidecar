@@ -14,7 +14,11 @@ module OptimizedImmageExtension
     pp"###########################  ###########################"
     pp instructions
     pp"###########################  ###########################"
+    pp from
+    pp"###########################  ###########################"
     pp to
+    pp"###########################  ###########################"
+    pp dimensions
     pp"###########################  ###########################"
     pp opts
     pp"###########################  ###########################"
@@ -27,9 +31,6 @@ module OptimizedImmageExtension
   def resize_instructions(from, to, dimensions, opts = {})
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination 
       dimensions = dimensions.split("x",2)[0]
-      pp"###########################  ###########################"
-      pp dimensions
-      pp"###########################  ###########################"
     end
 
     ensure_safe_paths!(from, to)
@@ -48,7 +49,7 @@ module OptimizedImmageExtension
       instructions << "-quality" << opts[:quality].to_s
     end
 
-    # NOTE: ORDER is important!
+    # NOTE: ORIGINAL, ORDER is important!
     # instructions.concat(%W{
     #   -auto-orient
     #   -gravity center
@@ -62,27 +63,7 @@ module OptimizedImmageExtension
     #   #{to}
     # })
 
-    #super(from, to, dimensions, opts)
-   # old_resize_instructions(from, to, dimensions, opts)
-    # old_resize_instructions(from, to, dimensions, opts)
-
-    # ensure_safe_paths!(from, to)
-
-    # # note FROM my not be named correctly
-    # from = prepend_decoder!(from, to, opts)
-    # to = prepend_decoder!(to, to, opts)
-
-    # instructions = ['convert', "#{from}[0]"]
-
-    # if opts[:colors]
-    #   instructions << "-colors" << opts[:colors].to_s
-    # end
-
-    # if opts[:quality]
-    #   instructions << "-quality" << opts[:quality].to_s
-    # end
-
-    # # -fuzz 4% -define trim:percent-background=0% -trim +repage -format jpg img.jpg
+    # ALGO -fuzz 4% -define trim:percent-background=0% -trim +repage -format jpg img.jpg
 
     # NOTE: ORDER is important!
     instructions.concat(%W{
@@ -127,10 +108,8 @@ module OptimizedImmageExtension
   def self.crop_instructions(from, to, dimensions, opts = {})
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination 
       dimensions = dimensions.split("x",2)[0]
-      pp"###########################  ###########################"
-      pp dimensions
-      pp"###########################  ###########################"
     end
+
     ensure_safe_paths!(from, to)
 
     from = prepend_decoder!(from, to, opts)
@@ -140,7 +119,7 @@ module OptimizedImmageExtension
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
-        -fuzz 4%
+        -fuzz 2%
         -define trim:percent-background=0%
         -trim
         +repage
@@ -168,9 +147,6 @@ end
   def self.downsize_instructions(from, to, dimensions, opts = {})
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination 
       dimensions = dimensions.split("x",2)[0]
-      pp"###########################  ###########################"
-      pp dimensions
-      pp"###########################  ###########################"
     end
 
     ensure_safe_paths!(from, to)
@@ -182,7 +158,7 @@ end
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
-        -fuzz 4%
+        -fuzz 2%
         -define trim:percent-background=0%
         -trim
         +repage
