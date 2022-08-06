@@ -79,6 +79,7 @@ module OptimizedImmageExtension
       })
     else
       instructions.concat(%W{
+        -background black
         -#{thumbnail_or_resize} #{dimensions.split("x",2)[0]}^
         -extent #{dimensions.split("x",2)[0]}
       })
@@ -190,6 +191,10 @@ end
     unless SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
         -background transparent
+      })
+    else
+      instructions.concat(%W{
+        -background black
       })
     end
 
