@@ -63,4 +63,3 @@ CookedPostProcessor.class_eval do
     end
   end
 end
-https://i.ytimg.com/vi/R8CNAfkUP-I/maxresdefault.jpg
