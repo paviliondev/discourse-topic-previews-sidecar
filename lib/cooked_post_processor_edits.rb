@@ -37,7 +37,7 @@ CookedPostProcessor.class_eval do
           @post.topic.generate_thumbnails!(extra_sizes: extra_sizes)
         end
         if SiteSetting.topic_list_enable_thumbnail_colour_determination
-          mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: upload.id).url).get_colors(8).first
+          mypixels = get_dominant_colour(@post.topic.image_upload_id)
         end
       else
         @post.update_column(:image_upload_id, nil) if @post.image_upload_id
@@ -48,7 +48,7 @@ CookedPostProcessor.class_eval do
       extra_sizes = ThemeModifierHelper.new(theme_ids: Theme.user_selectable.pluck(:id)).topic_thumbnail_sizes
       @post.topic.generate_thumbnails!(extra_sizes: extra_sizes)
       if SiteSetting.topic_list_enable_thumbnail_colour_determination
-        mypixels = Prizm::Extractor.new("public" + Upload.find_by(id: @post.topic.image_upload_id).url).get_colors(8).first
+        mypixels = get_dominant_colour(@post.topic.image_upload_id)
       end
     end
 
@@ -61,5 +61,9 @@ CookedPostProcessor.class_eval do
       topic.custom_fields['dominant_colour'] = {red: red, green: green, blue: blue}
       topic.save_custom_fields(true)
     end
+  end
+
+  def get_dominant_colour(upload_id)
+    Prizm::Extractor.new("public" + OptimizedImage.where(upload_id: upload_id).order('width DESC').first.url).get_colors(5).first
   end
 end
