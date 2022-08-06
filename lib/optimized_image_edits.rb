@@ -145,16 +145,39 @@ module OptimizedImmageExtension
 end
 
   def self.downsize_instructions(from, to, dimensions, opts = {})
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination 
-      dimensions = dimensions.split("x",2)[0]
-    end
-
     ensure_safe_paths!(from, to)
 
     from = prepend_decoder!(from, to, opts)
     to = prepend_decoder!(to, to, opts)
 
+    # instructions.concat(%W{
+    #   -      -auto-orient
+    #   -      -gravity center
+    #   -      -background transparent
+    #   -      -interlace none
+    #   -      -resize #{dimensions}
+    #   -      -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
+    #          #{to}
+    #        })
+
     instructions = ['convert', "#{from}[0]"]
+
+    instructions.concat(%W{
+      -auto-orient
+      -gravity center
+    })
+
+    unless SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+      instructions.concat(%W{
+        -background transparent
+      })
+    end
+
+    instructions.concat(%W{
+      -interlace none
+      -resize #{dimensions}
+      -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
+    })
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
@@ -166,12 +189,6 @@ end
     end
 
     instructions.concat(%W{
-      -auto-orient
-      -gravity center
-      -background transparent
-      -interlace none
-      -resize #{dimensions}
-      -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
       #{to}
     })
   end
