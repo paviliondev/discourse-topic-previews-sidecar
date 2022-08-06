@@ -93,7 +93,7 @@ module OptimizedImmageExtension
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
-        -fuzz 2%
+        -fuzz 1%
         -define trim:percent-background=0%
         -trim
         +repage
@@ -119,7 +119,7 @@ module OptimizedImmageExtension
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
-        -fuzz 2%
+        -fuzz 1%
         -define trim:percent-background=0%
         -trim
         +repage
@@ -181,7 +181,7 @@ end
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
       instructions.concat(%W{
-        -fuzz 2%
+        -fuzz 1%
         -define trim:percent-background=0%
         -trim
         +repage
