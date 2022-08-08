@@ -20,6 +20,11 @@ plugins:
   topic_list_enable_thumbnail_black_border_elimination:
     default: false
     client: false
+  topic_list_enable_thumbnail_black_border_elimination_tolerance:
+    default: 0
+    max: 10
+    min: 0
+    client: false
   topic_list_search_previews_enabled:
     default: true
     client: true

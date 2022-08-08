@@ -31,6 +31,7 @@ after_initialize do
   load File.expand_path('../lib/topic_list_previews_helper.rb', __FILE__)
   load File.expand_path('../lib/guardian_edits.rb', __FILE__)
   load File.expand_path('../lib/topic_list_edits.rb', __FILE__)
+  load File.expand_path('../lib/topic_edits.rb', __FILE__)
   load File.expand_path('../lib/optimized_image_edits.rb', __FILE__)
   load File.expand_path('../controllers/thumbnail_selection.rb', __FILE__)
   load File.expand_path('../lib/cooked_post_processor_edits.rb', __FILE__)
@@ -41,6 +42,7 @@ after_initialize do
   load File.expand_path('../serializers/search_topic_list_item_serializer_edits.rb', __FILE__)
   
   ::OptimizedImage.singleton_class.prepend OptimizedImmageExtension
+  ::Topic.prepend TopicExtension
 
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
   TopicList.preloaded_custom_fields << "dominant_colour" if TopicList.respond_to? :preloaded_custom_fields

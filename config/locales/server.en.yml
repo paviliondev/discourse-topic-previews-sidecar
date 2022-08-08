@@ -6,5 +6,6 @@ en:
     topic_list_excerpt_remove_links: "Remove links from excerpts."
     topic_list_enable_thumbnail_colour_determination: "Enable dominant thumbnail colour determination for additional styling (experimental)"
     topic_list_enable_thumbnail_black_border_elimination: "Enable black border elimination during thumbnail creation (esp. useful for YouTube previews) (experimental)"
+    topic_list_enable_thumbnail_black_border_elimination_tolerance: "Percentage tolerance for black border colour (max 10)"
     topic_list_search_previews_enabled: "Display search results as thumbnail grid (experimental)"
     topic_list_keep_link_text_content: "Keep text content inside link tags from excerpts"

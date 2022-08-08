@@ -23,6 +23,16 @@ module OptimizedImmageExtension
     convert_with(instructions, to, opts)
   end
 
+  def border_elimination_instructions
+    return %W{
+      -fuzz #{SiteSetting.topic_list_enable_thumbnail_black_border_elimination_tolerance}%
+      -define trim:percent-background=0%
+      -define trim:edges=north,south
+      -trim
+      +repage
+    }
+  end
+
   def resize_instructions(from, to, dimensions, opts = {})
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination 
       dimensions = dimensions.split("x",2)[0]
@@ -63,12 +73,7 @@ module OptimizedImmageExtension
     end
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
-      instructions.concat(%W{
-        -fuzz 0%
-        -define trim:percent-background=0%
-        -trim
-        +repage
-      })
+      instructions.concat(border_elimination_instructions)
     end
     
     instructions.concat(%W{
@@ -96,12 +101,7 @@ module OptimizedImmageExtension
     instructions = ['convert', "#{from}[0]"]
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
-      instructions.concat(%W{
-        -fuzz 3%
-        -define trim:percent-background=0%
-        -trim
-        +repage
-      })
+      instructions.concat(border_elimination_instructions)
     end
 
     instructions.concat(%W{
@@ -148,12 +148,7 @@ end
     })
 
     if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
-      instructions.concat(%W{
-        -fuzz 0%
-        -define trim:percent-background=0%
-        -trim
-        +repage
-      })
+      instructions.concat(border_elimination_instructions)
     end
 
     instructions.concat(%W{
