@@ -7,7 +7,7 @@ module TopicExtension
     return nil unless original.width && original.height
     extra_sizes = [] unless extra_sizes.kind_of?(Array)
 
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+    if SiteSetting.topic_list_enable_thumbnail_recreation_on_post_rebuild
       TopicThumbnail.where(upload_id:original.id).destroy_all  
       OptimizedImage.where(upload_id:original.id).destroy_all  
     end
