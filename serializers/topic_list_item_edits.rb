@@ -3,6 +3,8 @@ class ::TopicListItemSerializer
   include TopicListItemEditsMixin
 
   attributes :sidecar_installed,
+             :dominant_colour,
+             :include_dominant_colour?,
              :topic_post_id,
              :topic_post_liked,
              :topic_post_like_count,
@@ -21,6 +23,8 @@ class ::SuggestedTopicSerializer
   include TopicListItemEditsMixin
 
   attributes :sidecar_installed,
+             :dominant_colour,
+             :include_dominant_colour?,
              :topic_post_id,
              :topic_post_liked,
              :topic_post_like_count,

@@ -14,3 +14,20 @@ plugins:
   topic_list_keep_link_text_content:
     default: false
     client: false
+  topic_list_enable_thumbnail_colour_determination:
+    default: true
+    client: false
+  topic_list_enable_thumbnail_recreation_on_post_rebuild:
+    default: false
+    client: false
+  topic_list_enable_thumbnail_black_border_elimination:
+    default: false
+    client: false
+  topic_list_enable_thumbnail_black_border_elimination_tolerance:
+    default: 0
+    max: 10
+    min: 0
+    client: false
+  topic_list_search_previews_enabled:
+    default: true
+    client: true
