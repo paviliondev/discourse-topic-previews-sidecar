@@ -23,6 +23,13 @@ plugins:
   topic_list_enable_thumbnail_black_border_elimination:
     default: false
     client: false
+  topic_list_enable_thumbnail_black_border_elimination_strategy:
+    type: enum
+    default: "4:3 to 16:9"
+    choices:
+      - "detect"
+      - "4:3 to 16:9"
+    client: false
   topic_list_enable_thumbnail_black_border_elimination_tolerance:
     default: 0
     max: 10
