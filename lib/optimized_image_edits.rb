@@ -24,13 +24,21 @@ module OptimizedImmageExtension
   end
 
   def border_elimination_instructions
-    return %W{
-      -fuzz #{SiteSetting.topic_list_enable_thumbnail_black_border_elimination_tolerance}%
-      -define trim:percent-background=0%
-      -define trim:edges=north,south
-      -trim
-      +repage
-    }
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination_strategy == "4:3 to 16:9"
+      return %W{
+        -gravity center
+        -crop 100%x75%
+        +repage
+      }
+    else
+      return %W{
+        -fuzz #{SiteSetting.topic_list_enable_thumbnail_black_border_elimination_tolerance}%
+        -define trim:percent-background=0%
+        -define trim:edges=north,south
+        -trim
+        +repage
+      }
+    end
   end
 
   def resize_instructions(from, to, dimensions, opts = {})
