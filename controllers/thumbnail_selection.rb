@@ -11,7 +11,7 @@ class ::TopicPreviews::ThumbnailselectionController < ::ApplicationController
 
     thumbnails = []
 
-    if current_user.id = user_id || current_user.admin == true
+    if current_user.id == user_id || current_user.staff?
       thumbnails = TopicPreviews::ThumbnailSelectionHelper.get_thumbnails_from_topic(topic)
     end
 
