@@ -36,5 +36,5 @@ plugins:
     min: 0
     client: false
   topic_list_search_previews_enabled:
-    default: true
+    default: false
     client: true
