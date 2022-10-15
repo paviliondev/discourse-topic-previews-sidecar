@@ -10,6 +10,7 @@ This sidecar also includes some experimental features:
 
 - Colourisation of background based on dominant colour of the thumbnail
 - Processing of the thumbnails to remove any black borders (critical to determining the best dominant colour).
+- Option to recreate thumbnails on rebuild of Post to allow you to quickly manage border elimination.
 
 You must have the Theme Component installed for it to work/be useful
 
