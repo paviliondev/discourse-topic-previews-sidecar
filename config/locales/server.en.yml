@@ -5,7 +5,7 @@ en:
     topic_list_excerpt_length: "Character length of topic excerpts."
     topic_list_excerpt_remove_links: "Remove links from excerpts."
     topic_list_enable_thumbnail_colour_determination: "Enable dominant thumbnail colour determination for additional styling (experimental)"
-    topic_list_enable_thumbnail_recreation_on_post_rebuild: "Recreate thumbnails when you rebuild Topic's first post HTML"
+    topic_list_enable_thumbnail_recreation_on_post_rebuild: "Recreate thumbnails when you rebuild Topic's first post HTML (experimental)"
     topic_list_enable_thumbnail_black_border_elimination: "Enable black border elimination during thumbnail creation (esp. useful for YouTube previews) (experimental)"
     topic_list_enable_thumbnail_black_border_elimination_strategy: "Decide whether to assume 4:3 to 16:9 centre crop is best strategy or attempt to detect"
     topic_list_enable_thumbnail_black_border_elimination_tolerance: "Percentage tolerance for black border colour detection (max 10) (detection strategy only)"
