@@ -8,8 +8,11 @@ module TopicExtension
     extra_sizes = [] unless extra_sizes.kind_of?(Array)
 
     if SiteSetting.topic_list_enable_thumbnail_recreation_on_post_rebuild
-      TopicThumbnail.where(upload_id:original.id).destroy_all  
-      OptimizedImage.where(upload_id:original.id).destroy_all  
+      TopicThumbnail.where(upload_id:original.id).each do |tn|
+        optimized_image_id = tn.optimized_image_id
+        tn.destroy
+        OptimizedImage.find(optimized_image_id).destroy
+      end
     end
 
     (Topic.thumbnail_sizes + extra_sizes).each do |dim|
