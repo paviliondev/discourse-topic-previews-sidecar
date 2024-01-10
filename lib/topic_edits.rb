@@ -11,7 +11,7 @@ module TopicExtension
       TopicThumbnail.where(upload_id:original.id).each do |tn|
         optimized_image_id = tn.optimized_image_id
         tn.destroy
-        OptimizedImage.find(optimized_image_id).destroy
+        OptimizedImage.find(optimized_image_id).destroy if !optimized_image_id.blank?
       end
     end
 
