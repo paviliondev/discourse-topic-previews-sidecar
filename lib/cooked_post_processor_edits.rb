@@ -62,7 +62,7 @@ CookedPostProcessor.class_eval do
   end
 
   def get_dominant_colour(upload_id)
-    Prizm::Extractor.new("public" + OptimizedImage.where(upload_id: upload_id).order('width DESC').first.url).get_colors(5).first
+    Prizm::Extractor.new("public" + OptimizedImage.where(upload_id: upload_id).order('width DESC').first.url).get_colors(5, false).first
   end
 
   def get_extra_sizes

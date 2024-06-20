@@ -1,12 +1,12 @@
 # name: discourse-topic-previews-sidecar
 # about: Sidecar Plugin to support Topic List Preview Theme Component
-# version: 5.0.3
+# version: 5.0.4
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-topic-previews
 
-gem 'color', '1.8', {require: false}
-gem 'colorscore', '0.0.5', {require: true}
-gem 'rmagick', '4.2.2', {require: false}
+gem 'pkg-config', '1.5.6', {require: true}
+gem 'observer', '0.1.2', {require: true}
+gem 'rmagick', '6.0.1', {require: false}
 gem 'prizm', '0.0.3', {require: true}
 
 enabled_site_setting :topic_list_previews_enabled
