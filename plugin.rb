@@ -1,6 +1,6 @@
 # name: discourse-topic-previews-sidecar
 # about: Sidecar Plugin to support Topic List Preview Theme Component
-# version: 5.0.4
+# version: 5.0.5
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-topic-previews
 
