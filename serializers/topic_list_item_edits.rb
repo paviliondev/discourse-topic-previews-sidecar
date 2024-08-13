@@ -1,5 +1,4 @@
-require 'topic_list_item_serializer'
-class ::TopicListItemSerializer
+class TopicListItemSerializer
   include TopicListItemEditsMixin
 
   attributes :sidecar_installed,
@@ -19,7 +18,7 @@ class ::TopicListItemSerializer
   alias :include_topic_post_can_unlike? :include_topic_post_id?
 end
 
-class ::SuggestedTopicSerializer
+class SuggestedTopicSerializer
   include TopicListItemEditsMixin
 
   attributes :sidecar_installed,

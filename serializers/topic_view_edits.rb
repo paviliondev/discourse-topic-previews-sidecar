@@ -1,5 +1,4 @@
-require 'topic_view_serializer'
-class ::TopicViewSerializer
+class TopicViewSerializer
 
   attributes :user_chosen_thumbnail_url,
              :sidecar_installed
