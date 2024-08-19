@@ -24,25 +24,17 @@ module OptimizedImmageExtension
   end
 
   def border_elimination_instructions
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination_strategy == "4:3 to 16:9"
       return %W{
         -gravity center
         -crop 100%x75%
         +repage
       }
-    else
-      return %W{
-        -fuzz #{SiteSetting.topic_list_enable_thumbnail_black_border_elimination_tolerance}%
-        -define trim:percent-background=0%
-        -define trim:edges=north,south
-        -trim
-        +repage
-      }
-    end
   end
 
   def resize_instructions(from, to, dimensions, opts = {})
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination 
+    is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
+
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
       dimensions = dimensions.split("x",2)[0]
     end
 
@@ -68,7 +60,7 @@ module OptimizedImmageExtension
       -gravity center
     })
 
-    unless SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+    unless SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
       instructions.concat(%W{
         -background transparent
         -#{thumbnail_or_resize} #{dimensions}^
@@ -80,10 +72,10 @@ module OptimizedImmageExtension
       })
     end
 
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
       instructions.concat(border_elimination_instructions)
     end
-    
+
     instructions.concat(%W{
       -interpolate catrom
       -unsharp 2x0.5+0.7+0
@@ -97,7 +89,9 @@ module OptimizedImmageExtension
   end
 
   def self.crop_instructions(from, to, dimensions, opts = {})
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination 
+    is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
+
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
       dimensions = dimensions.split("x",2)[0]
     end
 
@@ -108,7 +102,7 @@ module OptimizedImmageExtension
 
     instructions = ['convert', "#{from}[0]"]
 
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
       instructions.concat(border_elimination_instructions)
     end
 
@@ -131,6 +125,8 @@ module OptimizedImmageExtension
 end
 
   def self.downsize_instructions(from, to, dimensions, opts = {})
+    is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
+
     ensure_safe_paths!(from, to)
 
     from = prepend_decoder!(from, to, opts)
@@ -143,7 +139,7 @@ end
       -gravity center
     })
 
-    unless SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+    unless SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
       instructions.concat(%W{
         -background transparent
       })
@@ -155,7 +151,7 @@ end
       -profile #{File.join(Rails.root, 'vendor', 'data', 'RT_sRGB.icm')}
     })
 
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination
+    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
       instructions.concat(border_elimination_instructions)
     end
 
