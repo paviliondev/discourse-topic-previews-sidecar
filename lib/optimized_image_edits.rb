@@ -155,11 +155,11 @@ end
   end
 
   def crop_for_youtube?(opts)
-    is_youtube_four_by_three = false  
+    is_youtube_four_by_three = false
     if opts[:upload_id]
       is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
     end
-    return SiteSetting.topic_list_enable_thumbnail_black_border_elimination && 
+    return SiteSetting.topic_list_enable_thumbnail_black_border_elimination &&
       is_youtube_four_by_three
   end
 
