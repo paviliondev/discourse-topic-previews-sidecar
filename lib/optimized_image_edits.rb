@@ -32,9 +32,7 @@ module OptimizedImmageExtension
   end
 
   def resize_instructions(from, to, dimensions, opts = {})
-    is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
-
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
+    if crop_for_youtube?(opts)
       dimensions = dimensions.split("x",2)[0]
     end
 
@@ -60,7 +58,7 @@ module OptimizedImmageExtension
       -gravity center
     })
 
-    unless SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
+    unless crop_for_youtube?(opts)
       instructions.concat(%W{
         -background transparent
         -#{thumbnail_or_resize} #{dimensions}^
@@ -72,7 +70,7 @@ module OptimizedImmageExtension
       })
     end
 
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
+    if crop_for_youtube?(opts)
       instructions.concat(border_elimination_instructions)
     end
 
@@ -89,9 +87,7 @@ module OptimizedImmageExtension
   end
 
   def self.crop_instructions(from, to, dimensions, opts = {})
-    is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
-
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
+    if crop_for_youtube?(opts)
       dimensions = dimensions.split("x",2)[0]
     end
 
@@ -102,7 +98,7 @@ module OptimizedImmageExtension
 
     instructions = ['convert', "#{from}[0]"]
 
-    if SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
+    if crop_for_youtube?(opts)
       instructions.concat(border_elimination_instructions)
     end
 
@@ -125,8 +121,6 @@ module OptimizedImmageExtension
 end
 
   def self.downsize_instructions(from, to, dimensions, opts = {})
-    is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
-
     ensure_safe_paths!(from, to)
 
     from = prepend_decoder!(from, to, opts)
@@ -139,7 +133,7 @@ end
       -gravity center
     })
 
-    unless SiteSetting.topic_list_enable_thumbnail_black_border_elimination && is_youtube_four_by_three
+    unless crop_for_youtube?(opts)
       instructions.concat(%W{
         -background transparent
       })
@@ -159,4 +153,14 @@ end
       #{to}
     })
   end
+
+  def crop_for_youtube?(opts)
+    is_youtube_four_by_three = false  
+    if opts[:upload_id]
+      is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
+    end
+    return SiteSetting.topic_list_enable_thumbnail_black_border_elimination && 
+      is_youtube_four_by_three
+  end
+
 end
