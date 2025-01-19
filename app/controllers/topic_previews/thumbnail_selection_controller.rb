@@ -15,10 +15,8 @@ module ::TopicPreviews
         thumbnails = TopicPreviews::ThumbnailSelectionHelper.get_thumbnails_from_topic(topic)
       end
 
-      pp thumbnails
-
       respond_to do |format|
-          format.json { render json: thumbnails}
+        format.json { render json: { thumbnailselection: thumbnails } }
       end
     end
   end

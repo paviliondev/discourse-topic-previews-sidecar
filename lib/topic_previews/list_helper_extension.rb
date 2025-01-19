@@ -2,9 +2,6 @@
 module TopicPreviews
   module ListHelperExtension
     class << self
-    # def test_method
-    #   puts "ListHelperExtension is applied!"
-    # end
 
     def load_previewed_posts(topics, user = nil)
       # TODO: better to keep track of previewed posts' id so they can be loaded at once

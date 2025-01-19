@@ -42,7 +42,6 @@ module TopicPreviews
     end
 
     def include_topic_post_user?
-      # @options[:featured_topics] && 
       topic_post_user.present?
     end
 
@@ -94,12 +93,8 @@ module TopicPreviews
       SiteSetting.topic_list_enable_thumbnail_colour_determination
     end
 
-    # def dominant_colour
-    #   object.custom_fields['dominant_colour']
-    # end
-
     def dominant_colour
-      object.dominant_color
+      object.dominant_color || object.custom_fields['dominant_colour']
     end
   end
 end
