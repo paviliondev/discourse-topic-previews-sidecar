@@ -8,6 +8,7 @@ module TopicPreviews
   
       attributes :sidecar_installed,
                 :dominant_colour,
+                :dominant_color,
                 :include_dominant_colour?,
                 :topic_post_id,
                 :topic_post_liked,

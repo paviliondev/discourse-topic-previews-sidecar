@@ -55,7 +55,7 @@ module TopicPreviews
     end
 
     def topic_post_bookmarked
-      object.previewed_post_bookmark || false
+      object.previewed_post_bookmark.present? # || false
     end
 
     alias :include_topic_post_bookmarked? :include_topic_post_id?
@@ -94,8 +94,12 @@ module TopicPreviews
       SiteSetting.topic_list_enable_thumbnail_colour_determination
     end
 
+    # def dominant_colour
+    #   object.custom_fields['dominant_colour']
+    # end
+
     def dominant_colour
-      object.custom_fields['dominant_colour']
+      object.dominant_color
     end
   end
 end

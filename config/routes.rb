@@ -3,5 +3,5 @@ Discourse::Application.routes.draw do
 end
 
 TopicPreviews::Engine.routes.draw do
-  get '/thumbnail-selection' => 'thumbnailselection#index'
+  get 'thumbnail-selection' => 'thumbnail_selection#index'
 end

@@ -1,13 +1,8 @@
 # name: discourse-topic-previews-sidecar
 # about: Sidecar Plugin to support Topic List Preview Theme Component
-# version: 5.1.1
+# version: 6.0.0
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-topic-previews
-
-gem 'pkg-config', '1.5.6', {require: true}
-gem 'observer', '0.1.2', {require: true}
-gem 'rmagick', '6.0.1', {require: false}
-gem 'prizm', '0.0.3', {require: true}
 
 enabled_site_setting :topic_list_previews_enabled
 
@@ -21,30 +16,23 @@ require_relative "lib/topic_previews/engine"
 
 after_initialize do
   reloadable_patch do
-    Category.prepend(TopicPreviews::CategoryExtension)
+    Upload.prepend(TopicPreviews::UploadExtension)
     Topic.prepend(TopicPreviews::TopicExtension)
-    TopicView.prepend(TopicPreviews::TopicViewExtension)
-    TopicViewSerializer.prepend(TopicPreviews::TopicViewSerializerExtension)
-    TopicQuery.prepend(TopicPreviews::TopicQueryExtension)
+    TopicViewSerializer.include(TopicPreviews::TopicViewSerializerExtension)
     ListHelper.prepend(TopicPreviews::ListHelperExtension)
     TopicList.prepend(TopicPreviews::TopicListExtension)
-    TopicListSerializer.prepend(TopicPreviews::TopicListSerializerExtension)
-    TopicListItemSerializer.prepend(TopicPreviews::TopicListItemSerializerExtension)
+    TopicListItemSerializer.include(TopicPreviews::TopicListItemSerializerExtension)
     OptimizedImage.singleton_class.prepend(TopicPreviews::OptimizedImageExtension)
     CookedPostProcessor.prepend(TopicPreviews::CookedPostProcessorExtension)
-    Guardian.prepend(TopicPreviews::GuardianExtension)
     PostGuardian.prepend(TopicPreviews::PostGuardianExtension)
-    SearchTopicListItemSerializer.prepend(TopicPreviews::SearchTopicListItemSerializerExtension)
+    SearchTopicListItemSerializer.include(TopicPreviews::SearchTopicListItemSerializerExtension)
+    SuggestedTopicSerializer.include(TopicPreviews::SuggestedTopicSerializerExtension)
   end
 
   User.register_custom_field_type('tlp_user_prefs_prefer_low_res_thumbnails', :boolean)
   Topic.register_custom_field_type('user_chosen_thumbnail_url', :string)
   Topic.register_custom_field_type('dominant_colour', :json)
-
   register_editable_user_custom_field :tlp_user_prefs_prefer_low_res_thumbnails
-
- 
-
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
   TopicList.preloaded_custom_fields << "dominant_colour" if TopicList.respond_to? :preloaded_custom_fields
   TopicView.preloaded_custom_fields << "accepted_answer_post_id" if TopicView.respond_to? :preloaded_custom_fields
