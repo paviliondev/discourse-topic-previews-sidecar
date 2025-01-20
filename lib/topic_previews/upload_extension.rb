@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module TopicPreviews
   module UploadExtension
 
@@ -5,9 +6,9 @@ module TopicPreviews
 
     def calculate_dominant_color!(local_path = nil)
       color = nil
-  
+
       color = "" if !FileHelper.is_supported_image?("image.#{extension}") || extension == "svg"
-  
+
       if color.nil?
         local_path ||=
           if local?
@@ -15,12 +16,12 @@ module TopicPreviews
           else
             Discourse.store.download_safe(self)&.path
           end
-  
+
         if local_path.nil?
           # Download failed. Could be too large to download, or file could be missing in s3
           color = ""
         end
-  
+
         color ||=
           begin
             data =
@@ -44,11 +45,11 @@ module TopicPreviews
 
             # Output format:
             # 1: (110.873,116.226,93.8821) #6F745E srgb(43.4798%,45.5789%,36.8165%)
-  
+
             color = data[/#([0-9A-F]{6})/, 1]
-  
+
             raise "Calculated dominant color but unable to parse output:\n#{data}" if color.nil?
-  
+
             color
           rescue Discourse::Utils::CommandError => e
             # Timeout or unable to parse image
@@ -57,7 +58,7 @@ module TopicPreviews
             ""
           end
       end
-  
+
       if persisted?
         self.update_column(:dominant_color, color)
       else

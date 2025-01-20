@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # name: discourse-topic-previews-sidecar
 # about: Sidecar Plugin to support Topic List Preview Theme Component
 # version: 6.0.0

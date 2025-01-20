@@ -1,5 +1,8 @@
+# frozen_string_literal: true
 module ::TopicPreviews
   class ThumbnailSelectionController < ::ApplicationController
+    requires_plugin PLUGIN_NAME
+
     def index
       params.require(:topic)
 

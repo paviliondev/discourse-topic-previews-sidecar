@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module TopicPreviews
   module  TopicListItemSerializerExtension
     extend ActiveSupport::Concern
@@ -5,7 +6,7 @@ module TopicPreviews
     include TopicListItemEditsMixin
 
     included do
-  
+
       attributes :sidecar_installed,
                 :dominant_colour,
                 :dominant_color,

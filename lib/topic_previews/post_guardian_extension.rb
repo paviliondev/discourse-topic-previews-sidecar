@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_dependency 'guardian'
 require_dependency 'guardian/post_guardian'
 

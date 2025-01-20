@@ -25,7 +25,6 @@ describe TopicListItemSerializer do
     expect(serialized[:featured_link_root_domain]).to eq(nil)
     expect(serialized[:thumbnails]).to eq(nil)
 
-
     featured_link = 'http://meta.discourse.org'
     topic.featured_link = featured_link
     serialized = TopicListItemSerializer.new(topic, scope: Guardian.new, root: false).as_json
@@ -34,7 +33,7 @@ describe TopicListItemSerializer do
     expect(serialized[:featured_link_root_domain]).to eq('discourse.org')
   end
 
-  fab!(:post) { Fabricate(:post) }
+  fab!(:post)
 
   it "process posts and reflect thumbnails in serializer" do
     post = Fabricate(:post, raw: "<img src='#{Discourse.base_url_no_prefix}/awesome/picture.png'>")
@@ -43,7 +42,7 @@ describe TopicListItemSerializer do
     Jobs::ProcessPost.new.execute(post_id: post.id)
     post.reload
     expect(post.cooked).not_to match(/http/)
- 
+
     serialized = TopicListItemSerializer.new(post.topic, scope: Guardian.new, root: false).as_json
     expect(serialized[:thumbnails]).not_to eq(nil)
   end

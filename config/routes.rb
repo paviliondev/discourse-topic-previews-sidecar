@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Discourse::Application.routes.draw do
   mount ::TopicPreviews::Engine, at: '/topic-previews'
 end

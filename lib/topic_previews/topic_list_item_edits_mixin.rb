@@ -9,7 +9,7 @@ module TopicPreviews
 
     def excerpt
       if object.previewed_post
-        doc = Nokogiri::HTML::fragment(object.previewed_post.cooked)
+        doc = Nokogiri::HTML5::fragment(object.previewed_post.cooked)
         doc.search('.//img').remove
         if !SiteSetting.topic_list_excerpt_remove_links
           PrettyText.excerpt(doc.to_html, SiteSetting.topic_list_excerpt_length, keep_emoji_images: true)
@@ -79,7 +79,7 @@ module TopicPreviews
     alias :include_topic_post_can_like? :include_topic_post_id?
 
     def topic_post_is_current_users
-      return scope.current_user && (object.previewed_post&.user_id == scope.current_user.id)
+      scope.current_user && (object.previewed_post&.user_id == scope.current_user.id)
     end
     alias :include_topic_post_is_current_users? :include_topic_post_id?
 

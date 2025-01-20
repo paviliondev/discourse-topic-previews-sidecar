@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_dependency 'optimized_image'
 
 module TopicPreviews
@@ -6,35 +7,35 @@ module TopicPreviews
     def optimize(operation, from, to, dimensions, opts = {})
       method_name = "#{operation}_instructions"
 
-      pp"###########################  ###########################"
+      pp "###########################  ###########################"
       pp method_name
-      pp"###########################  ###########################"
+      pp "###########################  ###########################"
       instructions = self.public_send(method_name.to_sym, from, to, dimensions, opts)
-      pp"###########################  ###########################"
+      pp "###########################  ###########################"
       pp instructions
-      pp"###########################  ###########################"
+      pp "###########################  ###########################"
       pp from
-      pp"###########################  ###########################"
+      pp "###########################  ###########################"
       pp to
-      pp"###########################  ###########################"
+      pp "###########################  ###########################"
       pp dimensions
-      pp"###########################  ###########################"
+      pp "###########################  ###########################"
       pp opts
-      pp"###########################  ###########################"
+      pp "###########################  ###########################"
       convert_with(instructions, to, opts)
     end
 
     def border_elimination_instructions
-        return %W{
-          -gravity center
-          -crop 100%x75%
-          +repage
-        }
+      %W{
+        -gravity center
+        -crop 100%x75%
+        +repage
+      }
     end
 
     def resize_instructions(from, to, dimensions, opts = {})
       if crop_for_youtube?(opts)
-        dimensions = dimensions.split("x",2)[0]
+        dimensions = dimensions.split("x", 2)[0]
       end
 
       ensure_safe_paths!(from, to)
@@ -59,15 +60,15 @@ module TopicPreviews
         -gravity center
       })
 
-      unless crop_for_youtube?(opts)
+      if crop_for_youtube?(opts)
+        instructions.concat(%W{
+          -#{thumbnail_or_resize} #{dimensions.split("x", 2)[0]}^
+        })
+      else
         instructions.concat(%W{
           -background transparent
           -#{thumbnail_or_resize} #{dimensions}^
           -extent #{dimensions}
-        })
-      else
-        instructions.concat(%W{
-          -#{thumbnail_or_resize} #{dimensions.split("x",2)[0]}^
         })
       end
 
@@ -89,7 +90,7 @@ module TopicPreviews
 
     def self.crop_instructions(from, to, dimensions, opts = {})
       if crop_for_youtube?(opts)
-        dimensions = dimensions.split("x",2)[0]
+        dimensions = dimensions.split("x", 2)[0]
       end
 
       ensure_safe_paths!(from, to)
@@ -160,7 +161,7 @@ module TopicPreviews
       if opts[:upload_id]
         is_youtube_four_by_three = Upload.find(opts[:upload_id]).original_filename == "hqdefault.jpg"
       end
-      return SiteSetting.topic_list_enable_thumbnail_black_border_elimination &&
+      SiteSetting.topic_list_enable_thumbnail_black_border_elimination &&
         is_youtube_four_by_three
     end
 

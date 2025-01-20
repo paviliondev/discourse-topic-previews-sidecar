@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 
-module TopicPreviews 
+module TopicPreviews
   module SuggestedTopicSerializerExtension
     extend ActiveSupport::Concern
 

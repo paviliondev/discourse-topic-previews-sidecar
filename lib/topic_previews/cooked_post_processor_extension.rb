@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_dependency 'cooked_post_processor'
 
 module TopicPreviews
@@ -18,18 +19,20 @@ module TopicPreviews
     end
 
     def update_post_image
-      
-      unless @post.is_first_post? && @post.topic.custom_fields["user_chosen_thumbnail_url"]
+
+      if @post.is_first_post? && @post.topic.custom_fields["user_chosen_thumbnail_url"]
+        @post.topic.generate_thumbnails!(extra_sizes: get_extra_sizes)
+      else
 
         upload = nil
         eligible_image_fragments = extract_images_for_post
-      
+
         # Loop through those fragments until we find one with an upload record
         @post.each_upload_url(fragments: eligible_image_fragments) do |src, path, sha1|
           upload = Upload.find_by(sha1: sha1)
           break if upload
         end
-      
+
         if upload.present?
           @post.update_column(:image_upload_id, upload.id) # post
           if @post.is_first_post? # topic
@@ -41,8 +44,6 @@ module TopicPreviews
           @post.topic.update_column(:image_upload_id, nil) if @post.topic.image_upload_id && @post.is_first_post?
           nil
         end
-      else
-        @post.topic.generate_thumbnails!(extra_sizes: get_extra_sizes)
       end
     end
 

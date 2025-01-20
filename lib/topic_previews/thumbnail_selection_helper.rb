@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ::TopicPreviews::ThumbnailSelectionHelper
 
   def self.extract_images_for_post (doc)
@@ -33,8 +34,8 @@ module ::TopicPreviews::ThumbnailSelectionHelper
       @post.each_upload_url(fragments: eligible_image_fragments) do |src, path, sha1|
         upload = Upload.find_by(sha1: sha1)
         if upload
-          thumbnails << {image_url: upload.url, post_id: post_id, upload_id: upload.id}
-        end 
+          thumbnails << { image_url: upload.url, post_id: post_id, upload_id: upload.id }
+        end
       end
     end
     thumbnails
