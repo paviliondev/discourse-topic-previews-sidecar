@@ -26,8 +26,10 @@ after_initialize do
     OptimizedImage.singleton_class.prepend(TopicPreviews::OptimizedImageExtension)
     CookedPostProcessor.prepend(TopicPreviews::CookedPostProcessorExtension)
     PostGuardian.prepend(TopicPreviews::PostGuardianExtension)
-    SearchTopicListItemSerializer.include(TopicPreviews::SearchTopicListItemSerializerExtension)
     SuggestedTopicSerializer.include(TopicPreviews::SuggestedTopicSerializerExtension)
+    if SiteSetting.topic_list_search_previews_enabled
+      SearchTopicListItemSerializer.prepend(TopicPreviews::SearchTopicListItemSerializerExtension)
+    end
   end
 
   User.register_custom_field_type('tlp_user_prefs_prefer_low_res_thumbnails', :boolean)
