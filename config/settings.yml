@@ -26,3 +26,8 @@ plugins:
   topic_list_search_previews_enabled:
     default: false
     client: true
+  topic_list_dominant_color_quantisation:
+    default: 5
+    max: 10
+    min: 3
+    client: false

@@ -1,0 +1,56 @@
+current directory: /Users/robertbarrow/dev/disc/discourse/plugins/discourse-topic-previews-sidecar/gems/3.2.2/gems/rmagick-6.0.1/ext/RMagick
+/Users/robertbarrow/.rbenv/versions/3.2.2/bin/ruby extconf.rb
+checking for brew... yes
+checking for Ruby version >= 3.0.0... yes
+checking for outdated ImageMagick version (<= 6.8.9)... no
+checking for clang++... yes
+checking for MagickCore/MagickCore.h... yes
+checking for malloc.h... no
+checking for malloc/malloc.h... yes
+checking for rb_io_path() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,ruby.h,ruby/io.h,MagickCore/MagickCore.h,malloc/malloc.h... no
+checking for posix_memalign() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,ruby.h,ruby/io.h,MagickCore/MagickCore.h,malloc/malloc.h... yes
+checking for malloc_usable_size() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,ruby.h,ruby/io.h,MagickCore/MagickCore.h,malloc/malloc.h... no
+checking for malloc_size() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,ruby.h,ruby/io.h,MagickCore/MagickCore.h,malloc/malloc.h... yes
+checking for _aligned_msize() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,ruby.h,ruby/io.h,MagickCore/MagickCore.h,malloc/malloc.h... no
+checking for GetImageChannelEntropy() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,ruby.h,ruby/io.h,MagickCore/MagickCore.h,malloc/malloc.h... no
+checking for SetImageGray() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,ruby.h,ruby/io.h,MagickCore/MagickCore.h,malloc/malloc.h... yes
+checking for SetMagickAlignedMemoryMethods() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,sys/types.h,ruby.h,ruby/io.h,MagickCore/MagickCore.h,malloc/malloc.h... yes
+creating extconf.h
+creating Makefile
+======================================================================
+Fri 30 Aug 24 12:09:23
+This installation of RMagick 6.0.1 is configured for
+Ruby 3.2.2 (arm64-darwin22) and ImageMagick 7.1.1
+======================================================================
+
+
+Configured compile options: {:magick_version=>"7.1.1", :local_libs=>"  -L/opt/homebrew/Cellar/imagemagick/7.1.1-35/lib -lMagickCore-7.Q16HDRI", :cppflags=>"-I/Users/robertbarrow/.rbenv/versions/3.2.2/include  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT $(DEFS) $(cppflags)  -Xpreprocessor -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -DMAGICKCORE_CHANNEL_MASK_DEPTH=32 -I/opt/homebrew/Cellar/imagemagick/7.1.1-35/include/ImageMagick-7 -x c++ -std=c++11 -Wno-register $(optflags) $(debugflags) -fomit-frame-pointer", :ldflags=>"-L. -L/Users/robertbarrow/.rbenv/versions/3.2.2/lib  -fstack-protector-strong  -L/opt/homebrew/Cellar/imagemagick/7.1.1-35/lib -lMagickCore-7.Q16HDRI -Wl,-rpath,/opt/homebrew/Cellar/imagemagick/7.1.1-35/lib", :defs=>["-DHAVE_MAGICKCORE_MAGICKCORE_H", "-DHAVE_MALLOC_MALLOC_H", "-DHAVE_POSIX_MEMALIGN", "-DHAVE_MALLOC_SIZE", "-DHAVE_SETIMAGEGRAY", "-DHAVE_SETMAGICKALIGNEDMEMORYMETHODS", "-DRUBY_VERSION_STRING=\"ruby 3.2.2\"", "-DRMAGICK_VERSION_STRING=\"RMagick 6.0.1\"", "-DIMAGEMAGICK_GREATER_THAN_EQUAL_6_9_0=1", "-DIMAGEMAGICK_GREATER_THAN_EQUAL_6_9_10=1", "-DIMAGEMAGICK_7=1", "-DIMAGEMAGICK_GREATER_THAN_EQUAL_7_0_8=1", "-DIMAGEMAGICK_GREATER_THAN_EQUAL_7_0_10=1"], :config_h=>"Makefile"}
+
+current directory: /Users/robertbarrow/dev/disc/discourse/plugins/discourse-topic-previews-sidecar/gems/3.2.2/gems/rmagick-6.0.1/ext/RMagick
+make DESTDIR\= sitearchdir\=./.gem.20240830-33233-6eyhl4 sitelibdir\=./.gem.20240830-33233-6eyhl4 clean
+
+current directory: /Users/robertbarrow/dev/disc/discourse/plugins/discourse-topic-previews-sidecar/gems/3.2.2/gems/rmagick-6.0.1/ext/RMagick
+make DESTDIR\= sitearchdir\=./.gem.20240830-33233-6eyhl4 sitelibdir\=./.gem.20240830-33233-6eyhl4
+compiling rmagick.cpp
+compiling rmdraw.cpp
+compiling rmenum.cpp
+compiling rmfill.cpp
+compiling rmilist.cpp
+compiling rmimage.cpp
+compiling rminfo.cpp
+compiling rmkinfo.cpp
+compiling rmmain.cpp
+compiling rmmontage.cpp
+compiling rmpixel.cpp
+compiling rmstruct.cpp
+compiling rmutil.cpp
+linking shared-object RMagick2.bundle
+ld: warning: -multiply_defined is obsolete
+ld: warning: ignoring duplicate libraries: '-lMagickCore-7.Q16HDRI', '-lruby.3.2'
+
+current directory: /Users/robertbarrow/dev/disc/discourse/plugins/discourse-topic-previews-sidecar/gems/3.2.2/gems/rmagick-6.0.1/ext/RMagick
+make DESTDIR\= sitearchdir\=./.gem.20240830-33233-6eyhl4 sitelibdir\=./.gem.20240830-33233-6eyhl4 install
+/usr/bin/install -c -m 0755 RMagick2.bundle ./.gem.20240830-33233-6eyhl4
+
+current directory: /Users/robertbarrow/dev/disc/discourse/plugins/discourse-topic-previews-sidecar/gems/3.2.2/gems/rmagick-6.0.1/ext/RMagick
+make DESTDIR\= sitearchdir\=./.gem.20240830-33233-6eyhl4 sitelibdir\=./.gem.20240830-33233-6eyhl4 clean

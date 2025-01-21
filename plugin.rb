@@ -1,52 +1,47 @@
+# frozen_string_literal: true
 # name: discourse-topic-previews-sidecar
 # about: Sidecar Plugin to support Topic List Preview Theme Component
-# version: 5.1.1
+# version: 6.0.0
 # authors: Robert Barrow, Angus McLeod
 # url: https://github.com/paviliondev/discourse-topic-previews
-
-gem 'pkg-config', '1.5.6', {require: true}
-gem 'observer', '0.1.2', {require: true}
-gem 'rmagick', '6.0.1', {require: false}
-gem 'prizm', '0.0.3', {require: true}
 
 enabled_site_setting :topic_list_previews_enabled
 
 DiscoursePluginRegistry.serialized_current_user_fields << "tlp_user_prefs_prefer_low_res_thumbnails"
 
+module ::TopicPreviews
+  PLUGIN_NAME = "topic-previews".freeze
+end
+
+require_relative "lib/topic_previews/engine"
+
 after_initialize do
-  User.register_custom_field_type('tlp_user_prefs_prefer_low_res_thumbnails', :boolean)
-  Topic.register_custom_field_type('user_chosen_thumbnail_url', :string)
-  Topic.register_custom_field_type('dominant_colour', :json)
-
-  register_editable_user_custom_field :tlp_user_prefs_prefer_low_res_thumbnails
-
-  module ::TopicPreviews
-    class Engine < ::Rails::Engine
-      engine_name "topic_previews"
-      isolate_namespace TopicPreviews
+  reloadable_patch do
+    Upload.prepend(TopicPreviews::UploadExtension)
+    Topic.prepend(TopicPreviews::TopicExtension)
+    TopicViewSerializer.include(TopicPreviews::TopicViewSerializerExtension)
+    ListHelper.prepend(TopicPreviews::ListHelperExtension)
+    TopicList.prepend(TopicPreviews::TopicListExtension)
+    TopicListItemSerializer.include(TopicPreviews::TopicListItemSerializerExtension)
+    OptimizedImage.singleton_class.prepend(TopicPreviews::OptimizedImageExtension)
+    CookedPostProcessor.prepend(TopicPreviews::CookedPostProcessorExtension)
+    PostGuardian.prepend(TopicPreviews::PostGuardianExtension)
+    SuggestedTopicSerializer.include(TopicPreviews::SuggestedTopicSerializerExtension)
+    if SiteSetting.topic_list_search_previews_enabled
+      SearchTopicListItemSerializer.prepend(TopicPreviews::SearchTopicListItemSerializerExtension)
     end
   end
 
-  load File.expand_path('../lib//thumbnail_selection_helper.rb', __FILE__)
-  load File.expand_path('../lib/topic_list_previews_helper.rb', __FILE__)
-  load File.expand_path('../lib/guardian_edits.rb', __FILE__)
-  load File.expand_path('../lib/topic_list_edits.rb', __FILE__)
-  load File.expand_path('../lib/topic_edits.rb', __FILE__)
-  load File.expand_path('../lib/optimized_image_edits.rb', __FILE__)
-  load File.expand_path('../controllers/thumbnail_selection.rb', __FILE__)
-  load File.expand_path('../lib/cooked_post_processor_edits.rb', __FILE__)
-  load File.expand_path('../lib/topic_list_serializer_lib.rb', __FILE__)
-  load File.expand_path('../serializers/topic_list_item_edits_mixin.rb', __FILE__)
-  load File.expand_path('../serializers/topic_list_item_edits.rb', __FILE__)
-  load File.expand_path('../serializers/topic_view_edits.rb', __FILE__)
-  load File.expand_path('../serializers/search_topic_list_item_serializer_edits.rb', __FILE__)
-  
-  ::OptimizedImage.singleton_class.prepend OptimizedImmageExtension
-  ::Topic.prepend TopicExtension
-
+  User.register_custom_field_type('tlp_user_prefs_prefer_low_res_thumbnails', :boolean)
+  Topic.register_custom_field_type('user_chosen_thumbnail_url', :string)
+  Topic.register_custom_field_type('dominant_colour', :json)
+  register_editable_user_custom_field :tlp_user_prefs_prefer_low_res_thumbnails
   TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
   TopicList.preloaded_custom_fields << "dominant_colour" if TopicList.respond_to? :preloaded_custom_fields
-  
+  TopicView.preloaded_custom_fields << "accepted_answer_post_id" if TopicView.respond_to? :preloaded_custom_fields
+  TopicView.preloaded_custom_fields << "dominant_colour" if TopicView.respond_to? :preloaded_custom_fields
+  Topic.preloaded_custom_fields << "accepted_answer_post_id" if Topic.respond_to? :preloaded_custom_fields
+  Topic.preloaded_custom_fields << "dominant_colour" if Topic.respond_to? :preloaded_custom_fields
   # DiscourseEvent.on(:accepted_solution) do |post|
   #   if post.image_url && SiteSetting.topic_list_previews_enabled
   #     ListHelper.create_topic_thumbnails(post, post.image_url)[:id]
@@ -61,14 +56,6 @@ after_initialize do
   PostRevisor.track_topic_field("image_upload_id".to_sym) do |tc, tf|
     tc.record_change("image_upload_id", tc.topic.image_upload_id, tf)
     tc.topic.image_upload_id = tf
-  end
-
-  Discourse::Application.routes.append do
-    mount ::TopicPreviews::Engine, at: '/topic-previews'
-  end
-
-  TopicPreviews::Engine.routes.draw do
-    get '/thumbnail-selection' => 'thumbnailselection#index'
   end
 
   DiscourseEvent.trigger(:topic_previews_ready)
