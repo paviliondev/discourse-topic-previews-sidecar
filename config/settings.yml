@@ -16,7 +16,7 @@ plugins:
     client: false
   topic_list_enable_thumbnail_colour_determination:
     default: false
-    client: false
+    client: true
   topic_list_enable_thumbnail_recreation_on_post_rebuild:
     default: false
     client: false
